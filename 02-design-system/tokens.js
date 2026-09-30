@@ -92,12 +92,10 @@ const tokens = {
   shadow: {
     light: {
       card: { color: '#161615', opacity: 0.08, offsetY: 8, blur: 24, elevation: 4 },
-      cta:  { color: '#FF5A36', opacity: 0.28, offsetY: 6, blur: 16, elevation: 6 },
       sheet:{ color: '#161615', opacity: 0.16, offsetY: -8, blur: 32, elevation: 12 },
     },
     dark: {
       card: { color: '#000000', opacity: 0.40, offsetY: 8, blur: 24, elevation: 4 },
-      cta:  { color: '#FF5A36', opacity: 0.35, offsetY: 6, blur: 16, elevation: 6 },
       sheet:{ color: '#000000', opacity: 0.60, offsetY: -8, blur: 32, elevation: 12 },
     },
   },

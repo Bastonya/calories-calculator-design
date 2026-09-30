@@ -116,11 +116,12 @@
 
   /* Button */
   .k-btn{position:relative;display:inline-flex;align-items:center;justify-content:center;gap:var(--sp-s2);width:100%;min-height:var(--sz-control);padding:0 var(--sp-s4);white-space:nowrap;text-align:center;line-height:1.2;border-radius:var(--r-pill);border:var(--sz-hairline) solid transparent;font:var(--fw-semibold) var(--fs-body)/1 var(--ff-body),var(--ff-fallback);cursor:pointer;color:inherit;background:none}
-  .k-btn--primary{background-color:var(--c-coral);color:var(--c-onCoral);box-shadow:var(--sh-cta)}
+  .k-btn--primary{background-color:var(--c-coral);color:var(--c-onCoral)}
   .k-btn--secondary{background-color:var(--c-card);color:var(--c-ink);border-color:var(--c-border)}
   .k-btn--pill{width:auto;min-height:var(--sz-controlSm);padding:0 var(--sp-s4);font-size:var(--fs-bodySm);background-color:var(--c-coralSoft);color:var(--c-coral)}
-  .k-btn.is-error{background-color:var(--c-coralSoft);color:var(--c-coral);border-color:var(--c-coral);box-shadow:none}
+  .k-btn.is-error{background-color:var(--c-coralSoft);color:var(--c-coral);border-color:var(--c-coral);font-size:inherit}
   .k-btn.is-loading{pointer-events:none}
+  .k-btn--pill.is-error{font-size:var(--fs-bodySm)}
   .k-btn.is-loading .k-btn__label,.k-btn.is-loading .k-btn__icon{visibility:hidden}
   .k-btn .k-spin{position:absolute;left:50%;top:50%;margin:-10px 0 0 -10px}
   .k-btn__icon{width:18px;height:18px;flex:none;display:inline-flex}
@@ -287,7 +288,7 @@
 
   <section class="block" id="tokens-shadow">
     <h2>Shadows and motion</h2>
-    <p class="desc">Three elevations. Shadow objects carry React Native fields (color, opacity, offset, blur, elevation) and are converted to CSS here. Durations and easings are the same ones used by the stylescape's motion motif.</p>
+    <p class="desc">Two elevations, cards and sheets. Buttons are flat. Shadow objects carry React Native fields (color, opacity, offset, blur, elevation) and are converted to CSS here. Durations and easings are the same ones used by the stylescape's motion motif.</p>
     <div class="panel"><h3>Shadow</h3><div class="shadows" id="shadows"></div></div>
     <div class="panel"><h3>Motion</h3><div class="motion-row" id="motion"></div></div>
   </section>
@@ -393,12 +394,10 @@ const tokens = {
   shadow: {
     light: {
       card: { color: '#161615', opacity: 0.08, offsetY: 8, blur: 24, elevation: 4 },
-      cta:  { color: '#FF5A36', opacity: 0.28, offsetY: 6, blur: 16, elevation: 6 },
       sheet:{ color: '#161615', opacity: 0.16, offsetY: -8, blur: 32, elevation: 12 },
     },
     dark: {
       card: { color: '#000000', opacity: 0.40, offsetY: 8, blur: 24, elevation: 4 },
-      cta:  { color: '#FF5A36', opacity: 0.35, offsetY: 6, blur: 16, elevation: 6 },
       sheet:{ color: '#000000', opacity: 0.60, offsetY: -8, blur: 32, elevation: 12 },
     },
   },
@@ -556,7 +555,7 @@ if (typeof module !== 'undefined' && module.exports) { module.exports = tokens; 
       tail = s==='loading' ? spinner.replace('k-spin','k-spin k-spin--sm')
            : '<button type="button" class="k-chip__x" aria-label="Remove '+esc(p.label)+'">'+I.x+'</button>';
     }
-    var label = s==='error' ? (p.errorLabel||p.label) : p.label;
+    var label = p.label;
     return '<span class="'+cls('k-chip','pressable',p.selected&&'k-chip--selected',p.removable&&'k-chip--removable',stateCls(s))+'" role="button" tabindex="0"'+(s==='disabled'?' aria-disabled="true"':'')+'>'+
       (s==='error'?'<span class="k-chip__icon">'+I.alert+'</span>':'')+esc(label)+tail+'</span>';
   };
@@ -659,12 +658,12 @@ if (typeof module !== 'undefined' && module.exports) { module.exports = tokens; 
       variants:[
         {title:'Diary entry', render:function(s){return C.Card({state:s,aside:s==='default'||s==='pressed'?C.Badge({level:'high'}):''});}}
       ]},
-    { id:'chip', name:'Chip', desc:'Filters and ingredients. Selected inverts to ink. The removable variant carries a clear button; while removal is pending it shows a small spinner. Error flags a conflict with the profile, for example an allergy.',
+    { id:'chip', name:'Chip', desc:'Filters and ingredients. Selected inverts to ink. The removable variant carries a clear button; while removal is pending it shows a small spinner. Error flags a conflict with the profile, for example an allergy, without changing the label.',
       props:['label','selected','removable','state','onPress','onRemove'],
       variants:[
-        {title:'Filter', render:function(s){return C.Chip({state:s,label:'Vegetarian',errorLabel:'Vegetarian'});}, row:true},
+        {title:'Filter', render:function(s){return C.Chip({state:s,label:'Vegetarian'});}, row:true},
         {title:'Selected', render:function(s){return C.Chip({state:s,label:'Under 500 kcal',selected:true});}, row:true},
-        {title:'Removable', render:function(s){return C.Chip({state:s,label:s==='error'?'Peanuts':'Spinach',removable:true,errorLabel:'Peanuts · allergy'});}, row:true}
+        {title:'Removable', render:function(s){return C.Chip({state:s,label:'Spinach',removable:true});}, row:true}
       ]},
     { id:'progressring', name:'ProgressRing', desc:'The brand motif. Stroke width stays at the token value at every size. Animates from the previous value. Error shows a dashed coral ring; loading sweeps once per second.',
       props:['value (0-100)','size: sm | md | lg','color: coral | yellow | green','text','label','state'],
