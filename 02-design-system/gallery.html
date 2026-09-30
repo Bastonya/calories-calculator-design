@@ -115,7 +115,7 @@
   @media (prefers-reduced-motion:reduce){.k-spin,.k-skel,.k-ring--loading .k-ring__fill{animation:none}}
 
   /* Button */
-  .k-btn{position:relative;display:inline-flex;align-items:center;justify-content:center;gap:var(--sp-s2);width:100%;min-height:var(--sz-control);padding:0 var(--sp-s5);border-radius:var(--r-pill);border:var(--sz-hairline) solid transparent;font:var(--fw-semibold) var(--fs-body)/1 var(--ff-body),var(--ff-fallback);cursor:pointer;color:inherit;background:none}
+  .k-btn{position:relative;display:inline-flex;align-items:center;justify-content:center;gap:var(--sp-s2);width:100%;min-height:var(--sz-control);padding:0 var(--sp-s4);white-space:nowrap;text-align:center;line-height:1.2;border-radius:var(--r-pill);border:var(--sz-hairline) solid transparent;font:var(--fw-semibold) var(--fs-body)/1 var(--ff-body),var(--ff-fallback);cursor:pointer;color:inherit;background:none}
   .k-btn--primary{background-color:var(--c-coral);color:var(--c-onCoral);box-shadow:var(--sh-cta)}
   .k-btn--secondary{background-color:var(--c-card);color:var(--c-ink);border-color:var(--c-border)}
   .k-btn--pill{width:auto;min-height:var(--sz-controlSm);padding:0 var(--sp-s4);font-size:var(--fs-bodySm);background-color:var(--c-coralSoft);color:var(--c-coral)}
@@ -123,7 +123,8 @@
   .k-btn.is-loading{pointer-events:none}
   .k-btn.is-loading .k-btn__label,.k-btn.is-loading .k-btn__icon{visibility:hidden}
   .k-btn .k-spin{position:absolute;left:50%;top:50%;margin:-10px 0 0 -10px}
-  .k-btn__icon{width:18px;height:18px;flex:none}
+  .k-btn__icon{width:18px;height:18px;flex:none;display:inline-flex}
+  .k-btn--pill .k-btn__icon{width:16px;height:16px}
 
   /* Input */
   .k-field{display:grid;gap:var(--sp-s1);width:100%;min-width:0}
@@ -152,10 +153,11 @@
   .k-link{background:none;border:0;padding:0;font:var(--fw-semibold) var(--fs-caption)/1 var(--ff-body),var(--ff-fallback);color:var(--c-coral);cursor:pointer;margin-left:auto}
 
   /* Chip */
-  .k-chip{display:inline-flex;align-items:center;gap:var(--sp-s1);min-height:var(--sz-controlSm);padding:0 var(--sp-s3);border-radius:var(--r-pill);border:var(--sz-hairline) solid var(--c-border);background-color:var(--c-card);color:var(--c-ink);font:var(--fw-medium) var(--fs-bodySm)/1 var(--ff-body),var(--ff-fallback);cursor:pointer}
+  .k-chip{display:inline-flex;align-items:center;gap:var(--sp-s2);min-height:var(--sz-controlSm);padding:0 var(--sp-s3);border-radius:var(--r-pill);border:var(--sz-hairline) solid var(--c-border);background-color:var(--c-card);color:var(--c-ink);font:var(--fw-medium) var(--fs-bodySm)/1 var(--ff-body),var(--ff-fallback);cursor:pointer}
   .k-chip--selected{background-color:var(--c-ink);color:var(--c-bg);border-color:var(--c-ink)}
   .k-chip--removable{padding-right:var(--sp-s2)}
-  .k-chip__x{display:grid;place-items:center;width:20px;height:20px;border-radius:var(--r-pill);color:var(--c-muted);background:none;border:0;cursor:pointer;padding:0}
+  .k-chip__x{display:grid;place-items:center;width:20px;height:20px;margin-left:calc(var(--sp-s1) * -1);border-radius:var(--r-pill);color:var(--c-muted);background:none;border:0;cursor:pointer;padding:0}
+  .k-chip__icon{display:inline-flex;width:14px;height:14px;flex:none;margin-left:calc(var(--sp-s1) * -1)}
   .k-chip--selected .k-chip__x{color:var(--c-bg)}
   .k-chip__x svg{width:12px;height:12px}
   .k-chip.is-error{border-color:var(--c-coral);color:var(--c-coral);background-color:var(--c-coralSoft)}
@@ -171,12 +173,13 @@
   .k-ring--green .k-ring__fill{stroke:var(--c-green)}
   .k-ring__center{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center}
   .k-ring__value{font:var(--fw-bold) var(--fs-display)/1 var(--ff-display),var(--ff-fallback);letter-spacing:var(--ls-display);font-variant-numeric:tabular-nums}
-  .k-ring--sm .k-ring__value{font-size:var(--fs-bodySm)}
+  .k-ring--sm .k-ring__value{font-size:var(--fs-captionSm);font-weight:var(--fw-semibold);letter-spacing:0}
+  .k-ring--sm .k-ring__label{display:none}
   .k-ring--lg .k-ring__value{font-size:var(--fs-displayLg)}
   .k-ring__label{font:var(--fw-regular) var(--fs-captionSm)/1 var(--ff-body),var(--ff-fallback);color:var(--c-muted);margin-top:var(--sp-s1)}
   .k-ring.is-pressed{transform:scale(var(--press-scale))}
   .k-ring.is-error .k-ring__fill{stroke:var(--c-coral);stroke-linecap:butt;stroke-dashoffset:0!important}
-  .k-ring--sm.is-error .k-ring__label,.k-ring--sm.k-ring--loading .k-ring__label{display:none}
+  
   .k-ring.is-error .k-ring__value{color:var(--c-coral)}
   .k-ring--loading .k-ring__fill{animation:k-sweep var(--dur-spin) var(--ease-standard) infinite}
   @keyframes k-sweep{0%{stroke-dashoffset:var(--k-c)}50%{stroke-dashoffset:calc(var(--k-c) * .25)}100%{stroke-dashoffset:var(--k-c)}}
@@ -230,7 +233,7 @@
   .k-tab--active{color:var(--c-ink)}
   .k-tab--active svg{color:var(--c-coral)}
   .k-tab--fab{margin-top:calc(var(--sp-s5) * -1)}
-  .k-tab--fab .k-fab{display:grid;place-items:center;width:var(--sz-control);height:var(--sz-control);border-radius:var(--r-pill);background-color:var(--c-coral);color:var(--c-onCoral);box-shadow:var(--sh-cta)}
+  .k-tab--fab .k-fab{display:grid;place-items:center;width:var(--sz-control);height:var(--sz-control);border-radius:var(--r-pill);background-color:var(--c-coral);color:var(--c-onCoral)}
   .k-tab--fab .k-fab svg{color:inherit}
   .k-tab__dot{position:absolute;top:6px;left:calc(50% + 6px);width:8px;height:8px;border-radius:var(--r-pill);background:var(--c-coral);border:2px solid var(--c-card)}
   .k-tabbar.is-error .k-tab--error{color:var(--c-coral)}
@@ -510,7 +513,7 @@ if (typeof module !== 'undefined' && module.exports) { module.exports = tokens; 
 
   C.Button = function(p){
     var s=p.state||'default', label=p.label||'Save to diary';
-    if(s==='error') label = p.errorLabel || 'Could not save. Retry';
+    if(s==='error') label = p.errorLabel || 'Not saved. Retry';
     var icon = s==='error' ? I.alert : (p.icon ? I[p.icon] : '');
     return '<button type="button" class="'+cls('k-btn','k-btn--'+(p.variant||'primary'),'pressable',stateCls(s))+'"'+
       (s==='disabled'?' disabled':'')+(s==='loading'?' aria-busy="true"':'')+'>'+
@@ -555,7 +558,7 @@ if (typeof module !== 'undefined' && module.exports) { module.exports = tokens; 
     }
     var label = s==='error' ? (p.errorLabel||p.label) : p.label;
     return '<span class="'+cls('k-chip','pressable',p.selected&&'k-chip--selected',p.removable&&'k-chip--removable',stateCls(s))+'" role="button" tabindex="0"'+(s==='disabled'?' aria-disabled="true"':'')+'>'+
-      (s==='error'?'<span style="width:14px;height:14px;display:inline-flex">'+I.alert+'</span>':'')+esc(label)+tail+'</span>';
+      (s==='error'?'<span class="k-chip__icon">'+I.alert+'</span>':'')+esc(label)+tail+'</span>';
   };
 
   C.ProgressRing = function(p){
