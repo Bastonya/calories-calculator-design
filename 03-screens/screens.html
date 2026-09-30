@@ -3,84 +3,93 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Kalo Design System</title>
-<meta name="description" content="Kalo design system gallery: tokens and components rendered from code, every component in default, pressed, disabled, error and loading states, in light and dark mode.">
+<title>Kalo Screens and Flows</title>
+<meta name="description" content="Kalo key screens: calculate calories and find a suitable recipe, plus History and Settings, composed from the design system components in device frames, light and dark mode.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
 <style>
   /* =====================================================================
-     Gallery chrome. Custom properties (--c-*, --sp-*, --r-*, --fs-*, --lh-*,
-     --ls-*, --ff-*, --fw-*, --sh-*, --dur-*, --ease-*, --sz-*, --op-*) are
-     generated at runtime from the tokens object below. Nothing in the
-     component styles uses a literal color, size or duration.
+     Page chrome and device frames. Screen content is composed from the
+     design system components in kalo.js, styled by kalo.css (inlined
+     below). This block only lays out frames, steps and annotations.
      ===================================================================== */
   *{box-sizing:border-box}
   html{-webkit-text-size-adjust:100%}
   body{margin:0;background:var(--c-bg);color:var(--c-ink);font-family:var(--ff-body),var(--ff-fallback);font-size:var(--fs-body);line-height:1.5;-webkit-font-smoothing:antialiased}
   h1,h2,h3,h4{font-family:var(--ff-display),var(--ff-fallback);margin:0;letter-spacing:-.01em}
   p{margin:0}
-  code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.9em}
   .wrap{max-width:1180px;margin:0 auto;padding:var(--sp-s6) var(--sp-s4) var(--sp-s8)}
   .topbar{position:sticky;top:0;z-index:5;background:var(--c-bg);display:flex;align-items:center;justify-content:space-between;gap:var(--sp-s3);padding:var(--sp-s3) 0;border-bottom:var(--sz-hairline) solid var(--c-border);margin-bottom:var(--sp-s6)}
   .brand{display:flex;align-items:center;gap:var(--sp-s2);font-family:var(--ff-display),var(--ff-fallback);font-weight:var(--fw-bold);font-size:var(--fs-headline)}
   .brand span{color:var(--c-muted);font-weight:var(--fw-medium);font-family:var(--ff-body),var(--ff-fallback);font-size:var(--fs-bodySm)}
   .theme-btn{font:inherit;font-weight:var(--fw-medium);font-size:var(--fs-caption);border:var(--sz-hairline) solid var(--c-border);background:var(--c-card);color:var(--c-ink);border-radius:var(--r-pill);padding:var(--sp-s2) var(--sp-s3);cursor:pointer}
+  .kicker{font-family:var(--ff-display),var(--ff-fallback);font-size:var(--fs-captionSm);font-weight:var(--fw-semibold);letter-spacing:.12em;text-transform:uppercase;color:var(--c-coralText);margin-bottom:var(--sp-s1)}
+  .hero h1{font-size:clamp(32px,5vw,52px);font-weight:var(--fw-bold);line-height:1.05}
+  .hero p{color:var(--c-muted);max-width:64ch;margin-top:var(--sp-s3)}
+  .hero{margin-bottom:var(--sp-s6)}
   nav.jump{display:flex;flex-wrap:wrap;gap:var(--sp-s2);margin-bottom:var(--sp-s7)}
   nav.jump a{font-size:var(--fs-caption);font-weight:var(--fw-medium);text-decoration:none;color:var(--c-muted);border:var(--sz-hairline) solid var(--c-border);background:var(--c-card);border-radius:var(--r-pill);padding:var(--sp-s1) var(--sp-s3)}
   nav.jump a:hover{color:var(--c-ink)}
-  .kicker{font-family:var(--ff-display),var(--ff-fallback);font-size:var(--fs-captionSm);font-weight:var(--fw-semibold);letter-spacing:.12em;text-transform:uppercase;color:var(--c-coralText);margin-bottom:var(--sp-s1)}
-  .hero h1{font-size:clamp(32px,5vw,52px);font-weight:var(--fw-bold);line-height:1.05}
-  .hero p{color:var(--c-muted);max-width:60ch;margin-top:var(--sp-s3)}
-  .hero{margin-bottom:var(--sp-s7)}
-  section.block{margin-bottom:var(--sp-s8);scroll-margin-top:80px}
-  section.block>h2{font-size:var(--fs-headlineLg);font-weight:var(--fw-semibold)}
-  section.block>.desc{color:var(--c-muted);font-size:var(--fs-bodySm);margin:var(--sp-s1) 0 var(--sp-s4);max-width:70ch}
-  .props{display:flex;flex-wrap:wrap;gap:var(--sp-s1);margin:0 0 var(--sp-s4)}
-  .props code{font-size:var(--fs-captionSm);color:var(--c-muted);background:var(--c-card);border:var(--sz-hairline) solid var(--c-border);border-radius:var(--r-pill);padding:2px 8px}
-  .panel{background:var(--c-card);border:var(--sz-hairline) solid var(--c-border);border-radius:var(--r-lg);padding:var(--sp-s5)}
-  .panel+.panel{margin-top:var(--sp-s3)}
-  .panel h3{font-size:var(--fs-headline);font-weight:var(--fw-medium);margin-bottom:var(--sp-s3)}
-  .divider{height:var(--sz-hairline);background:var(--c-border);margin:var(--sp-s8) 0}
 
-  /* state matrix */
-  .matrix{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:var(--sp-s3)}
-  .matrix.wide{grid-template-columns:repeat(auto-fit,minmax(260px,1fr))}
-  .cell{background:var(--c-bg);border:var(--sz-hairline) solid var(--c-border);border-radius:var(--r-md);padding:var(--sp-s4);min-width:0}
-  .cell .st{font-family:var(--ff-display),var(--ff-fallback);font-size:var(--fs-captionSm);font-weight:var(--fw-semibold);letter-spacing:.1em;text-transform:uppercase;color:var(--c-muted);margin-bottom:var(--sp-s3);display:flex;justify-content:space-between;gap:var(--sp-s2)}
-  .cell .st em{font-style:normal;font-family:var(--ff-body),var(--ff-fallback);letter-spacing:0;text-transform:none;font-weight:var(--fw-regular);color:var(--c-muted)}
-  .cell .demo{display:flex;flex-direction:column;gap:var(--sp-s2);align-items:stretch}
-  .cell .demo.center{align-items:center}
-  .cell .demo.row{flex-direction:row;flex-wrap:wrap;align-items:center}
-  .variant-title{font-family:var(--ff-display),var(--ff-fallback);font-size:var(--fs-bodySm);font-weight:var(--fw-medium);color:var(--c-ink);margin:var(--sp-s4) 0 var(--sp-s2)}
-  .variant-title:first-child{margin-top:0}
+  section.flow{margin-bottom:var(--sp-s8);scroll-margin-top:80px}
+  section.flow>h2{font-size:var(--fs-headlineLg);font-weight:var(--fw-semibold)}
+  section.flow>.desc{color:var(--c-muted);font-size:var(--fs-bodySm);margin:var(--sp-s1) 0 var(--sp-s5);max-width:72ch}
+  .steps{display:flex;flex-wrap:wrap;align-items:flex-start;gap:var(--sp-s4) var(--sp-s3);padding:var(--sp-s1)}
+  .step{flex:none;width:340px;display:flex;flex-direction:column;gap:var(--sp-s2)}
+  .step__label{display:flex;justify-content:space-between;align-items:baseline;gap:var(--sp-s2);padding:0 var(--sp-s1)}
+  .step__label b{font-family:var(--ff-display),var(--ff-fallback);font-size:var(--fs-headline);font-weight:var(--fw-semibold)}
+  .step__label span{font-family:var(--ff-display),var(--ff-fallback);font-size:var(--fs-captionSm);font-weight:var(--fw-semibold);letter-spacing:.1em;text-transform:uppercase;color:var(--c-coralText);white-space:nowrap}
+  .step__note{font-size:var(--fs-caption);color:var(--c-muted);padding:0 var(--sp-s1);max-width:340px}
+  .next{flex:none;align-self:center;width:32px;height:32px;color:var(--c-muted);display:grid;place-items:center;margin-top:var(--sp-s8)}
+  .next svg{width:22px;height:22px}
+  @media(max-width:760px){
+    .steps{flex-direction:column;align-items:center}
+    .step{width:100%;max-width:340px}
+    .next{margin:0;transform:rotate(90deg)}
+  }
 
-  /* token views */
-  .swatches{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:var(--sp-s2)}
-  .sw{border-radius:var(--r-md);overflow:hidden;border:var(--sz-hairline) solid var(--c-border);background:var(--c-bg)}
-  .sw .chip{height:56px}
-  .sw .info{padding:var(--sp-s2) var(--sp-s3);font-size:var(--fs-captionSm);line-height:1.4}
-  .sw .info b{display:block;font-family:var(--ff-display),var(--ff-fallback);font-size:var(--fs-caption);font-weight:var(--fw-semibold)}
-  .sw .info code{color:var(--c-muted)}
-  .two{display:grid;grid-template-columns:1fr;gap:var(--sp-s3)}
-  @media(min-width:860px){.two{grid-template-columns:1fr 1fr}}
-  .tok-list{display:grid;gap:var(--sp-s2)}
-  .tok-row{display:grid;grid-template-columns:96px 1fr auto;align-items:center;gap:var(--sp-s3);font-size:var(--fs-caption)}
-  .tok-row code{color:var(--c-muted)}
-  .tok-row .bar{height:12px;background:var(--c-coral);border-radius:var(--r-sm)}
-  .radii{display:flex;gap:var(--sp-s3);flex-wrap:wrap}
-  .radii div{width:88px;height:64px;background:var(--c-coralSoft);border:2px solid var(--c-coral);display:grid;place-items:center;font-size:var(--fs-captionSm);color:var(--c-coralText);font-weight:var(--fw-semibold)}
-  .type-row{display:grid;grid-template-columns:1fr;gap:var(--sp-s1);padding:var(--sp-s3) 0;border-bottom:var(--sz-hairline) solid var(--c-border)}
-  @media(min-width:640px){.type-row{grid-template-columns:150px 1fr}}
-  .type-row:last-child{border-bottom:0}
-  .type-row .lbl{font-size:var(--fs-captionSm);color:var(--c-muted);line-height:1.5}
-  .type-row .lbl b{display:block;font-family:var(--ff-display),var(--ff-fallback);font-weight:var(--fw-semibold);color:var(--c-ink);font-size:var(--fs-caption)}
-  .shadows{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:var(--sp-s4)}
-  .shadows div{background:var(--c-card);border-radius:var(--r-md);padding:var(--sp-s4);font-size:var(--fs-caption);min-height:88px}
-  .shadows code{display:block;color:var(--c-muted);font-size:var(--fs-captionSm);margin-top:var(--sp-s1)}
-  .motion-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:var(--sp-s3)}
-  .motion-row .cell{display:flex;flex-direction:column;align-items:center;gap:var(--sp-s2);text-align:center;font-size:var(--fs-captionSm);color:var(--c-muted)}
-  .motion-row b{color:var(--c-ink);font-family:var(--ff-display),var(--ff-fallback);font-size:var(--fs-caption)}
+  /* device frame */
+  .phone{position:relative;width:100%;min-height:700px;background:var(--c-bg);border:var(--sz-hairline) solid var(--c-border);border-radius:40px;padding:var(--sp-s3) var(--sp-s3) 0;box-shadow:var(--sh-card);display:flex;flex-direction:column;overflow:hidden}
+  .status{display:flex;justify-content:space-between;font-size:var(--fs-captionSm);font-weight:var(--fw-semibold);color:var(--c-muted);padding:0 var(--sp-s2) var(--sp-s3)}
+  .screen{flex:1;display:flex;flex-direction:column;gap:var(--sp-s3);padding-bottom:var(--sp-s3)}
+  .phone .k-tabbar{margin:auto calc(var(--sp-s3) * -1) 0;border-radius:0}
+  .screen-head{padding:0 var(--sp-s1)}
+  .screen-head .t-caption{color:var(--c-muted)}
+  .stack{display:grid;gap:var(--sp-s2)}
+  .row{display:flex;flex-wrap:wrap;gap:var(--sp-s2);align-items:center}
+  .row.nowrap{flex-wrap:nowrap}
+  .grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:var(--sp-s2)}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:var(--sp-s2)}
+  .grid7{display:grid;grid-template-columns:repeat(7,1fr);gap:var(--sp-s1) 0;justify-items:center}
+  .section-title{display:flex;justify-content:space-between;align-items:baseline;padding:var(--sp-s1) var(--sp-s1) 0}
+  .section-title .t-caption{color:var(--c-muted)}
+  .ring-row{display:flex;align-items:center;gap:var(--sp-s4)}
+  .ring-meta{display:grid;gap:var(--sp-s1);font-size:var(--fs-caption)}
+  .ring-meta .k{color:var(--c-muted);font-size:var(--fs-captionSm)}
+  .ring-meta .v{font:var(--fw-semibold) var(--fs-headline)/1.2 var(--ff-display),var(--ff-fallback);font-variant-numeric:tabular-nums}
+  .list{display:grid;gap:var(--sp-s1)}
+  .line{display:flex;justify-content:space-between;gap:var(--sp-s2);align-items:baseline;padding:var(--sp-s1) 0;border-bottom:var(--sz-hairline) solid var(--c-border);font-size:var(--fs-bodySm)}
+  .line:last-child{border-bottom:0}
+  .line .num{color:var(--c-muted);font-size:var(--fs-caption);white-space:nowrap}
+  .line .num b{color:var(--c-ink);font-family:var(--ff-display),var(--ff-fallback);font-weight:var(--fw-semibold);font-size:var(--fs-bodySm)}
+  .line .num i{font-style:normal;color:var(--c-muted);font-size:var(--fs-captionSm)}
+  .steps-list{margin:0;padding-left:var(--sp-s5);font-size:var(--fs-bodySm);display:grid;gap:var(--sp-s1)}
+  .art{display:grid;place-items:center;border-radius:var(--r-md);background:var(--c-yellowSoft);height:120px}
+  .art svg{width:88px;height:88px}
+  .muted{color:var(--c-muted)}
+  .center{text-align:center}
+  .day{display:flex;flex-direction:column;align-items:center;gap:2px}
+  .day .t-caption{font-size:var(--fs-captionSm);color:var(--c-muted)}
+  .day.today .k-ring__value{color:var(--c-coralText)}
+  .weekday{font-size:var(--fs-captionSm);color:var(--c-muted);text-align:center;font-weight:var(--fw-medium)}
+
+  /* overlay for sheet steps */
+  .overlay{position:absolute;inset:0;z-index:2}
+  .overlay .scrim{position:absolute;inset:0;background:var(--c-overlay)}
+  .overlay .k-sheet{border-radius:var(--r-lg) var(--r-lg) 36px 36px}
+  .dim{opacity:.55}
+
   .foot{margin-top:var(--sp-s7);color:var(--c-muted);font-size:var(--fs-caption);text-align:center}
 
 /* Kalo design system component styles. Generated custom properties come from
@@ -247,63 +256,34 @@
 .k-tabbar__frame{border:var(--sz-hairline) solid var(--c-border);border-radius:var(--r-md);overflow:hidden;background:var(--c-bg)}
 .k-tabbar__frame .k-tabbar{border-radius:0}
 .k-tabbar__frame .fake{height:36px;padding:var(--sp-s2) var(--sp-s3);font:var(--fw-regular) var(--fs-captionSm)/1 var(--ff-body),var(--ff-fallback);color:var(--c-muted)}
-</style></style>
+</style>
 </head>
 <body>
 <div class="wrap">
   <header class="topbar">
     <div class="brand">
       <svg width="24" height="24" viewBox="0 0 64 64" aria-hidden="true"><circle cx="32" cy="32" r="22" fill="none" stroke="var(--c-border)" stroke-width="10"/><circle cx="32" cy="32" r="22" fill="none" stroke="var(--c-coral)" stroke-width="10" stroke-linecap="round" stroke-dasharray="138" stroke-dashoffset="36" transform="rotate(-90 32 32)"/><circle cx="32" cy="32" r="7" fill="var(--c-yellow)"/></svg>
-      Kalo <span>Design system</span>
+      Kalo <span>Screens and flows</span>
     </div>
     <button class="theme-btn" id="themeBtn" type="button" aria-label="Toggle light and dark mode">Dark mode</button>
   </header>
 
   <main>
-  <div class="hero">
-    <div class="kicker">Part 2 · Design system</div>
-    <h1>Tokens and components, as code</h1>
-    <p>Every color, size, radius, type style, shadow and duration on this page comes from one token object. The components below are rendered by JavaScript from that object, in five states each, and the theme toggle swaps only the token values.</p>
-  </div>
-
-  <nav class="jump" id="jump" aria-label="Sections"></nav>
-
-  <section class="block" id="tokens-color">
-    <h2>Color</h2>
-    <p class="desc">Accent fills are identical in both themes. Neutrals, soft tints and the text variants swap. Text in an accent color uses coralText, greenText or yellowText (AA on bg, card and the soft tints). Text on an accent fill uses the on-color tokens, ink in both themes. borderStrong outlines inputs at 3:1.</p>
-    <div class="two">
-      <div class="panel"><h3>Light</h3><div class="swatches" id="sw-light"></div></div>
-      <div class="panel"><h3>Dark</h3><div class="swatches" id="sw-dark"></div></div>
+    <div class="hero">
+      <div class="kicker">Part 3 · Key screens and flows</div>
+      <h1>Two user stories, end to end</h1>
+      <p>Every screen below is composed from the design system components and tokens, nothing else. Flow A logs a meal in the fewest taps. Flow B finds a recipe that fits the user's profile and fits it to their day. History and Settings complete the app, including the subscription with a one-step cancel.</p>
     </div>
-  </section>
-
-  <section class="block" id="tokens-spacing">
-    <h2>Spacing and radii</h2>
-    <p class="desc">Spacing runs on a 4 px base. Radii: sm for inputs and chips, md for cards inside cards, lg for top-level cards and sheets, pill for buttons and badges.</p>
-    <div class="two">
-      <div class="panel"><h3>Spacing</h3><div class="tok-list" id="spacing"></div></div>
-      <div class="panel"><h3>Radius</h3><div class="radii" id="radii"></div></div>
-    </div>
-  </section>
-
-  <section class="block" id="tokens-type">
-    <h2>Typography</h2>
-    <p class="desc">Space Grotesk for display and headlines, Inter for body and labels. Nine named text styles map onto the size and line-height scales.</p>
-    <div class="panel" id="type"></div>
-  </section>
-
-  <section class="block" id="tokens-shadow">
-    <h2>Shadows and motion</h2>
-    <p class="desc">Two elevations, cards and sheets. Buttons are flat. Shadow objects carry React Native fields (color, opacity, offset, blur, elevation) and are converted to CSS here. Durations and easings are the same ones used by the stylescape's motion motif.</p>
-    <div class="panel"><h3>Shadow</h3><div class="shadows" id="shadows"></div></div>
-    <div class="panel"><h3>Motion</h3><div class="motion-row" id="motion"></div></div>
-  </section>
-
-  <div class="divider"></div>
-  <div id="components"></div>
+    <nav class="jump" aria-label="Sections">
+      <a href="#flow-a">Flow A · Calculate calories</a>
+      <a href="#flow-b">Flow B · Find a recipe</a>
+      <a href="#history">History</a>
+      <a href="#settings">Settings</a>
+    </nav>
+    <div id="flows"></div>
   </main>
 
-  <footer class="foot">Kalo · Part 2 design system · Source of truth: <code>02-design-system/tokens.js</code>, inlined below verbatim · Fonts from Google Fonts, everything else inline.</footer>
+  <footer class="foot">Kalo · Part 3 screens and flows · Built from <code>02-design-system/tokens.js</code>, <code>kalo.css</code> and <code>kalo.js</code>, inlined verbatim · Fonts from Google Fonts, everything else inline.</footer>
 </div>
 
 <script>
@@ -687,126 +667,266 @@ if (typeof module !== 'undefined' && module.exports) { module.exports = tokens; 
 <script>
 (function(){
   'use strict';
-  var T=Kalo.tokens, C=Kalo.components, STATES=Kalo.STATES, esc=Kalo.esc;
+  var C=Kalo.components, I=Kalo.icons, esc=Kalo.esc;
   Kalo.theme.init(document.getElementById('themeBtn'));
 
-  /* ---------- Component registry for the gallery ---------- */
-  var REGISTRY=[
-    { id:'button', name:'Button', desc:'One primary per screen. Secondary for the alternate action. Pill for filters and quick actions. Error turns the button into its own retry affordance so the user never loses their place.',
-      props:['variant: primary | secondary | pill','label','icon','state','onPress'],
-      variants:[
-        {title:'Primary', render:function(s){return C.Button({variant:'primary',state:s,icon:'plus',label:'Log a meal'});}},
-        {title:'Secondary', render:function(s){return C.Button({variant:'secondary',state:s,label:'Edit portion',errorLabel:'Retry'});}},
-        {title:'Pill', render:function(s){return C.Button({variant:'pill',state:s,label:'From my fridge',errorLabel:'Retry'});}, center:true }
-      ]},
-    { id:'input', name:'Input', desc:'Label above, helper below, unit inside. Focus and pressed share the coral outline. Loading shows a spinner in the trailing slot while search results arrive.',
-      props:['label','value','placeholder','unit','icon','help','error','state','onChangeText'],
-      variants:[
-        {title:'Numeric with unit', render:function(s){return C.Input({state:s,label:'Portion',value:s==='error'?'7,000':'320',unit:'g',help:'Tap to edit the AI estimate'});}},
-        {title:'Search', render:function(s){return C.Input({state:s,label:'Search food',icon:'search',placeholder:'Chicken burrito',value:s==='loading'?'Chicken bur':(s==='error'?'':'Chicken burrito'),error:'Nothing found. Try another name.',loadingValue:'Chicken bur'});}}
-      ]},
-    { id:'card', name:'Card', desc:'Top-level container. Tappable by default with the shared press scale. Error keeps the content and adds an inline message with a retry link. Loading uses skeleton lines, not a spinner.',
-      props:['title','text','aside','error','state','onPress'],
-      variants:[
-        {title:'Diary entry', render:function(s){return C.Card({state:s,aside:s==='default'||s==='pressed'?C.Badge({level:'high'}):''});}}
-      ]},
-    { id:'chip', name:'Chip', desc:'Filters and ingredients. Selected inverts to ink. The removable variant carries a clear button; while removal is pending it shows a small spinner. Error flags a conflict with the profile, for example an allergy, without changing the label.',
-      props:['label','selected','removable','state','onPress','onRemove'],
-      variants:[
-        {title:'Filter', render:function(s){return C.Chip({state:s,label:'Vegetarian'});}, row:true},
-        {title:'Selected', render:function(s){return C.Chip({state:s,label:'Under 500 kcal',selected:true});}, row:true},
-        {title:'Removable', render:function(s){return C.Chip({state:s,label:'Spinach',removable:true});}, row:true}
-      ]},
-    { id:'progressring', name:'ProgressRing', desc:'The brand motif. Stroke width stays at the token value at every size. Animates from the previous value. Error shows a dashed coral ring; loading sweeps once per second.',
-      props:['value (0-100)','size: xs | sm | md | lg','color: coral | yellow | green','text','label','state'],
-      variants:[
-        {title:'Medium, calories', render:function(s){return C.ProgressRing({state:s,value:72});}, center:true},
-        {title:'Small, secondary', render:function(s){return C.ProgressRing({state:s,size:'sm',color:'yellow',value:45,text:'45%',label:''});}, center:true},
-        {title:'Large, goal reached', render:function(s){return C.ProgressRing({state:s,size:'lg',color:'green',value:100,text:'2,000',label:'goal reached'});}, center:true}
-      ]},
-    { id:'statcard', name:'StatCard', desc:'Macro summary: name, value over target, and a bar in the macro color. Three sit side by side under the ring on the dashboard.',
-      props:['name','value','target','unit','color','state','onPress'],
-      variants:[
-        {title:'Protein', render:function(s){return C.StatCard({state:s,name:'Protein',value:96,target:140,color:'coral'});}},
-        {title:'Carbs', render:function(s){return C.StatCard({state:s,name:'Carbs',value:148,target:220,color:'yellow'});}},
-        {title:'Fat', render:function(s){return C.StatCard({state:s,name:'Fat',value:42,target:65,color:'green'});}}
-      ], wide:false},
-    { id:'bottomsheet', name:'BottomSheet', desc:'One sheet for the whole logging flow: four input methods, then analysis, then the result. Slides up in 250 ms. Error is the AI recognition failure with two honest ways out.',
-      props:['title','children','state','onDismiss'],
-      variants:[
-        {title:'Log a meal', render:function(s){return C.BottomSheet({state:s});}}
-      ], wide:true},
-    { id:'badge', name:'Badge', desc:'AI confidence, always visible next to any detected value. Green above 85, yellow between 60 and 85, coral below 60. A plain label by default; interactive badges open an explanation on tap.',
-      props:['level: high | medium | low','text','interactive','state','onPress'],
-      variants:[
-        {title:'High', render:function(s){return C.Badge({state:s,level:'high',interactive:true});}, row:true},
-        {title:'Medium', render:function(s){return C.Badge({state:s,level:'medium',interactive:true});}, row:true},
-        {title:'Low', render:function(s){return C.Badge({state:s,level:'low',interactive:true});}, row:true}
-      ]},
-    { id:'tabbar', name:'TabBar', desc:'Five slots with the log action raised in the center. Error marks the tab whose data failed to sync and leaves the rest usable. Loading is skeleton, shown only on cold start.',
-      props:['active','state','onSelect'],
-      variants:[
-        {title:'Main navigation', render:function(s){return C.TabBar({state:s,label:'Main, '+s+' state'});}}
-      ], wide:true}
-  ];
+  /* ---------- Data ---------- */
+  var GOAL=2000, EATEN=1360, NEW_KCAL=540;
+  var macros={ protein:{v:96,t:140}, carbs:{v:148,t:220}, fat:{v:42,t:65} };
+  var detected={ name:'Chicken burrito bowl', portion:320, kcal:540, p:38, c:64, f:22, conf:92 };
 
-  /* ---------- 6. Render token views ---------- */
-  function swatches(theme, el){
-    var c=T.color[theme];
-    el.innerHTML=Object.keys(c).map(function(k){
-      return '<div class="sw"><div class="chip" style="background:'+c[k]+'"></div><div class="info"><b>'+k+'</b><code>'+c[k]+'</code></div></div>';
-    }).join('');
+  /* Recipe with per-unit nutrition. kind drives the rescale: dense ingredients carry most of the calories
+     and scale hardest, structural ones (water, spices) stay close to the original. */
+  var recipe={
+    name:'Spinach feta omelette', time:'25 min', serves:1, tags:['Vegetarian','High protein'],
+    ingredients:[
+      {name:'Eggs',        qty:3,  unit:'',    kcal:78,   p:6.3, c:0.6, f:5.3, kind:'normal'},
+      {name:'Feta',        qty:60, unit:'g',   kcal:2.64, p:0.14,c:0.04,f:0.21,kind:'dense'},
+      {name:'Olive oil',   qty:15, unit:'ml',  kcal:8.84, p:0,   c:0,   f:1,   kind:'dense'},
+      {name:'Spinach',     qty:60, unit:'g',   kcal:0.23, p:0.03,c:0.04,f:0,   kind:'normal'},
+      {name:'Milk',        qty:30, unit:'ml',  kcal:0.6,  p:0.03,c:0.05,f:0.03,kind:'normal'},
+      {name:'Cherry tomatoes', qty:80, unit:'g', kcal:0.18, p:0.01,c:0.04,f:0, kind:'normal'},
+      {name:'Water',       qty:20, unit:'ml',  kcal:0,    p:0,   c:0,   f:0,   kind:'structural'},
+      {name:'Salt, pepper, herbs', qty:1, unit:'tsp', kcal:2, p:0, c:0.4, f:0, kind:'structural'}
+    ],
+    steps:['Whisk the eggs with milk, water and a pinch of salt.','Warm the oil, wilt the spinach for a minute.','Pour in the eggs, cook on low until just set.','Add feta and tomatoes, fold, season and serve.']
+  };
+  var EXP={dense:1.6, normal:1.0, structural:0.15};
+  function totals(ings){ var t={kcal:0,p:0,c:0,f:0}; ings.forEach(function(i){ t.kcal+=i.kcal*i.qty; t.p+=i.p*i.qty; t.c+=i.c*i.qty; t.f+=i.f*i.qty; }); return t; }
+  function rescale(ings,target){
+    /* find the scale k so that sum(kcal_i * qty_i * k^exp_i) == target, by bisection */
+    var lo=0.05, hi=3, k, list;
+    for(var n=0;n<40;n++){
+      k=(lo+hi)/2;
+      list=ings.map(function(i){ var q=i.qty*Math.pow(k,EXP[i.kind]); return Object.assign({},i,{qty:q}); });
+      if(totals(list).kcal>target) hi=k; else lo=k;
+    }
+    return list;
   }
-  swatches('light',document.getElementById('sw-light'));
-  swatches('dark',document.getElementById('sw-dark'));
-
-  document.getElementById('spacing').innerHTML=Object.keys(T.spacing).map(function(k){
-    return '<div class="tok-row"><code>spacing.'+k+'</code><div class="bar" style="width:'+Math.max(T.spacing[k],2)+'px"></div><span>'+T.spacing[k]+' px</span></div>';
-  }).join('');
-  document.getElementById('radii').innerHTML=Object.keys(T.radius).map(function(k){
-    return '<div style="border-radius:'+T.radius[k]+'px">'+k+' '+T.radius[k]+'</div>';
-  }).join('');
-
-  var samples={displayLg:'1,360 kcal',display:'Find a recipe',headlineLg:'Today at a glance',headline:'From my fridge',body:'Kalo detected a chicken burrito. Tap any value to correct it.',bodyStrong:'Chicken burrito bowl',label:'Portion · 320 g',caption:'Logged 12:40 · Photo · 92% confidence',overline:'Protein 38 g · Carbs 64 g'};
-  document.getElementById('type').innerHTML=Object.keys(T.typography.styles).map(function(k){
-    var st=T.typography.styles[k];
-    return '<div class="type-row"><div class="lbl"><b>'+k+'</b>'+T.typography.family[st.family]+' '+st.weight+'<br>'+T.typography.size[st.size]+' / '+T.typography.lineHeight[st.size]+' px</div><div class="t-'+k+'">'+esc(samples[k])+'</div></div>';
-  }).join('');
-
-  function renderShadows(){
-    var theme=Kalo.theme.current(), s=T.shadow[theme];
-    document.getElementById('shadows').innerHTML=Object.keys(s).map(function(k){
-      var v=s[k];
-      return '<div style="box-shadow:var(--sh-'+k+')"><b>shadow.'+k+'</b><code>y '+v.offsetY+' · blur '+v.blur+' · '+Math.round(v.opacity*100)+'% · elevation '+v.elevation+'</code></div>';
-    }).join('');
+  function fmtQty(q,unit){
+    if(unit==='') return (Math.round(q*2)/2).toString().replace('.5','½').replace('0½','½');
+    if(unit==='tsp') return (Math.round(q*4)/4)+' tsp';
+    return Math.round(q)+' '+unit;
   }
-  renderShadows(); Kalo.theme.onChange(renderShadows);
+  function r(n){ return Math.round(n); }
 
-  document.getElementById('motion').innerHTML=Object.keys(T.motion.duration).map(function(k){
-    return '<div class="cell"><b>'+k+'</b>'+T.motion.duration[k]+' ms</div>';
-  }).join('')+Object.keys(T.motion.easing).map(function(k){
-    return '<div class="cell"><b>ease.'+k+'</b><code style="font-size:10px">'+T.motion.easing[k]+'</code></div>';
-  }).join('')+'<div class="cell"><b>pressScale</b>'+T.motion.pressScale+'</div><div class="cell"><b>bounceScale</b>'+T.motion.bounceScale+'</div>';
+  /* ---------- Frame helpers ---------- */
+  function phone(o){
+    return '<div class="phone" role="group" aria-label="'+esc(o.aria||o.title||'Screen')+'">'+
+      '<div class="status" aria-hidden="true"><span>9:41</span><span>●●●</span></div>'+
+      '<div class="screen'+(o.dim?' dim':'')+'">'+o.content+'</div>'+
+      (o.tab ? C.TabBar({bare:true, active:o.tab, label:(o.aria||o.title)+' navigation'}) : '')+
+      (o.overlay ? '<div class="overlay"><div class="scrim"></div>'+o.overlay+'</div>' : '')+
+    '</div>';
+  }
+  function head(title,sub){ return '<div class="screen-head"><div class="t-headlineLg">'+esc(title)+'</div>'+(sub?'<div class="t-caption">'+esc(sub)+'</div>':'')+'</div>'; }
+  function sectionTitle(t,aside){ return '<div class="section-title"><span class="t-label">'+esc(t)+'</span>'+(aside?'<span class="t-caption">'+aside+'</span>':'')+'</div>'; }
+  function step(o){
+    return '<div class="step"><div class="step__label"><b>'+esc(o.title)+'</b><span>'+esc(o.tag)+'</span></div>'+o.phone+'<p class="step__note">'+o.note+'</p></div>';
+  }
+  var ARROW='<div class="next" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></div>';
+  function flow(id,title,desc,steps){
+    return '<section class="flow" id="'+id+'"><h2>'+esc(title)+'</h2><p class="desc">'+desc+'</p><div class="steps">'+steps.join(ARROW)+'</div></section>';
+  }
+  var BOWL='<svg viewBox="0 0 100 100" aria-hidden="true"><circle cx="50" cy="42" r="30" fill="var(--c-yellowSoft)"/><path d="M18 52h64a32 32 0 0 1-64 0z" fill="var(--c-coral)"/><circle cx="38" cy="46" r="6" fill="var(--c-green)"/><circle cx="56" cy="40" r="5" fill="var(--c-yellow)"/><circle cx="64" cy="48" r="4" fill="var(--c-card)"/></svg>';
+  var FRIDGE='<svg viewBox="0 0 100 100" aria-hidden="true"><rect x="26" y="14" width="48" height="72" rx="10" fill="var(--c-greenSoft)"/><rect x="26" y="14" width="48" height="26" rx="10" fill="var(--c-green)"/><rect x="36" y="46" width="28" height="6" rx="3" fill="var(--c-card)"/><rect x="36" y="58" width="20" height="6" rx="3" fill="var(--c-card)"/><rect x="36" y="70" width="24" height="6" rx="3" fill="var(--c-card)"/><circle cx="62" cy="27" r="4" fill="var(--c-yellow)"/></svg>';
 
-  /* ---------- 7. Render component matrices ---------- */
-  var notes={pressed:'static preview',default:'',disabled:'',error:'',loading:''};
-  var out='';
-  REGISTRY.forEach(function(comp){
-    out+='<section class="block" id="'+comp.id+'"><h2>'+comp.name+'</h2><p class="desc">'+esc(comp.desc)+'</p>'+
-      '<div class="props">'+comp.props.map(function(p){return '<code>'+esc(p)+'</code>';}).join('')+'</div>';
-    comp.variants.forEach(function(v){
-      out+='<div class="variant-title">'+esc(v.title)+'</div><div class="matrix'+(comp.wide?' wide':'')+'">';
-      STATES.forEach(function(s){
-        out+='<div class="cell"><div class="st">'+s+(notes[s]?'<em>'+notes[s]+'</em>':'')+'</div><div class="demo'+(v.center?' center':'')+(v.row?' row':'')+'">'+v.render(s)+'</div></div>';
-      });
-      out+='</div>';
-    });
-    out+='</section>';
+  /* ---------- Screen: Home dashboard (used for A1 and A4) ---------- */
+  function home(o){
+    var eaten=o.eaten, left=GOAL-eaten, pct=Math.round(eaten/GOAL*100);
+    var m=o.macros;
+    var entries=o.entries.map(function(e){ return C.Card({title:e.name, text:e.meta, aside:C.Badge({level:e.level, text:e.conf+'%'})}); }).join('');
+    return head('Good morning, Lena','Tuesday, 30 September')+
+      (o.saved ? C.Card({static:true, title:'', text:'', children:'<div class="row nowrap"><span class="k-badge k-badge--high">Saved</span><span class="t-label">Your ring moved to '+pct+'%.</span></div>'}) : '')+
+      C.Card({static:true, title:'', text:'', children:
+        '<div class="ring-row">'+C.ProgressRing({value:pct, text:left.toLocaleString('en-US'), label:'kcal left'})+
+        '<div class="ring-meta"><div><div class="k">Goal</div><div class="v">'+GOAL.toLocaleString('en-US')+'</div></div><div><div class="k">Eaten</div><div class="v">'+eaten.toLocaleString('en-US')+'</div></div><div><div class="k">Progress</div><div class="v" style="color:var(--c-coralText)">'+pct+'%</div></div></div></div>'})+
+      '<div class="grid3">'+C.StatCard({name:'Protein',value:m.protein.v,target:m.protein.t,color:'coral'})+C.StatCard({name:'Carbs',value:m.carbs.v,target:m.carbs.t,color:'yellow'})+C.StatCard({name:'Fat',value:m.fat.v,target:m.fat.t,color:'green'})+'</div>'+
+      sectionTitle('Quick log')+
+      '<div class="row">'+C.Button({variant:'pill',icon:'camera',label:'Photo'})+C.Button({variant:'pill',icon:'mic',label:'Voice'})+C.Button({variant:'pill',icon:'barcode',label:'Barcode'})+C.Button({variant:'pill',icon:'search',label:'Search'})+'</div>'+
+      sectionTitle('Today','<a class="k-link" href="#history">See all</a>')+
+      '<div class="stack">'+entries+'</div>';
+  }
+  var baseEntries=[{name:'Avocado toast',meta:'Breakfast · 8:10 · 320 kcal',level:'medium',conf:71},{name:'Greek yogurt with berries',meta:'Snack · 10:30 · 180 kcal',level:'high',conf:95}];
+  var A1=phone({title:'Home', content:home({eaten:EATEN, macros:macros, entries:baseEntries}), tab:'Home'});
+
+  /* ---------- Screen: Log a meal sheet (A2, three states) ---------- */
+  function logSheet(state){
+    return phone({title:'Log a meal', aria:'Log a meal sheet, '+state+' state', dim:true, content:home({eaten:EATEN, macros:macros, entries:baseEntries}), tab:'Home',
+      overlay:C.BottomSheet({bare:true, state:state, title:'Log a meal'})});
+  }
+  var A2=logSheet('default'), A2L=logSheet('loading'), A2E=logSheet('error');
+
+  /* ---------- Screen: Confirm and edit (A3) ---------- */
+  var A3=phone({title:'Confirm and edit', content:
+    head('Confirm','Detected from your photo. Tap any value to correct it.')+
+    C.Card({static:true, title:'', text:'', children:
+      '<div class="art" style="margin-bottom:var(--sp-s3)">'+BOWL+'</div>'+
+      '<div class="k-card__row"><div class="k-card__title">'+esc(detected.name)+'</div>'+C.Badge({level:'high', text:'High · '+detected.conf+'%'})+'</div>'+
+      '<div class="k-card__text">Rice, black beans, grilled chicken, salsa</div>'})+
+    '<div class="grid2">'+C.Input({label:'Portion', value:String(detected.portion), unit:'g'})+C.Input({label:'Calories', value:String(detected.kcal), unit:'kcal'})+'</div>'+
+    '<div class="grid3">'+C.Input({label:'Protein (g)', value:String(detected.p)})+C.Input({label:'Carbs (g)', value:String(detected.c)})+C.Input({label:'Fat (g)', value:String(detected.f)})+'</div>'+
+    '<div class="row"><span class="k-badge k-badge--medium">Estimate</span><span class="t-caption muted">Calories follow the portion. Edit either one.</span></div>'+
+    '<div class="stack" style="margin-top:auto">'+C.Button({variant:'primary', label:'Save to diary'})+C.Button({variant:'secondary', label:'Retake photo'})+'</div>'
   });
-  document.getElementById('components').innerHTML=out;
 
-  var jump=[['tokens-color','Color'],['tokens-spacing','Spacing'],['tokens-type','Type'],['tokens-shadow','Shadow, motion']].concat(REGISTRY.map(function(c){return [c.id,c.name];}));
-  document.getElementById('jump').innerHTML=jump.map(function(j){return '<a href="#'+j[0]+'">'+j[1]+'</a>';}).join('');
+  /* ---------- Screen: Result (A4) ---------- */
+  var after={ protein:{v:macros.protein.v+detected.p,t:140}, carbs:{v:macros.carbs.v+detected.c,t:220}, fat:{v:macros.fat.v+detected.f,t:65} };
+  var A4=phone({title:'Home, updated', content:home({eaten:EATEN+NEW_KCAL, macros:after, saved:true,
+    entries:[{name:detected.name,meta:'Lunch · just now · '+detected.kcal+' kcal',level:'high',conf:detected.conf}].concat(baseEntries)}), tab:'Home'});
+
+  /* ---------- Screen: Recipe discovery (B1, two tabs) ---------- */
+  function tabs(active){
+    return '<div class="row">'+C.Chip({label:'Browse recipes', selected:active==='browse'})+C.Chip({label:'From my fridge', selected:active==='fridge'})+'</div>';
+  }
+  var base=totals(recipe.ingredients);
+  var recipes=[
+    {name:recipe.name, meta:r(base.kcal)+' kcal · '+recipe.time+' · '+r(base.p)+' g protein', fit:'Fits your day'},
+    {name:'Chickpea and tomato stew', meta:'480 kcal · 35 min · 19 g protein', fit:'Fits your day'},
+    {name:'Halloumi grain bowl', meta:'540 kcal · 20 min · 24 g protein', fit:'Fits your day'}
+  ];
+  function recipeList(list){ return '<div class="stack">'+list.map(function(x){ return C.Card({title:x.name, text:x.meta, aside:C.Badge({level:'high', text:x.fit})}); }).join('')+'</div>'; }
+  var B1=phone({title:'Recipes', content:
+    head('Recipes','Suggestions respect your goal, diet and allergies.')+tabs('browse')+
+    C.Input({label:'Search', icon:'search', placeholder:'Omelette, stew, bowl'})+
+    '<div class="row">'+C.Chip({label:'Under 500 kcal', selected:true})+C.Chip({label:'Vegetarian', selected:true})+C.Chip({label:'High protein'})+C.Chip({label:'Under 30 min'})+'</div>'+
+    sectionTitle('Popular this week')+recipeList(recipes), tab:'Recipes'});
+  var B1F=phone({title:'From my fridge', content:
+    head('Recipes','Tell Kalo what you have. Pantry basics are assumed.')+tabs('fridge')+
+    C.Input({label:'Add an ingredient', icon:'plus', placeholder:'Eggs, spinach, feta'})+
+    sectionTitle('In my fridge','4 items')+
+    '<div class="row">'+['Eggs','Spinach','Feta','Cherry tomatoes'].map(function(x){ return C.Chip({label:x, removable:true}); }).join('')+'</div>'+
+    '<div class="stack" style="margin-top:auto">'+C.Button({variant:'primary', icon:'search', label:'Find recipes'})+'</div>', tab:'Recipes'});
+
+  /* ---------- Screen: Recipe list filtered by profile (B2) and its empty state ---------- */
+  function profileCard(){
+    return C.Card({static:true, title:'', text:'', children:
+      '<div class="k-card__row"><span class="t-label">Filtered by your profile</span>'+C.Button({variant:'pill', label:'Edit'})+'</div>'+
+      '<div class="row" style="margin-top:var(--sp-s2)">'+C.Chip({label:'Goal: lose weight'})+C.Chip({label:'Vegetarian'})+C.Chip({label:'No peanuts'})+C.Chip({label:'Budget 640 kcal'})+'</div>'});
+  }
+  var B2=phone({title:'Recipes for you', content:
+    head('Recipes for you','3 recipes from your 4 ingredients')+profileCard()+recipeList(recipes)+
+    '<p class="t-caption muted" style="padding:0 var(--sp-s1)">Budget is what is left of today\'s goal. Recipes over budget are hidden, not shamed.</p>', tab:'Recipes'});
+  var B2E=phone({title:'Recipes for you, empty', content:
+    head('Recipes for you','0 recipes')+profileCard()+
+    C.Card({static:true, title:'', text:'', children:
+      '<div class="art" style="background:var(--c-greenSoft);margin-bottom:var(--sp-s3)">'+FRIDGE+'</div>'+
+      '<div class="k-card__title center">Nothing fits all of these</div>'+
+      '<div class="k-card__text center">No vegetarian recipe with your ingredients stays under 640 kcal. Try one change.</div>'+
+      '<div class="stack" style="margin-top:var(--sp-s3)">'+C.Button({variant:'secondary', label:'Raise the budget to 800 kcal'})+C.Button({variant:'secondary', label:'Add an ingredient'})+'</div>'}), tab:'Recipes'});
+
+  /* ---------- Screen: Recipe detail (B3) ---------- */
+  function ingredientLines(list, prev){
+    return '<div class="list">'+list.map(function(i,idx){
+      var n=prev ? '<span class="num"><i>'+esc(fmtQty(prev[idx].qty,i.unit))+' →</i> <b>'+esc(fmtQty(i.qty,i.unit))+'</b></span>' : '<span class="num"><b>'+esc(fmtQty(i.qty,i.unit))+'</b></span>';
+      return '<div class="line"><span>'+esc(i.name)+'</span>'+n+'</div>';
+    }).join('')+'</div>';
+  }
+  var B3=phone({title:'Recipe detail', content:
+    head(recipe.name, recipe.time+' · '+recipe.serves+' serving · '+recipe.tags.join(', '))+
+    '<div class="art">'+BOWL+'</div>'+
+    C.Card({static:true, title:'', text:'', children:
+      '<div class="ring-row">'+C.ProgressRing({size:'sm', value:Math.round(base.kcal/GOAL*100), text:r(base.kcal/GOAL*100)+'%', color:'yellow'})+
+      '<div><div class="t-headline num">'+r(base.kcal)+' kcal <span class="t-caption muted">per serving</span></div><div class="t-caption muted">'+r(base.kcal/GOAL*100)+'% of your daily goal. 640 kcal left today.</div></div></div>'})+
+    '<div class="grid3">'+C.StatCard({name:'Protein',value:r(base.p),target:140,color:'coral'})+C.StatCard({name:'Carbs',value:r(base.c),target:220,color:'yellow'})+C.StatCard({name:'Fat',value:r(base.f),target:65,color:'green'})+'</div>'+
+    sectionTitle('Ingredients','1 serving')+C.Card({static:true, title:'', text:'', children:ingredientLines(recipe.ingredients)})+
+    sectionTitle('Steps', recipe.time)+C.Card({static:true, title:'', text:'', children:'<ol class="steps-list">'+recipe.steps.map(function(s){return '<li>'+esc(s)+'</li>';}).join('')+'</ol>'})+
+    '<div class="stack">'+C.Button({variant:'primary', label:'Set a calorie limit'})+C.Button({variant:'secondary', label:'Add to diary as is'})+'</div>'
+  });
+
+  /* ---------- Screen: Calorie limit for this dish (B4) ---------- */
+  var TARGET=450, scaled=rescale(recipe.ingredients, TARGET), st=totals(scaled);
+  var B4=phone({title:'Calorie limit', content:
+    head('Fit it to your day','Set a target. Kalo rescales the recipe, not the flavour.')+
+    C.Input({label:'Calories for this dish', value:String(TARGET), unit:'kcal', help:'Was '+r(base.kcal)+' kcal. You have 640 kcal left today.'})+
+    C.Card({static:true, title:'', text:'', children:
+      '<div class="ring-row">'+C.ProgressRing({size:'sm', value:Math.round(st.kcal/base.kcal*100), text:r(st.kcal/base.kcal*100)+'%', color:'coral'})+
+      '<div><div class="t-headline num">'+r(base.kcal)+' → '+r(st.kcal)+' kcal</div><div class="t-caption muted">Protein '+r(st.p)+' g · Carbs '+r(st.c)+' g · Fat '+r(st.f)+' g</div></div></div>'})+
+    sectionTitle('Adjusted ingredients')+
+    C.Card({static:true, title:'', text:'', children:ingredientLines(scaled, recipe.ingredients)+
+      '<div class="row" style="margin-top:var(--sp-s3)"><span class="k-badge k-badge--medium">How it works</span><span class="t-caption muted">Oil and cheese scale most. Water and seasoning stay put.</span></div>'})+
+    '<div class="stack" style="margin-top:auto">'+C.Button({variant:'primary', icon:'plus', label:'Add to diary · '+r(st.kcal)+' kcal'})+'</div>'
+  });
+
+  /* ---------- Screen: History ---------- */
+  var days=[1620,1980,1750,2100,1890,1540,1710, 1860,1990,1670,2040,1780,1950,1600, 1820,2010,1730,1900,1680,2080,1760, 1840,1970,1650,1910,1790,2030,1720, 1840,1900];
+  var today=30;
+  function calendar(){
+    var wd=['M','T','W','T','F','S','S'].map(function(d){return '<div class="weekday" aria-hidden="true">'+d+'</div>';}).join('');
+    var cells='';
+    for(var b=0;b<1;b++) cells+='<div></div>';                    /* September 2026 starts on a Tuesday */
+    for(var d=1;d<=30;d++){
+      var v=days[d-1], pct=Math.round(v/GOAL*100), fut=d>today;
+      cells+='<div class="day'+(d===today?' today':'')+'">'+C.ProgressRing({size:'xs', value:fut?0:pct, text:String(d), color:pct>100?'yellow':'coral', state:fut?'disabled':'default', label:''})+'</div>';
+    }
+    return '<div class="grid7">'+wd+cells+'</div>';
+  }
+  var H=phone({title:'History', content:
+    head('History','September 2026')+
+    C.Card({static:true, title:'', text:'', children:calendar()+
+      '<div class="row" style="margin-top:var(--sp-s3);justify-content:space-between"><span class="t-caption muted">Ring = share of your 2,000 kcal goal</span><span class="k-badge k-badge--medium">Over goal</span></div>'})+
+    sectionTitle('Daily totals','Avg 1,830 kcal')+
+    '<div class="stack">'+[[30,'Today',1900],[29,'Mon 29 Sep',1840],[28,'Sun 28 Sep',1720]].map(function(x){
+      var pct=Math.round(x[2]/GOAL*100);
+      return C.Card({title:x[1], text:x[2].toLocaleString('en-US')+' kcal · '+pct+'% of goal', aside:C.ProgressRing({size:'xs', value:pct, text:pct+'%', label:''})});
+    }).join('')+'</div>', tab:'History'});
+
+  /* ---------- Screen: Settings (free and Plus) ---------- */
+  function settings(plus){
+    return head('Settings')+
+      sectionTitle('Profile')+
+      C.Card({static:true, title:'', text:'', children:'<div class="grid3">'+C.Input({label:'Height (cm)', value:'168'})+C.Input({label:'Weight (kg)', value:'64'})+C.Input({label:'Age', value:'31'})+'</div>'})+
+      sectionTitle('Goal')+
+      C.Card({static:true, title:'', text:'', children:'<div class="row">'+C.Chip({label:'Lose weight', selected:true})+C.Chip({label:'Maintain'})+C.Chip({label:'Build muscle'})+'</div>'+
+        '<div style="margin-top:var(--sp-s2)">'+C.Input({label:'Daily calories', value:'2,000', unit:'kcal', help:'Suggested from your profile. Change it any time.'})+'</div>'})+
+      sectionTitle('Diet and allergies')+
+      C.Card({static:true, title:'', text:'', children:'<div class="row">'+C.Chip({label:'Vegetarian', removable:true})+C.Chip({label:'No peanuts', removable:true})+C.Button({variant:'pill', icon:'plus', label:'Add'})+'</div>'})+
+      sectionTitle('Subscription')+
+      (plus
+        ? C.Card({static:true, title:'', text:'', children:'<div class="k-card__row"><div class="k-card__title">Kalo Plus</div>'+C.Badge({level:'high', text:'Active'})+'</div>'+
+            '<div class="k-card__text">€3.99 a month · renews 30 October</div>'+
+            '<div class="stack" style="margin-top:var(--sp-s3)">'+C.Button({variant:'secondary', label:'Cancel subscription'})+'</div>'+
+            '<p class="t-caption muted" style="margin-top:var(--sp-s2)">One tap, no questions. Plus stays on until 30 October, then you are back on Free with all your data.</p>'})
+        : C.Card({static:true, title:'', text:'', children:'<div class="k-card__row"><div class="k-card__title">Free plan</div>'+C.Badge({level:'medium', text:'Current'})+'</div>'+
+            '<div class="k-card__text">Unlimited logging, recipes and history. No ads, ever.</div>'+
+            '<div class="stack" style="margin-top:var(--sp-s3)">'+C.Button({variant:'primary', label:'Try Plus · €3.99 a month'})+'</div>'+
+            '<p class="t-caption muted" style="margin-top:var(--sp-s2)">Plus adds weekly meal plans and export. Cancel in one tap from this screen.</p>'}));
+  }
+  var S1=phone({title:'Settings', content:settings(false), tab:'Settings'});
+  var S2=phone({title:'Settings, Plus subscriber', content:settings(true), tab:'Settings'});
+
+  /* ---------- Assemble the walkthrough ---------- */
+  var out='';
+  out+=flow('flow-a','Flow A · Calculate the calories in a dish or product',
+    'Fewest possible taps: one sheet with four input methods, AI does the counting, confidence is always visible and every value is editable inline. No ads anywhere in this flow.',
+    [
+      step({tag:'Flow A · Step 1', title:'Home dashboard', phone:A1, note:'Calorie ring, three macro StatCards, quick-log pills and today\'s entries with AI confidence badges. The primary action is the raised log button in the tab bar.'}),
+      step({tag:'Flow A · Step 2', title:'Log a meal', phone:A2, note:'One BottomSheet, four ways in: photo, voice, barcode, search. Photo is first because it is the fewest taps.'}),
+      step({tag:'Step 2 · loading state', title:'Analyzing photo', phone:A2L, note:'The sheet stays in place while the AI works. Under two seconds on a typical connection.'}),
+      step({tag:'Step 2 · error state', title:'Photo not recognized', phone:A2E, note:'Honest failure with two ways out: retake, or search by name. The user never leaves the flow.'}),
+      step({tag:'Flow A · Step 3', title:'Confirm and edit', phone:A3, note:'Detected dish with its confidence Badge. Portion, calories and macros are Inputs, not labels. One Save action.'}),
+      step({tag:'Flow A · Step 4', title:'Result', phone:A4, note:'Back on the dashboard: the ring animates from 68% to 95%, the new entry is on top, and a quiet confirmation replaces any celebration.'})
+    ]);
+  out+=flow('flow-b','Flow B · Find a recipe that suits me',
+    'Recipes are filtered by the profile from Settings (goal, diet, allergies) and by what is left of today\'s calorie budget. A dish that is too rich is not rejected: the user sets a limit and Kalo rescales it.',
+    [
+      step({tag:'Flow B · Step 1', title:'Recipe discovery', phone:B1, note:'Two tabs as Chips. Browse: search Input, filter Chips, recipe Cards with a fit Badge.'}),
+      step({tag:'Step 1 · second tab', title:'From my fridge', phone:B1F, note:'Removable ingredient Chips and one primary action. Pantry basics like oil, salt and water are assumed.'}),
+      step({tag:'Flow B · Step 2', title:'Recipe list, filtered', phone:B2, note:'The profile that did the filtering is shown as Chips at the top, editable in one tap. Every result fits goal, diet, allergies and budget.'}),
+      step({tag:'Step 2 · empty state', title:'No match', phone:B2E, note:'Empty state explains which constraint failed and offers the smallest change that would unlock results.'}),
+      step({tag:'Flow B · Step 3', title:'Recipe detail', phone:B3, note:'Calories as a share of the daily goal, macros per serving as StatCards, ingredients, steps and time. Two actions: set a limit or add as is.'}),
+      step({tag:'Flow B · Step 4', title:'Calorie limit for this dish', phone:B4, note:'Target 450 kcal. Quantities are rescaled by ingredient type: oil and feta scale hardest, eggs and vegetables proportionally, water and seasoning stay close to the original. The list shows before and after, then Add to diary.'})
+    ]);
+  out+=flow('history','History',
+    'A month at a glance using the ring motif per day, then daily totals. Future days are disabled rings, days over goal turn yellow, never red.',
+    [ step({tag:'History', title:'Calendar and daily totals', phone:H, note:'Each day is an extra-small ProgressRing showing the share of the goal. Totals below reuse the Card with a ring aside.'}) ]);
+  out+=flow('settings','Settings',
+    'Profile and goals feed the recipe filter. The subscription lives here in plain sight: the free tier is honest and complete, and cancelling Plus is one tap.',
+    [
+      step({tag:'Settings · Free', title:'Profile, goals, subscription', phone:S1, note:'Inputs for the body profile, Chips for the goal and diet, and the plan Card with the in-app upgrade.'}),
+      step({tag:'Settings · Plus', title:'One-step cancel', phone:S2, note:'Same screen for a subscriber. Cancel is a secondary Button, no dark pattern, and the copy says exactly what happens next.'})
+    ]);
+  document.getElementById('flows').innerHTML=out;
 })();
 </script>
 </body>

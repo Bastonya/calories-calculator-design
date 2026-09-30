@@ -1,0 +1,278 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Kalo Design System</title>
+<meta name="description" content="Kalo design system gallery: tokens and components rendered from code, every component in default, pressed, disabled, error and loading states, in light and dark mode.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+  /* =====================================================================
+     Gallery chrome. Custom properties (--c-*, --sp-*, --r-*, --fs-*, --lh-*,
+     --ls-*, --ff-*, --fw-*, --sh-*, --dur-*, --ease-*, --sz-*, --op-*) are
+     generated at runtime from the tokens object below. Nothing in the
+     component styles uses a literal color, size or duration.
+     ===================================================================== */
+  *{box-sizing:border-box}
+  html{-webkit-text-size-adjust:100%}
+  body{margin:0;background:var(--c-bg);color:var(--c-ink);font-family:var(--ff-body),var(--ff-fallback);font-size:var(--fs-body);line-height:1.5;-webkit-font-smoothing:antialiased}
+  h1,h2,h3,h4{font-family:var(--ff-display),var(--ff-fallback);margin:0;letter-spacing:-.01em}
+  p{margin:0}
+  code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.9em}
+  .wrap{max-width:1180px;margin:0 auto;padding:var(--sp-s6) var(--sp-s4) var(--sp-s8)}
+  .topbar{position:sticky;top:0;z-index:5;background:var(--c-bg);display:flex;align-items:center;justify-content:space-between;gap:var(--sp-s3);padding:var(--sp-s3) 0;border-bottom:var(--sz-hairline) solid var(--c-border);margin-bottom:var(--sp-s6)}
+  .brand{display:flex;align-items:center;gap:var(--sp-s2);font-family:var(--ff-display),var(--ff-fallback);font-weight:var(--fw-bold);font-size:var(--fs-headline)}
+  .brand span{color:var(--c-muted);font-weight:var(--fw-medium);font-family:var(--ff-body),var(--ff-fallback);font-size:var(--fs-bodySm)}
+  .theme-btn{font:inherit;font-weight:var(--fw-medium);font-size:var(--fs-caption);border:var(--sz-hairline) solid var(--c-border);background:var(--c-card);color:var(--c-ink);border-radius:var(--r-pill);padding:var(--sp-s2) var(--sp-s3);cursor:pointer}
+  nav.jump{display:flex;flex-wrap:wrap;gap:var(--sp-s2);margin-bottom:var(--sp-s7)}
+  nav.jump a{font-size:var(--fs-caption);font-weight:var(--fw-medium);text-decoration:none;color:var(--c-muted);border:var(--sz-hairline) solid var(--c-border);background:var(--c-card);border-radius:var(--r-pill);padding:var(--sp-s1) var(--sp-s3)}
+  nav.jump a:hover{color:var(--c-ink)}
+  .kicker{font-family:var(--ff-display),var(--ff-fallback);font-size:var(--fs-captionSm);font-weight:var(--fw-semibold);letter-spacing:.12em;text-transform:uppercase;color:var(--c-coralText);margin-bottom:var(--sp-s1)}
+  .hero h1{font-size:clamp(32px,5vw,52px);font-weight:var(--fw-bold);line-height:1.05}
+  .hero p{color:var(--c-muted);max-width:60ch;margin-top:var(--sp-s3)}
+  .hero{margin-bottom:var(--sp-s7)}
+  section.block{margin-bottom:var(--sp-s8);scroll-margin-top:80px}
+  section.block>h2{font-size:var(--fs-headlineLg);font-weight:var(--fw-semibold)}
+  section.block>.desc{color:var(--c-muted);font-size:var(--fs-bodySm);margin:var(--sp-s1) 0 var(--sp-s4);max-width:70ch}
+  .props{display:flex;flex-wrap:wrap;gap:var(--sp-s1);margin:0 0 var(--sp-s4)}
+  .props code{font-size:var(--fs-captionSm);color:var(--c-muted);background:var(--c-card);border:var(--sz-hairline) solid var(--c-border);border-radius:var(--r-pill);padding:2px 8px}
+  .panel{background:var(--c-card);border:var(--sz-hairline) solid var(--c-border);border-radius:var(--r-lg);padding:var(--sp-s5)}
+  .panel+.panel{margin-top:var(--sp-s3)}
+  .panel h3{font-size:var(--fs-headline);font-weight:var(--fw-medium);margin-bottom:var(--sp-s3)}
+  .divider{height:var(--sz-hairline);background:var(--c-border);margin:var(--sp-s8) 0}
+
+  /* state matrix */
+  .matrix{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:var(--sp-s3)}
+  .matrix.wide{grid-template-columns:repeat(auto-fit,minmax(260px,1fr))}
+  .cell{background:var(--c-bg);border:var(--sz-hairline) solid var(--c-border);border-radius:var(--r-md);padding:var(--sp-s4);min-width:0}
+  .cell .st{font-family:var(--ff-display),var(--ff-fallback);font-size:var(--fs-captionSm);font-weight:var(--fw-semibold);letter-spacing:.1em;text-transform:uppercase;color:var(--c-muted);margin-bottom:var(--sp-s3);display:flex;justify-content:space-between;gap:var(--sp-s2)}
+  .cell .st em{font-style:normal;font-family:var(--ff-body),var(--ff-fallback);letter-spacing:0;text-transform:none;font-weight:var(--fw-regular);color:var(--c-muted)}
+  .cell .demo{display:flex;flex-direction:column;gap:var(--sp-s2);align-items:stretch}
+  .cell .demo.center{align-items:center}
+  .cell .demo.row{flex-direction:row;flex-wrap:wrap;align-items:center}
+  .variant-title{font-family:var(--ff-display),var(--ff-fallback);font-size:var(--fs-bodySm);font-weight:var(--fw-medium);color:var(--c-ink);margin:var(--sp-s4) 0 var(--sp-s2)}
+  .variant-title:first-child{margin-top:0}
+
+  /* token views */
+  .swatches{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:var(--sp-s2)}
+  .sw{border-radius:var(--r-md);overflow:hidden;border:var(--sz-hairline) solid var(--c-border);background:var(--c-bg)}
+  .sw .chip{height:56px}
+  .sw .info{padding:var(--sp-s2) var(--sp-s3);font-size:var(--fs-captionSm);line-height:1.4}
+  .sw .info b{display:block;font-family:var(--ff-display),var(--ff-fallback);font-size:var(--fs-caption);font-weight:var(--fw-semibold)}
+  .sw .info code{color:var(--c-muted)}
+  .two{display:grid;grid-template-columns:1fr;gap:var(--sp-s3)}
+  @media(min-width:860px){.two{grid-template-columns:1fr 1fr}}
+  .tok-list{display:grid;gap:var(--sp-s2)}
+  .tok-row{display:grid;grid-template-columns:96px 1fr auto;align-items:center;gap:var(--sp-s3);font-size:var(--fs-caption)}
+  .tok-row code{color:var(--c-muted)}
+  .tok-row .bar{height:12px;background:var(--c-coral);border-radius:var(--r-sm)}
+  .radii{display:flex;gap:var(--sp-s3);flex-wrap:wrap}
+  .radii div{width:88px;height:64px;background:var(--c-coralSoft);border:2px solid var(--c-coral);display:grid;place-items:center;font-size:var(--fs-captionSm);color:var(--c-coralText);font-weight:var(--fw-semibold)}
+  .type-row{display:grid;grid-template-columns:1fr;gap:var(--sp-s1);padding:var(--sp-s3) 0;border-bottom:var(--sz-hairline) solid var(--c-border)}
+  @media(min-width:640px){.type-row{grid-template-columns:150px 1fr}}
+  .type-row:last-child{border-bottom:0}
+  .type-row .lbl{font-size:var(--fs-captionSm);color:var(--c-muted);line-height:1.5}
+  .type-row .lbl b{display:block;font-family:var(--ff-display),var(--ff-fallback);font-weight:var(--fw-semibold);color:var(--c-ink);font-size:var(--fs-caption)}
+  .shadows{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:var(--sp-s4)}
+  .shadows div{background:var(--c-card);border-radius:var(--r-md);padding:var(--sp-s4);font-size:var(--fs-caption);min-height:88px}
+  .shadows code{display:block;color:var(--c-muted);font-size:var(--fs-captionSm);margin-top:var(--sp-s1)}
+  .motion-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:var(--sp-s3)}
+  .motion-row .cell{display:flex;flex-direction:column;align-items:center;gap:var(--sp-s2);text-align:center;font-size:var(--fs-captionSm);color:var(--c-muted)}
+  .motion-row b{color:var(--c-ink);font-family:var(--ff-display),var(--ff-fallback);font-size:var(--fs-caption)}
+  .foot{margin-top:var(--sp-s7);color:var(--c-muted);font-size:var(--fs-caption);text-align:center}
+
+  /* @inline kalo.css */
+</style></style>
+</head>
+<body>
+<div class="wrap">
+  <header class="topbar">
+    <div class="brand">
+      <svg width="24" height="24" viewBox="0 0 64 64" aria-hidden="true"><circle cx="32" cy="32" r="22" fill="none" stroke="var(--c-border)" stroke-width="10"/><circle cx="32" cy="32" r="22" fill="none" stroke="var(--c-coral)" stroke-width="10" stroke-linecap="round" stroke-dasharray="138" stroke-dashoffset="36" transform="rotate(-90 32 32)"/><circle cx="32" cy="32" r="7" fill="var(--c-yellow)"/></svg>
+      Kalo <span>Design system</span>
+    </div>
+    <button class="theme-btn" id="themeBtn" type="button" aria-label="Toggle light and dark mode">Dark mode</button>
+  </header>
+
+  <main>
+  <div class="hero">
+    <div class="kicker">Part 2 · Design system</div>
+    <h1>Tokens and components, as code</h1>
+    <p>Every color, size, radius, type style, shadow and duration on this page comes from one token object. The components below are rendered by JavaScript from that object, in five states each, and the theme toggle swaps only the token values.</p>
+  </div>
+
+  <nav class="jump" id="jump" aria-label="Sections"></nav>
+
+  <section class="block" id="tokens-color">
+    <h2>Color</h2>
+    <p class="desc">Accent fills are identical in both themes. Neutrals, soft tints and the text variants swap. Text in an accent color uses coralText, greenText or yellowText (AA on bg, card and the soft tints). Text on an accent fill uses the on-color tokens, ink in both themes. borderStrong outlines inputs at 3:1.</p>
+    <div class="two">
+      <div class="panel"><h3>Light</h3><div class="swatches" id="sw-light"></div></div>
+      <div class="panel"><h3>Dark</h3><div class="swatches" id="sw-dark"></div></div>
+    </div>
+  </section>
+
+  <section class="block" id="tokens-spacing">
+    <h2>Spacing and radii</h2>
+    <p class="desc">Spacing runs on a 4 px base. Radii: sm for inputs and chips, md for cards inside cards, lg for top-level cards and sheets, pill for buttons and badges.</p>
+    <div class="two">
+      <div class="panel"><h3>Spacing</h3><div class="tok-list" id="spacing"></div></div>
+      <div class="panel"><h3>Radius</h3><div class="radii" id="radii"></div></div>
+    </div>
+  </section>
+
+  <section class="block" id="tokens-type">
+    <h2>Typography</h2>
+    <p class="desc">Space Grotesk for display and headlines, Inter for body and labels. Nine named text styles map onto the size and line-height scales.</p>
+    <div class="panel" id="type"></div>
+  </section>
+
+  <section class="block" id="tokens-shadow">
+    <h2>Shadows and motion</h2>
+    <p class="desc">Two elevations, cards and sheets. Buttons are flat. Shadow objects carry React Native fields (color, opacity, offset, blur, elevation) and are converted to CSS here. Durations and easings are the same ones used by the stylescape's motion motif.</p>
+    <div class="panel"><h3>Shadow</h3><div class="shadows" id="shadows"></div></div>
+    <div class="panel"><h3>Motion</h3><div class="motion-row" id="motion"></div></div>
+  </section>
+
+  <div class="divider"></div>
+  <div id="components"></div>
+  </main>
+
+  <footer class="foot">Kalo · Part 2 design system · Source of truth: <code>02-design-system/tokens.js</code>, inlined below verbatim · Fonts from Google Fonts, everything else inline.</footer>
+</div>
+
+<script>
+/* @inline tokens.js */
+</script>
+<script>
+/* @inline kalo.js */
+</script>
+<script>
+(function(){
+  'use strict';
+  var T=Kalo.tokens, C=Kalo.components, STATES=Kalo.STATES, esc=Kalo.esc;
+  Kalo.theme.init(document.getElementById('themeBtn'));
+
+  /* ---------- Component registry for the gallery ---------- */
+  var REGISTRY=[
+    { id:'button', name:'Button', desc:'One primary per screen. Secondary for the alternate action. Pill for filters and quick actions. Error turns the button into its own retry affordance so the user never loses their place.',
+      props:['variant: primary | secondary | pill','label','icon','state','onPress'],
+      variants:[
+        {title:'Primary', render:function(s){return C.Button({variant:'primary',state:s,icon:'plus',label:'Log a meal'});}},
+        {title:'Secondary', render:function(s){return C.Button({variant:'secondary',state:s,label:'Edit portion',errorLabel:'Retry'});}},
+        {title:'Pill', render:function(s){return C.Button({variant:'pill',state:s,label:'From my fridge',errorLabel:'Retry'});}, center:true }
+      ]},
+    { id:'input', name:'Input', desc:'Label above, helper below, unit inside. Focus and pressed share the coral outline. Loading shows a spinner in the trailing slot while search results arrive.',
+      props:['label','value','placeholder','unit','icon','help','error','state','onChangeText'],
+      variants:[
+        {title:'Numeric with unit', render:function(s){return C.Input({state:s,label:'Portion',value:s==='error'?'7,000':'320',unit:'g',help:'Tap to edit the AI estimate'});}},
+        {title:'Search', render:function(s){return C.Input({state:s,label:'Search food',icon:'search',placeholder:'Chicken burrito',value:s==='loading'?'Chicken bur':(s==='error'?'':'Chicken burrito'),error:'Nothing found. Try another name.',loadingValue:'Chicken bur'});}}
+      ]},
+    { id:'card', name:'Card', desc:'Top-level container. Tappable by default with the shared press scale. Error keeps the content and adds an inline message with a retry link. Loading uses skeleton lines, not a spinner.',
+      props:['title','text','aside','error','state','onPress'],
+      variants:[
+        {title:'Diary entry', render:function(s){return C.Card({state:s,aside:s==='default'||s==='pressed'?C.Badge({level:'high'}):''});}}
+      ]},
+    { id:'chip', name:'Chip', desc:'Filters and ingredients. Selected inverts to ink. The removable variant carries a clear button; while removal is pending it shows a small spinner. Error flags a conflict with the profile, for example an allergy, without changing the label.',
+      props:['label','selected','removable','state','onPress','onRemove'],
+      variants:[
+        {title:'Filter', render:function(s){return C.Chip({state:s,label:'Vegetarian'});}, row:true},
+        {title:'Selected', render:function(s){return C.Chip({state:s,label:'Under 500 kcal',selected:true});}, row:true},
+        {title:'Removable', render:function(s){return C.Chip({state:s,label:'Spinach',removable:true});}, row:true}
+      ]},
+    { id:'progressring', name:'ProgressRing', desc:'The brand motif. Stroke width stays at the token value at every size. Animates from the previous value. Error shows a dashed coral ring; loading sweeps once per second.',
+      props:['value (0-100)','size: xs | sm | md | lg','color: coral | yellow | green','text','label','state'],
+      variants:[
+        {title:'Medium, calories', render:function(s){return C.ProgressRing({state:s,value:72});}, center:true},
+        {title:'Small, secondary', render:function(s){return C.ProgressRing({state:s,size:'sm',color:'yellow',value:45,text:'45%',label:''});}, center:true},
+        {title:'Large, goal reached', render:function(s){return C.ProgressRing({state:s,size:'lg',color:'green',value:100,text:'2,000',label:'goal reached'});}, center:true}
+      ]},
+    { id:'statcard', name:'StatCard', desc:'Macro summary: name, value over target, and a bar in the macro color. Three sit side by side under the ring on the dashboard.',
+      props:['name','value','target','unit','color','state','onPress'],
+      variants:[
+        {title:'Protein', render:function(s){return C.StatCard({state:s,name:'Protein',value:96,target:140,color:'coral'});}},
+        {title:'Carbs', render:function(s){return C.StatCard({state:s,name:'Carbs',value:148,target:220,color:'yellow'});}},
+        {title:'Fat', render:function(s){return C.StatCard({state:s,name:'Fat',value:42,target:65,color:'green'});}}
+      ], wide:false},
+    { id:'bottomsheet', name:'BottomSheet', desc:'One sheet for the whole logging flow: four input methods, then analysis, then the result. Slides up in 250 ms. Error is the AI recognition failure with two honest ways out.',
+      props:['title','children','state','onDismiss'],
+      variants:[
+        {title:'Log a meal', render:function(s){return C.BottomSheet({state:s});}}
+      ], wide:true},
+    { id:'badge', name:'Badge', desc:'AI confidence, always visible next to any detected value. Green above 85, yellow between 60 and 85, coral below 60. A plain label by default; interactive badges open an explanation on tap.',
+      props:['level: high | medium | low','text','interactive','state','onPress'],
+      variants:[
+        {title:'High', render:function(s){return C.Badge({state:s,level:'high',interactive:true});}, row:true},
+        {title:'Medium', render:function(s){return C.Badge({state:s,level:'medium',interactive:true});}, row:true},
+        {title:'Low', render:function(s){return C.Badge({state:s,level:'low',interactive:true});}, row:true}
+      ]},
+    { id:'tabbar', name:'TabBar', desc:'Five slots with the log action raised in the center. Error marks the tab whose data failed to sync and leaves the rest usable. Loading is skeleton, shown only on cold start.',
+      props:['active','state','onSelect'],
+      variants:[
+        {title:'Main navigation', render:function(s){return C.TabBar({state:s,label:'Main, '+s+' state'});}}
+      ], wide:true}
+  ];
+
+  /* ---------- 6. Render token views ---------- */
+  function swatches(theme, el){
+    var c=T.color[theme];
+    el.innerHTML=Object.keys(c).map(function(k){
+      return '<div class="sw"><div class="chip" style="background:'+c[k]+'"></div><div class="info"><b>'+k+'</b><code>'+c[k]+'</code></div></div>';
+    }).join('');
+  }
+  swatches('light',document.getElementById('sw-light'));
+  swatches('dark',document.getElementById('sw-dark'));
+
+  document.getElementById('spacing').innerHTML=Object.keys(T.spacing).map(function(k){
+    return '<div class="tok-row"><code>spacing.'+k+'</code><div class="bar" style="width:'+Math.max(T.spacing[k],2)+'px"></div><span>'+T.spacing[k]+' px</span></div>';
+  }).join('');
+  document.getElementById('radii').innerHTML=Object.keys(T.radius).map(function(k){
+    return '<div style="border-radius:'+T.radius[k]+'px">'+k+' '+T.radius[k]+'</div>';
+  }).join('');
+
+  var samples={displayLg:'1,360 kcal',display:'Find a recipe',headlineLg:'Today at a glance',headline:'From my fridge',body:'Kalo detected a chicken burrito. Tap any value to correct it.',bodyStrong:'Chicken burrito bowl',label:'Portion · 320 g',caption:'Logged 12:40 · Photo · 92% confidence',overline:'Protein 38 g · Carbs 64 g'};
+  document.getElementById('type').innerHTML=Object.keys(T.typography.styles).map(function(k){
+    var st=T.typography.styles[k];
+    return '<div class="type-row"><div class="lbl"><b>'+k+'</b>'+T.typography.family[st.family]+' '+st.weight+'<br>'+T.typography.size[st.size]+' / '+T.typography.lineHeight[st.size]+' px</div><div class="t-'+k+'">'+esc(samples[k])+'</div></div>';
+  }).join('');
+
+  function renderShadows(){
+    var theme=Kalo.theme.current(), s=T.shadow[theme];
+    document.getElementById('shadows').innerHTML=Object.keys(s).map(function(k){
+      var v=s[k];
+      return '<div style="box-shadow:var(--sh-'+k+')"><b>shadow.'+k+'</b><code>y '+v.offsetY+' · blur '+v.blur+' · '+Math.round(v.opacity*100)+'% · elevation '+v.elevation+'</code></div>';
+    }).join('');
+  }
+  renderShadows(); Kalo.theme.onChange(renderShadows);
+
+  document.getElementById('motion').innerHTML=Object.keys(T.motion.duration).map(function(k){
+    return '<div class="cell"><b>'+k+'</b>'+T.motion.duration[k]+' ms</div>';
+  }).join('')+Object.keys(T.motion.easing).map(function(k){
+    return '<div class="cell"><b>ease.'+k+'</b><code style="font-size:10px">'+T.motion.easing[k]+'</code></div>';
+  }).join('')+'<div class="cell"><b>pressScale</b>'+T.motion.pressScale+'</div><div class="cell"><b>bounceScale</b>'+T.motion.bounceScale+'</div>';
+
+  /* ---------- 7. Render component matrices ---------- */
+  var notes={pressed:'static preview',default:'',disabled:'',error:'',loading:''};
+  var out='';
+  REGISTRY.forEach(function(comp){
+    out+='<section class="block" id="'+comp.id+'"><h2>'+comp.name+'</h2><p class="desc">'+esc(comp.desc)+'</p>'+
+      '<div class="props">'+comp.props.map(function(p){return '<code>'+esc(p)+'</code>';}).join('')+'</div>';
+    comp.variants.forEach(function(v){
+      out+='<div class="variant-title">'+esc(v.title)+'</div><div class="matrix'+(comp.wide?' wide':'')+'">';
+      STATES.forEach(function(s){
+        out+='<div class="cell"><div class="st">'+s+(notes[s]?'<em>'+notes[s]+'</em>':'')+'</div><div class="demo'+(v.center?' center':'')+(v.row?' row':'')+'">'+v.render(s)+'</div></div>';
+      });
+      out+='</div>';
+    });
+    out+='</section>';
+  });
+  document.getElementById('components').innerHTML=out;
+
+  var jump=[['tokens-color','Color'],['tokens-spacing','Spacing'],['tokens-type','Type'],['tokens-shadow','Shadow, motion']].concat(REGISTRY.map(function(c){return [c.id,c.name];}));
+  document.getElementById('jump').innerHTML=jump.map(function(j){return '<a href="#'+j[0]+'">'+j[1]+'</a>';}).join('');
+})();
+</script>
+</body>
+</html>
