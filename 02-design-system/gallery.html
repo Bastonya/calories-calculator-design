@@ -29,7 +29,7 @@
   nav.jump{display:flex;flex-wrap:wrap;gap:var(--sp-s2);margin-bottom:var(--sp-s7)}
   nav.jump a{font-size:var(--fs-caption);font-weight:var(--fw-medium);text-decoration:none;color:var(--c-muted);border:var(--sz-hairline) solid var(--c-border);background:var(--c-card);border-radius:var(--r-pill);padding:var(--sp-s1) var(--sp-s3)}
   nav.jump a:hover{color:var(--c-ink)}
-  .kicker{font-family:var(--ff-display),var(--ff-fallback);font-size:var(--fs-captionSm);font-weight:var(--fw-semibold);letter-spacing:.12em;text-transform:uppercase;color:var(--c-coral);margin-bottom:var(--sp-s1)}
+  .kicker{font-family:var(--ff-display),var(--ff-fallback);font-size:var(--fs-captionSm);font-weight:var(--fw-semibold);letter-spacing:.12em;text-transform:uppercase;color:var(--c-coralText);margin-bottom:var(--sp-s1)}
   .hero h1{font-size:clamp(32px,5vw,52px);font-weight:var(--fw-bold);line-height:1.05}
   .hero p{color:var(--c-muted);max-width:60ch;margin-top:var(--sp-s3)}
   .hero{margin-bottom:var(--sp-s7)}
@@ -48,7 +48,7 @@
   .matrix.wide{grid-template-columns:repeat(auto-fit,minmax(260px,1fr))}
   .cell{background:var(--c-bg);border:var(--sz-hairline) solid var(--c-border);border-radius:var(--r-md);padding:var(--sp-s4);min-width:0}
   .cell .st{font-family:var(--ff-display),var(--ff-fallback);font-size:var(--fs-captionSm);font-weight:var(--fw-semibold);letter-spacing:.1em;text-transform:uppercase;color:var(--c-muted);margin-bottom:var(--sp-s3);display:flex;justify-content:space-between;gap:var(--sp-s2)}
-  .cell .st em{font-style:normal;font-family:var(--ff-body),var(--ff-fallback);letter-spacing:0;text-transform:none;font-weight:var(--fw-regular);color:var(--c-muted);opacity:.8}
+  .cell .st em{font-style:normal;font-family:var(--ff-body),var(--ff-fallback);letter-spacing:0;text-transform:none;font-weight:var(--fw-regular);color:var(--c-muted)}
   .cell .demo{display:flex;flex-direction:column;gap:var(--sp-s2);align-items:stretch}
   .cell .demo.center{align-items:center}
   .cell .demo.row{flex-direction:row;flex-wrap:wrap;align-items:center}
@@ -69,7 +69,7 @@
   .tok-row code{color:var(--c-muted)}
   .tok-row .bar{height:12px;background:var(--c-coral);border-radius:var(--r-sm)}
   .radii{display:flex;gap:var(--sp-s3);flex-wrap:wrap}
-  .radii div{width:88px;height:64px;background:var(--c-coralSoft);border:2px solid var(--c-coral);display:grid;place-items:center;font-size:var(--fs-captionSm);color:var(--c-coral);font-weight:var(--fw-semibold)}
+  .radii div{width:88px;height:64px;background:var(--c-coralSoft);border:2px solid var(--c-coral);display:grid;place-items:center;font-size:var(--fs-captionSm);color:var(--c-coralText);font-weight:var(--fw-semibold)}
   .type-row{display:grid;grid-template-columns:1fr;gap:var(--sp-s1);padding:var(--sp-s3) 0;border-bottom:var(--sz-hairline) solid var(--c-border)}
   @media(min-width:640px){.type-row{grid-template-columns:150px 1fr}}
   .type-row:last-child{border-bottom:0}
@@ -100,6 +100,8 @@
   .t-overline{font:var(--fw-semibold) var(--fs-captionSm)/var(--lh-captionSm) var(--ff-display),var(--ff-fallback);letter-spacing:.1em;text-transform:uppercase}
   .num{font-variant-numeric:tabular-nums}
 
+  .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+
   /* shared state behaviour */
   .is-disabled{opacity:var(--op-disabled);pointer-events:none;box-shadow:none!important}
   .pressable{transition:transform var(--dur-press) var(--ease-standard),background-color var(--dur-press) var(--ease-standard)}
@@ -118,11 +120,11 @@
   .k-btn{position:relative;display:inline-flex;align-items:center;justify-content:center;gap:var(--sp-s2);width:100%;min-height:var(--sz-control);padding:0 var(--sp-s4);white-space:nowrap;text-align:center;line-height:1.2;border-radius:var(--r-pill);border:var(--sz-hairline) solid transparent;font:var(--fw-semibold) var(--fs-body)/1 var(--ff-body),var(--ff-fallback);cursor:pointer;color:inherit;background:none}
   .k-btn--primary{background-color:var(--c-coral);color:var(--c-onCoral)}
   .k-btn--secondary{background-color:var(--c-card);color:var(--c-ink);border-color:var(--c-border)}
-  .k-btn--pill{width:auto;min-height:var(--sz-controlSm);padding:0 var(--sp-s4);font-size:var(--fs-bodySm);background-color:var(--c-coralSoft);color:var(--c-coral)}
-  .k-btn.is-error{background-color:var(--c-coralSoft);color:var(--c-coral);border-color:var(--c-coral);font-size:inherit}
+  .k-btn--pill{width:auto;min-height:var(--sz-controlSm);padding:0 var(--sp-s4);font-size:var(--fs-bodySm);background-color:var(--c-coralSoft);color:var(--c-coralText)}
+  .k-btn.is-error{background-color:var(--c-coralSoft);color:var(--c-coralText);border-color:var(--c-coral);font-size:inherit}
   .k-btn.is-loading{pointer-events:none}
   .k-btn--pill.is-error{font-size:var(--fs-bodySm)}
-  .k-btn.is-loading .k-btn__label,.k-btn.is-loading .k-btn__icon{visibility:hidden}
+  .k-btn.is-loading .k-btn__label,.k-btn.is-loading .k-btn__icon{opacity:0}
   .k-btn .k-spin{position:absolute;left:50%;top:50%;margin:-10px 0 0 -10px}
   .k-btn__icon{width:18px;height:18px;flex:none;display:inline-flex}
   .k-btn--pill .k-btn__icon{width:16px;height:16px}
@@ -131,17 +133,18 @@
   .k-field{display:grid;gap:var(--sp-s1);width:100%;min-width:0}
   .k-field>*{min-width:0}
   .k-field__label{font:var(--fw-medium) var(--fs-bodySm)/var(--lh-bodySm) var(--ff-body),var(--ff-fallback)}
-  .k-input{display:flex;align-items:center;gap:var(--sp-s2);min-height:var(--sz-control);padding:0 var(--sp-s4);border-radius:var(--r-sm);border:var(--sz-hairline) solid var(--c-border);background:var(--c-card);color:var(--c-ink);transition:border-color var(--dur-press) var(--ease-standard),box-shadow var(--dur-press) var(--ease-standard)}
+  .k-input{display:flex;align-items:center;gap:var(--sp-s2);min-height:var(--sz-control);padding:0 var(--sp-s4);border-radius:var(--r-sm);border:var(--sz-hairline) solid var(--c-borderStrong);background:var(--c-card);color:var(--c-ink);transition:border-color var(--dur-press) var(--ease-standard),box-shadow var(--dur-press) var(--ease-standard)}
   .k-input input{flex:1;width:100%;min-width:0;border:0;background:none;font:var(--fw-regular) var(--fs-body)/1 var(--ff-body),var(--ff-fallback);color:inherit;outline:none;padding:0}
   .k-input input::placeholder{color:var(--c-muted)}
   .k-input__icon{width:18px;height:18px;color:var(--c-muted);flex:none}
   .k-input__unit{color:var(--c-muted);font-size:var(--fs-bodySm)}
   .k-input:focus-within,.k-input.is-pressed{border-color:var(--c-coral);box-shadow:0 0 0 3px var(--c-coralSoft)}
   .k-input.is-error{border-color:var(--c-coral)}
-  .k-input.is-error .k-input__icon{color:var(--c-coral)}
+  .k-input.is-error .k-input__icon{color:var(--c-coralText)}
   .k-field__help{font:var(--fw-regular) var(--fs-caption)/var(--lh-caption) var(--ff-body),var(--ff-fallback);color:var(--c-muted)}
-  .k-field.is-error .k-field__help{color:var(--c-coral)}
-  .k-field.is-disabled{opacity:var(--op-disabled)}
+  .k-field.is-error .k-field__help{color:var(--c-coralText)}
+  .k-field.is-disabled{opacity:1;pointer-events:none}
+  .k-field.is-disabled .k-input{opacity:var(--op-disabled)}
 
   /* Card */
   .k-card{display:block;width:100%;text-align:left;background-color:var(--c-card);border:var(--sz-hairline) solid var(--c-border);border-radius:var(--r-lg);padding:var(--sp-s4);box-shadow:var(--sh-card);color:var(--c-ink);cursor:pointer;font:inherit}
@@ -149,20 +152,21 @@
   .k-card__title{font:var(--fw-medium) var(--fs-headline)/var(--lh-headline) var(--ff-display),var(--ff-fallback)}
   .k-card__text{font:var(--fw-regular) var(--fs-bodySm)/var(--lh-bodySm) var(--ff-body),var(--ff-fallback);color:var(--c-muted);margin-top:var(--sp-s1)}
   .k-card__row{display:flex;align-items:center;justify-content:space-between;gap:var(--sp-s2)}
-  .k-msg{display:flex;align-items:center;gap:var(--sp-s2);margin-top:var(--sp-s3);padding:var(--sp-s2) var(--sp-s3);border-radius:var(--r-sm);background:var(--c-coralSoft);color:var(--c-coral);font:var(--fw-medium) var(--fs-caption)/var(--lh-caption) var(--ff-body),var(--ff-fallback)}
+  .k-msg{display:flex;align-items:center;gap:var(--sp-s2);margin-top:var(--sp-s3);padding:var(--sp-s2) var(--sp-s3);border-radius:var(--r-sm);background:var(--c-coralSoft);color:var(--c-coralText);font:var(--fw-medium) var(--fs-caption)/var(--lh-caption) var(--ff-body),var(--ff-fallback)}
   .k-msg svg{width:16px;height:16px;flex:none}
-  .k-link{background:none;border:0;padding:0;font:var(--fw-semibold) var(--fs-caption)/1 var(--ff-body),var(--ff-fallback);color:var(--c-coral);cursor:pointer;margin-left:auto}
+  .k-link{background:none;border:0;padding:0;font:var(--fw-semibold) var(--fs-caption)/1 var(--ff-body),var(--ff-fallback);color:var(--c-coralText);cursor:pointer;margin-left:auto}
 
   /* Chip */
-  .k-chip{display:inline-flex;align-items:center;gap:var(--sp-s2);min-height:var(--sz-controlSm);padding:0 var(--sp-s3);border-radius:var(--r-pill);border:var(--sz-hairline) solid var(--c-border);background-color:var(--c-card);color:var(--c-ink);font:var(--fw-medium) var(--fs-bodySm)/1 var(--ff-body),var(--ff-fallback);cursor:pointer}
+  .k-chip{display:inline-flex;align-items:center;gap:var(--sp-s2);min-height:var(--sz-controlSm);padding:0 var(--sp-s3);border-radius:var(--r-pill);border:var(--sz-hairline) solid var(--c-border);background-color:var(--c-card);color:var(--c-ink);font:var(--fw-medium) var(--fs-bodySm)/1 var(--ff-body),var(--ff-fallback)}
+  .k-chip__label{display:inline-flex;align-items:center;gap:var(--sp-s2);min-height:var(--sz-controlSm);background:none;border:0;padding:0;margin:0;font:inherit;color:inherit;cursor:pointer;border-radius:var(--r-pill)}
   .k-chip--selected{background-color:var(--c-ink);color:var(--c-bg);border-color:var(--c-ink)}
   .k-chip--removable{padding-right:var(--sp-s2)}
   .k-chip__x{display:grid;place-items:center;width:20px;height:20px;margin-left:calc(var(--sp-s1) * -1);border-radius:var(--r-pill);color:var(--c-muted);background:none;border:0;cursor:pointer;padding:0}
   .k-chip__icon{display:inline-flex;width:14px;height:14px;flex:none;margin-left:calc(var(--sp-s1) * -1)}
   .k-chip--selected .k-chip__x{color:var(--c-bg)}
   .k-chip__x svg{width:12px;height:12px}
-  .k-chip.is-error{border-color:var(--c-coral);color:var(--c-coral);background-color:var(--c-coralSoft)}
-  .k-chip.is-error .k-chip__x{color:var(--c-coral)}
+  .k-chip.is-error{border-color:var(--c-coral);color:var(--c-coralText);background-color:var(--c-coralSoft)}
+  .k-chip.is-error .k-chip__x{color:var(--c-coralText)}
   .k-chip .k-spin{color:var(--c-muted)}
 
   /* ProgressRing */
@@ -181,7 +185,7 @@
   .k-ring.is-pressed{transform:scale(var(--press-scale))}
   .k-ring.is-error .k-ring__fill{stroke:var(--c-coral);stroke-linecap:butt;stroke-dashoffset:0!important}
   
-  .k-ring.is-error .k-ring__value{color:var(--c-coral)}
+  .k-ring.is-error .k-ring__value{color:var(--c-coralText)}
   .k-ring--loading .k-ring__fill{animation:k-sweep var(--dur-spin) var(--ease-standard) infinite}
   @keyframes k-sweep{0%{stroke-dashoffset:var(--k-c)}50%{stroke-dashoffset:calc(var(--k-c) * .25)}100%{stroke-dashoffset:var(--k-c)}}
 
@@ -195,7 +199,7 @@
   .k-stat--yellow .k-bar i{background:var(--c-yellow)}
   .k-stat--green .k-bar i{background:var(--c-green)}
   .k-stat.is-error{border-color:var(--c-coral)}
-  .k-stat.is-error .k-stat__value{color:var(--c-coral)}
+  .k-stat.is-error .k-stat__value{color:var(--c-coralText)}
   .k-stat.is-error .k-bar i{background:var(--c-coral);width:100%;opacity:.35}
 
   /* BottomSheet */
@@ -204,25 +208,26 @@
   .k-sheet-frame__scrim{position:absolute;inset:0;background:var(--c-overlay)}
   .k-sheet{position:absolute;left:0;right:0;bottom:0;background:var(--c-card);border-radius:var(--r-lg) var(--r-lg) 0 0;padding:var(--sp-s2) var(--sp-s4) var(--sp-s4);box-shadow:var(--sh-sheet);animation:k-sheet-in var(--dur-sheet) var(--ease-out)}
   @keyframes k-sheet-in{from{transform:translateY(24px);opacity:0}}
+  .k-sheet.is-disabled{opacity:1}
   .k-sheet__handle{width:var(--sz-handleW);height:var(--sz-handleH);border-radius:var(--r-pill);background:var(--c-border);margin:0 auto var(--sp-s3)}
   .k-sheet__title{font:var(--fw-semibold) var(--fs-headline)/var(--lh-headline) var(--ff-display),var(--ff-fallback);margin-bottom:var(--sp-s3)}
   .k-sheet__grid{display:grid;grid-template-columns:repeat(4,1fr);gap:var(--sp-s2)}
   .k-opt{display:flex;flex-direction:column;align-items:center;gap:var(--sp-s1);padding:var(--sp-s3) var(--sp-s1);border-radius:var(--r-md);border:var(--sz-hairline) solid var(--c-border);background-color:var(--c-bg);color:var(--c-ink);font:var(--fw-medium) var(--fs-captionSm)/1 var(--ff-body),var(--ff-fallback);cursor:pointer}
-  .k-opt svg{width:22px;height:22px;color:var(--c-coral)}
+  .k-opt svg{width:22px;height:22px;color:var(--c-coralText)}
   .k-sheet__status{display:flex;align-items:center;gap:var(--sp-s3);padding:var(--sp-s3);border-radius:var(--r-md);background:var(--c-bg);border:var(--sz-hairline) solid var(--c-border)}
   .k-sheet__status .k-spin{color:var(--c-coral)}
   .k-sheet__status b{display:block;font:var(--fw-medium) var(--fs-bodySm)/var(--lh-bodySm) var(--ff-body),var(--ff-fallback)}
   .k-sheet__status small{font:var(--fw-regular) var(--fs-caption)/var(--lh-caption) var(--ff-body),var(--ff-fallback);color:var(--c-muted)}
   .k-sheet.is-error .k-sheet__status{border-color:var(--c-coral);background:var(--c-coralSoft)}
-  .k-sheet.is-error .k-sheet__status svg{color:var(--c-coral);width:22px;height:22px;flex:none}
-  .k-sheet.is-error .k-sheet__status b{color:var(--c-coral)}
+  .k-sheet.is-error .k-sheet__status svg{color:var(--c-coralText);width:22px;height:22px;flex:none}
+  .k-sheet.is-error .k-sheet__status b{color:var(--c-coralText)}
 
   /* Badge */
   .k-badge{display:inline-flex;align-items:center;gap:var(--sp-s1);padding:3px var(--sp-s2);border-radius:var(--r-pill);font:var(--fw-semibold) var(--fs-captionSm)/1.2 var(--ff-body),var(--ff-fallback);cursor:pointer;border:var(--sz-hairline) solid transparent;background:none}
   .k-badge::before{content:"";width:6px;height:6px;border-radius:var(--r-pill);background:currentColor;flex:none}
-  .k-badge--high{background-color:var(--c-greenSoft);color:var(--c-green)}
+  .k-badge--high{background-color:var(--c-greenSoft);color:var(--c-greenText)}
   .k-badge--medium{background-color:var(--c-yellowSoft);color:var(--c-yellowText)}
-  .k-badge--low,.k-badge.is-error{background-color:var(--c-coralSoft);color:var(--c-coral)}
+  .k-badge--low,.k-badge.is-error{background-color:var(--c-coralSoft);color:var(--c-coralText)}
   .k-badge.is-loading{background-color:var(--c-card);color:var(--c-muted);border-color:var(--c-border)}
   .k-badge.is-loading::before{display:none}
   .k-badge .k-spin{width:12px;height:12px}
@@ -232,13 +237,13 @@
   .k-tab{position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;min-height:var(--sz-tapMin);min-width:0;border:0;background:none;border-radius:var(--r-sm);color:var(--c-muted);font:var(--fw-medium) var(--fs-captionSm)/1 var(--ff-body),var(--ff-fallback);cursor:pointer;padding:var(--sp-s1) 0;white-space:nowrap;letter-spacing:-.01em}
   .k-tab svg{width:22px;height:22px}
   .k-tab--active{color:var(--c-ink)}
-  .k-tab--active svg{color:var(--c-coral)}
+  .k-tab--active svg{color:var(--c-coralText)}
   .k-tab--fab{margin-top:calc(var(--sp-s5) * -1)}
   .k-tab--fab .k-fab{display:grid;place-items:center;width:var(--sz-control);height:var(--sz-control);border-radius:var(--r-pill);background-color:var(--c-coral);color:var(--c-onCoral)}
   .k-tab--fab .k-fab svg{color:inherit}
   .k-tab__dot{position:absolute;top:6px;left:calc(50% + 6px);width:8px;height:8px;border-radius:var(--r-pill);background:var(--c-coral);border:2px solid var(--c-card)}
-  .k-tabbar.is-error .k-tab--error{color:var(--c-coral)}
-  .k-tabbar.is-error .k-tab--error svg{color:var(--c-coral)}
+  .k-tabbar.is-error .k-tab--error{color:var(--c-coralText)}
+  .k-tabbar.is-error .k-tab--error svg{color:var(--c-coralText)}
   .k-tabbar__frame{border:var(--sz-hairline) solid var(--c-border);border-radius:var(--r-md);overflow:hidden;background:var(--c-bg)}
   .k-tabbar__frame .k-tabbar{border-radius:0}
   .k-tabbar__frame .fake{height:36px;padding:var(--sp-s2) var(--sp-s3);font:var(--fw-regular) var(--fs-captionSm)/1 var(--ff-body),var(--ff-fallback);color:var(--c-muted)}
@@ -246,25 +251,26 @@
 </head>
 <body>
 <div class="wrap">
-  <div class="topbar">
+  <header class="topbar">
     <div class="brand">
       <svg width="24" height="24" viewBox="0 0 64 64" aria-hidden="true"><circle cx="32" cy="32" r="22" fill="none" stroke="var(--c-border)" stroke-width="10"/><circle cx="32" cy="32" r="22" fill="none" stroke="var(--c-coral)" stroke-width="10" stroke-linecap="round" stroke-dasharray="138" stroke-dashoffset="36" transform="rotate(-90 32 32)"/><circle cx="32" cy="32" r="7" fill="var(--c-yellow)"/></svg>
       Kalo <span>Design system</span>
     </div>
     <button class="theme-btn" id="themeBtn" type="button" aria-label="Toggle light and dark mode">Dark mode</button>
-  </div>
+  </header>
 
+  <main>
   <div class="hero">
     <div class="kicker">Part 2 · Design system</div>
     <h1>Tokens and components, as code</h1>
     <p>Every color, size, radius, type style, shadow and duration on this page comes from one token object. The components below are rendered by JavaScript from that object, in five states each, and the theme toggle swaps only the token values.</p>
   </div>
 
-  <nav class="jump" id="jump"></nav>
+  <nav class="jump" id="jump" aria-label="Sections"></nav>
 
   <section class="block" id="tokens-color">
     <h2>Color</h2>
-    <p class="desc">Accents are identical in both themes. Neutrals and soft tints swap. Text on an accent always uses the matching on-color token.</p>
+    <p class="desc">Accent fills are identical in both themes. Neutrals, soft tints and the text variants swap. Text in an accent color uses coralText, greenText or yellowText (AA on bg, card and the soft tints). Text on an accent fill uses the on-color tokens, ink in both themes. borderStrong outlines inputs at 3:1.</p>
     <div class="two">
       <div class="panel"><h3>Light</h3><div class="swatches" id="sw-light"></div></div>
       <div class="panel"><h3>Dark</h3><div class="swatches" id="sw-dark"></div></div>
@@ -295,8 +301,9 @@
 
   <div class="divider"></div>
   <div id="components"></div>
+  </main>
 
-  <p class="foot">Kalo · Part 2 design system · Source of truth: <code>02-design-system/tokens.js</code>, inlined below verbatim · Fonts from Google Fonts, everything else inline.</p>
+  <footer class="foot">Kalo · Part 2 design system · Source of truth: <code>02-design-system/tokens.js</code>, inlined below verbatim · Fonts from Google Fonts, everything else inline.</footer>
 </div>
 
 <script>
@@ -307,6 +314,12 @@
  * React Native + Expo app (import tokens from './tokens') and inlined
  * verbatim into 02-design-system/gallery.html, which turns every entry
  * into a CSS custom property at runtime.
+ *
+ * Accessibility: coral, green and yellow are fill colors. Text or icons in an
+ * accent color use coralText, greenText or yellowText, which reach WCAG AA
+ * (4.5:1) on bg, card and the matching soft tint in each theme. Text on a
+ * coral, green or yellow fill uses the on* tokens (ink in both themes).
+ * borderStrong outlines inputs at 3:1 or better against card and bg.
  *
  * Units: spacing, radius, font size, line height and stroke widths are
  * device-independent pixels. Durations are milliseconds.
@@ -325,10 +338,13 @@ const tokens = {
       coralSoft: '#FFE9E3',
       yellowSoft: '#FFF4CF',
       greenSoft: '#DFF7E8',
-      onCoral: '#FFFFFF',
+      onCoral: '#161615',
       onYellow: '#161615',
-      onGreen: '#FFFFFF',
-      yellowText: '#9A6E00',
+      onGreen: '#161615',
+      coralText: '#C63110',
+      greenText: '#1C7D44',
+      yellowText: '#8F6600',
+      borderStrong: '#918C76',
       skeleton: '#EFEEE8',
       overlay: 'rgba(22,22,21,0.45)',
     },
@@ -344,10 +360,13 @@ const tokens = {
       coralSoft: '#3A2119',
       yellowSoft: '#3A3115',
       greenSoft: '#153524',
-      onCoral: '#FFFFFF',
+      onCoral: '#161615',
       onYellow: '#161615',
-      onGreen: '#FFFFFF',
+      onGreen: '#161615',
+      coralText: '#FF5A36',
+      greenText: '#2ECC71',
       yellowText: '#FFC93C',
+      borderStrong: '#7A7972',
       skeleton: '#262622',
       overlay: 'rgba(0,0,0,0.6)',
     },
@@ -516,7 +535,7 @@ if (typeof module !== 'undefined' && module.exports) { module.exports = tokens; 
     var icon = s==='error' ? I.alert : (p.icon ? I[p.icon] : '');
     return '<button type="button" class="'+cls('k-btn','k-btn--'+(p.variant||'primary'),'pressable',stateCls(s))+'"'+
       (s==='disabled'?' disabled':'')+(s==='loading'?' aria-busy="true"':'')+'>'+
-      (icon?'<span class="k-btn__icon">'+icon+'</span>':'')+'<span class="k-btn__label">'+esc(label)+'</span>'+(s==='loading'?spinner:'')+'</button>';
+      (icon?'<span class="k-btn__icon">'+icon+'</span>':'')+'<span class="k-btn__label">'+esc(label)+'</span>'+(s==='loading'?spinner+'<span class="sr-only">, loading</span>':'')+'</button>';
   };
 
   C.Input = function(p){
@@ -539,7 +558,7 @@ if (typeof module !== 'undefined' && module.exports) { module.exports = tokens; 
     var s=p.state||'default';
     var body;
     if(s==='loading'){
-      body='<div class="k-skel" style="width:55%;height:16px"></div><div class="k-skel" style="width:85%;margin-top:10px"></div><div class="k-skel" style="width:40%;margin-top:8px"></div>';
+      body='<span class="sr-only">Loading entry</span><div class="k-skel" style="width:55%;height:16px"></div><div class="k-skel" style="width:85%;margin-top:10px"></div><div class="k-skel" style="width:40%;margin-top:8px"></div>';
     } else {
       body='<div class="k-card__row"><div class="k-card__title">'+esc(p.title||'Chicken burrito bowl')+'</div>'+(p.aside||'')+'</div>'+
            '<div class="k-card__text">'+esc(p.text||'Lunch · 12:40 · 540 kcal')+'</div>'+
@@ -556,8 +575,14 @@ if (typeof module !== 'undefined' && module.exports) { module.exports = tokens; 
            : '<button type="button" class="k-chip__x" aria-label="Remove '+esc(p.label)+'">'+I.x+'</button>';
     }
     var label = p.label;
-    return '<span class="'+cls('k-chip','pressable',p.selected&&'k-chip--selected',p.removable&&'k-chip--removable',stateCls(s))+'" role="button" tabindex="0"'+(s==='disabled'?' aria-disabled="true"':'')+'>'+
-      (s==='error'?'<span class="k-chip__icon">'+I.alert+'</span>':'')+esc(label)+tail+'</span>';
+    var dis = s==='disabled'?' disabled':'';
+    if(p.removable){
+      tail = s==='loading' ? spinner.replace('k-spin','k-spin k-spin--sm')+'<span class="sr-only">Removing</span>'
+           : '<button type="button" class="k-chip__x" aria-label="Remove '+esc(p.label)+'"'+dis+'>'+I.x+'</button>';
+    }
+    return '<span class="'+cls('k-chip','pressable',p.selected&&'k-chip--selected',p.removable&&'k-chip--removable',stateCls(s))+'">'+
+      '<button type="button" class="k-chip__label"'+dis+(p.selected?' aria-pressed="true"':'')+'>'+
+      (s==='error'?'<span class="k-chip__icon" aria-hidden="true">'+I.alert+'</span>':'')+esc(label)+'</button>'+tail+'</span>';
   };
 
   C.ProgressRing = function(p){
@@ -582,19 +607,20 @@ if (typeof module !== 'undefined' && module.exports) { module.exports = tokens; 
     var s=p.state||'default';
     var body;
     if(s==='loading'){
-      body='<div class="k-skel" style="width:40%;height:10px"></div><div class="k-skel" style="width:60%;height:18px;margin:6px 0 10px"></div><div class="k-bar"></div>';
+      body='<span class="sr-only">Loading '+esc(p.name)+'</span><div class="k-skel" style="width:40%;height:10px"></div><div class="k-skel" style="width:60%;height:18px;margin:6px 0 10px"></div><div class="k-bar"></div>';
     } else {
       var pct = s==='disabled' ? 0 : Math.round((p.value/p.target)*100);
       body='<div class="k-stat__name">'+esc(p.name)+'</div>'+
         '<div class="k-stat__value">'+(s==='error'?'—':(s==='disabled'?'–':p.value))+' <small>/ '+p.target+' '+esc(p.unit||'g')+'</small></div>'+
         '<div class="k-bar"><i style="width:'+Math.min(pct,100)+'%"></i></div>'+
-        (s==='error'?'<div class="k-field__help" style="color:var(--c-coral);margin-top:6px">'+esc(p.error||'No data yet')+'</div>':'');
+        (s==='error'?'<div class="k-field__help" style="color:var(--c-coralText);margin-top:6px">'+esc(p.error||'No data yet')+'</div>':'');
     }
-    return '<button type="button" class="'+cls('k-stat','pressable',p.color&&'k-stat--'+p.color,stateCls(s))+'"'+(s==='disabled'?' disabled':'')+'>'+body+'</button>';
+    return '<button type="button" class="'+cls('k-stat','pressable',p.color&&'k-stat--'+p.color,stateCls(s))+'"'+(s==='disabled'?' disabled':'')+(s==='loading'?' aria-busy="true"':'')+'>'+body+'</button>';
   };
 
+  var sheetSeq=0;
   C.BottomSheet = function(p){
-    var s=p.state||'default';
+    var s=p.state||'default', sid='k-sheet-title-'+(++sheetSeq);
     var opts=[['camera','Photo'],['mic','Voice'],['barcode','Barcode'],['search','Search']];
     var content;
     if(s==='loading'){
@@ -611,7 +637,7 @@ if (typeof module !== 'undefined' && module.exports) { module.exports = tokens; 
     return '<div class="k-sheet-frame" aria-label="Bottom sheet">'+
       '<div class="k-sheet-frame__bg"><div class="t-headline">Good morning, Lena</div><div class="t-caption" style="color:var(--c-muted)">640 kcal left today</div></div>'+
       '<div class="k-sheet-frame__scrim"></div>'+
-      '<div class="'+cls('k-sheet',s!=='pressed'?stateCls(s):'')+'" role="dialog"><div class="k-sheet__handle"></div><div class="k-sheet__title">'+esc(p.title||'Log a meal')+'</div>'+content+'</div>'+
+      '<div class="'+cls('k-sheet',s!=='pressed'?stateCls(s):'')+'" role="dialog" aria-modal="true" aria-labelledby="'+sid+'"><div class="k-sheet__handle" aria-hidden="true"></div><div class="k-sheet__title" id="'+sid+'">'+esc(p.title||'Log a meal')+'</div>'+content+'</div>'+
     '</div>';
   };
 
@@ -631,11 +657,11 @@ if (typeof module !== 'undefined' && module.exports) { module.exports = tokens; 
       if(s==='loading') return '<div class="k-tab"><div class="k-skel" style="width:22px;height:22px;border-radius:var(--r-pill)"></div><div class="k-skel" style="width:32px;height:8px"></div></div>';
       var isFab=t[0]==='plus';
       var c=cls('k-tab','pressable',isFab&&'k-tab--fab',t[1]===active&&!isFab&&'k-tab--active',s==='pressed'&&t[1]==='Recipes'&&'is-pressed',s==='error'&&t[1]==='History'&&'k-tab--error');
-      var icon = isFab ? '<span class="k-fab">'+I.plus+'</span>' : I[t[0]];
-      return '<button type="button" class="'+c+'"'+(s==='disabled'?' disabled':'')+(t[1]===active?' aria-current="page"':'')+'>'+icon+(isFab?'':'<span>'+esc(t[1])+'</span>')+(s==='error'&&t[1]==='History'?'<span class="k-tab__dot" aria-label="Sync failed"></span>':'')+'</button>';
+      var icon = isFab ? '<span class="k-fab" aria-hidden="true">'+I.plus+'</span>' : I[t[0]];
+      return '<button type="button" class="'+c+'"'+(s==='disabled'?' disabled':'')+(t[1]===active?' aria-current="page"':'')+(isFab?' aria-label="Log a meal"':'')+'>'+icon+(isFab?'':'<span>'+esc(t[1])+'</span>')+(s==='error'&&t[1]==='History'?'<span class="k-tab__dot" aria-label="Sync failed"></span>':'')+'</button>';
     }).join('');
-    return '<div class="k-tabbar__frame"><div class="fake">'+(s==='error'?'<span style="color:var(--c-coral)">Sync failed. Showing cached data.</span>':(s==='disabled'?'Offline':'Screen content'))+'</div>'+
-      '<nav class="'+cls('k-tabbar',stateCls(s))+'" aria-label="Main">'+inner+'</nav></div>';
+    return '<div class="k-tabbar__frame"><div class="fake">'+(s==='error'?'<span style="color:var(--c-coralText)">Sync failed. Showing cached data.</span>':(s==='disabled'?'Offline':'Screen content'))+'</div>'+
+      '<nav class="'+cls('k-tabbar',stateCls(s))+'" aria-label="'+esc(p.label||'Main')+'">'+inner+'</nav></div>';
   };
 
   /* ---------- 5. Component registry for the gallery ---------- */
@@ -694,7 +720,7 @@ if (typeof module !== 'undefined' && module.exports) { module.exports = tokens; 
     { id:'tabbar', name:'TabBar', desc:'Five slots with the log action raised in the center. Error marks the tab whose data failed to sync and leaves the rest usable. Loading is skeleton, shown only on cold start.',
       props:['active','state','onSelect'],
       variants:[
-        {title:'Main navigation', render:function(s){return C.TabBar({state:s});}}
+        {title:'Main navigation', render:function(s){return C.TabBar({state:s,label:'Main, '+s+' state'});}}
       ], wide:true}
   ];
 

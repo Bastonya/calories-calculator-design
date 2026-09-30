@@ -6,6 +6,12 @@
  * verbatim into 02-design-system/gallery.html, which turns every entry
  * into a CSS custom property at runtime.
  *
+ * Accessibility: coral, green and yellow are fill colors. Text or icons in an
+ * accent color use coralText, greenText or yellowText, which reach WCAG AA
+ * (4.5:1) on bg, card and the matching soft tint in each theme. Text on a
+ * coral, green or yellow fill uses the on* tokens (ink in both themes).
+ * borderStrong outlines inputs at 3:1 or better against card and bg.
+ *
  * Units: spacing, radius, font size, line height and stroke widths are
  * device-independent pixels. Durations are milliseconds.
  */
@@ -23,10 +29,13 @@ const tokens = {
       coralSoft: '#FFE9E3',
       yellowSoft: '#FFF4CF',
       greenSoft: '#DFF7E8',
-      onCoral: '#FFFFFF',
+      onCoral: '#161615',
       onYellow: '#161615',
-      onGreen: '#FFFFFF',
-      yellowText: '#9A6E00',
+      onGreen: '#161615',
+      coralText: '#C63110',
+      greenText: '#1C7D44',
+      yellowText: '#8F6600',
+      borderStrong: '#918C76',
       skeleton: '#EFEEE8',
       overlay: 'rgba(22,22,21,0.45)',
     },
@@ -42,10 +51,13 @@ const tokens = {
       coralSoft: '#3A2119',
       yellowSoft: '#3A3115',
       greenSoft: '#153524',
-      onCoral: '#FFFFFF',
+      onCoral: '#161615',
       onYellow: '#161615',
-      onGreen: '#FFFFFF',
+      onGreen: '#161615',
+      coralText: '#FF5A36',
+      greenText: '#2ECC71',
       yellowText: '#FFC93C',
+      borderStrong: '#7A7972',
       skeleton: '#262622',
       overlay: 'rgba(0,0,0,0.6)',
     },
