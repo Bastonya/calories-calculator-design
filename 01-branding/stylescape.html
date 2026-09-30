@@ -1,0 +1,589 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Kalo Brand Stylescape</title>
+<meta name="description" content="Branding stylescape for Kalo, an AI-first calorie tracker and recipe finder: name, logo, tone of voice, color, type, imagery, motion and UI snippets.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+  /* ---------- Tokens (from CLAUDE.md) ---------- */
+  :root{
+    --coral:#FF5A36; --yellow:#FFC93C; --green:#2ECC71;
+    --ink:#161615; --muted:#66655F; --border:#E8E6DD;
+    --bg:#FAFAF7; --card:#FFFFFF;
+    --coral-soft:#FFE9E3; --yellow-soft:#FFF4CF; --green-soft:#DFF7E8;
+    --shadow:0 8px 24px rgba(22,22,21,.08);
+    --display:"Space Grotesk",ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;
+    --body:"Inter",ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;
+    --r-sm:12px; --r-md:20px; --r-lg:28px; --r-pill:999px;
+    color-scheme:light;
+  }
+  @media (prefers-color-scheme:dark){
+    :root:not([data-theme="light"]){
+      --ink:#F3F2ED; --muted:#B5B3A9; --border:#2E2E29; --bg:#121210; --card:#1C1C19;
+      --coral-soft:#3A2119; --yellow-soft:#3A3115; --green-soft:#153524;
+      --shadow:0 8px 24px rgba(0,0,0,.4); color-scheme:dark;
+    }
+  }
+  :root[data-theme="dark"]{
+    --ink:#F3F2ED; --muted:#B5B3A9; --border:#2E2E29; --bg:#121210; --card:#1C1C19;
+    --coral-soft:#3A2119; --yellow-soft:#3A3115; --green-soft:#153524;
+    --shadow:0 8px 24px rgba(0,0,0,.4); color-scheme:dark;
+  }
+
+  *{box-sizing:border-box}
+  html{-webkit-text-size-adjust:100%}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--body);font-size:15px;line-height:1.5;
+       -webkit-font-smoothing:antialiased}
+  h1,h2,h3{font-family:var(--display);margin:0;letter-spacing:-.01em}
+  p{margin:0}
+  a{color:inherit}
+
+  .wrap{max-width:1180px;margin:0 auto;padding:24px 16px 80px}
+  .topbar{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:8px 0 28px}
+  .brand{display:flex;align-items:center;gap:10px;font-family:var(--display);font-weight:700;font-size:18px}
+  .theme-btn{font:inherit;font-weight:500;font-size:13px;border:1px solid var(--border);background:var(--card);color:var(--ink);
+             border-radius:var(--r-pill);padding:8px 14px;cursor:pointer}
+
+  .hero{display:grid;grid-template-columns:1fr;gap:20px;align-items:center;margin-bottom:20px}
+  @media(min-width:860px){.hero{grid-template-columns:1.2fr .8fr}}
+  .hero h1{font-size:clamp(34px,6vw,64px);font-weight:700;line-height:1.02}
+  .hero h1 em{font-style:normal;color:var(--coral)}
+  .hero .lede{color:var(--muted);font-size:17px;margin-top:14px;max-width:48ch}
+  .meta{display:flex;flex-wrap:wrap;gap:8px;margin-top:20px}
+  .tag{font-size:12px;font-weight:500;color:var(--muted);border:1px solid var(--border);border-radius:var(--r-pill);padding:5px 11px;background:var(--card)}
+
+  /* collage grid */
+  .grid{display:grid;grid-template-columns:repeat(6,1fr);gap:14px}
+  .tile{background:var(--card);border:1px solid var(--border);border-radius:var(--r-lg);padding:22px;grid-column:span 6;min-width:0}
+  @media(min-width:640px){.c2{grid-column:span 3}.c3{grid-column:span 3}.c4{grid-column:span 6}}
+  @media(min-width:960px){.c2{grid-column:span 2}.c3{grid-column:span 3}.c4{grid-column:span 4}}
+  .tile h2{font-size:20px;font-weight:600;margin-bottom:4px}
+  .tile .sub{color:var(--muted);font-size:13px;margin-bottom:16px}
+  .kicker{font-family:var(--display);font-size:11px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--coral);margin-bottom:8px}
+  .accent-coral{background:var(--coral);color:#fff;border-color:transparent}
+  .accent-yellow{background:var(--yellow);color:#161615;border-color:transparent}
+  .accent-green{background:var(--green);color:#fff;border-color:transparent}
+  .accent-ink{background:var(--ink);color:var(--bg);border-color:transparent}
+  .accent-coral h2,.accent-yellow h2,.accent-green h2,.accent-ink h2{color:inherit}
+  .accent-coral .kicker,.accent-green .kicker,.accent-ink .kicker{color:inherit;opacity:.8}
+  .accent-yellow .kicker{color:#161615;opacity:.7}
+
+  /* logo tile */
+  .logo-row{display:flex;flex-wrap:wrap;align-items:center;gap:24px}
+  .icons{display:flex;gap:14px;align-items:flex-end;flex-wrap:wrap}
+  .icon-label{font-size:11px;color:var(--muted);text-align:center;margin-top:6px}
+
+  /* mood */
+  .mood{display:flex;flex-wrap:wrap;gap:10px}
+  .mood span{font-family:var(--display);font-weight:600;font-size:22px;padding:8px 16px;border-radius:var(--r-pill);background:var(--bg);border:1px solid var(--border)}
+  .accent-coral .mood span{background:rgba(255,255,255,.16);border-color:rgba(255,255,255,.3)}
+
+  /* tone */
+  .tone{display:grid;gap:10px}
+  .tone-pair{display:grid;grid-template-columns:1fr;gap:6px;padding:12px;border-radius:var(--r-md);background:var(--bg);border:1px solid var(--border)}
+  @media(min-width:640px){.tone-pair{grid-template-columns:1fr 1fr}}
+  .say,.avoid{font-size:14px}
+  .say b,.avoid b{display:block;font-size:11px;letter-spacing:.1em;text-transform:uppercase;font-family:var(--display);margin-bottom:4px}
+  .say b{color:var(--green)}.avoid b{color:var(--muted)}
+  .avoid{color:var(--muted);text-decoration:line-through;text-decoration-color:rgba(255,90,54,.6)}
+  .avoid b{text-decoration:none}
+
+  /* palette */
+  .swatches{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+  @media(min-width:640px){.swatches{grid-template-columns:repeat(4,1fr)}}
+  .sw{border-radius:var(--r-md);overflow:hidden;border:1px solid var(--border)}
+  .sw .chip{height:74px}
+  .sw .info{padding:10px 12px;font-size:12px;line-height:1.35}
+  .sw .info b{display:block;font-family:var(--display);font-size:14px;font-weight:600}
+  .sw .info code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;color:var(--muted)}
+  .sw .info small{display:block;color:var(--muted);margin-top:4px}
+  .ratio{display:flex;flex-wrap:wrap;gap:6px;margin-top:14px}
+  .ratio div{height:14px;border-radius:7px}
+  .rules{margin:14px 0 0;padding-left:18px;font-size:13px;color:var(--muted)}
+  .rules li{margin-bottom:4px}
+
+  /* type */
+  .specimen{display:grid;gap:14px}
+  .specimen .row{display:grid;grid-template-columns:1fr;gap:4px;padding-bottom:12px;border-bottom:1px solid var(--border)}
+  @media(min-width:640px){.specimen .row{grid-template-columns:120px 1fr}}
+  .specimen .row:last-child{border-bottom:0;padding-bottom:0}
+  .specimen .lbl{font-size:11px;color:var(--muted);font-family:var(--display);font-weight:600;letter-spacing:.1em;text-transform:uppercase;padding-top:6px}
+  .specimen .lbl small{display:block;font-family:var(--body);letter-spacing:0;text-transform:none;font-weight:400;font-size:11px}
+  .t-display{font-family:var(--display);font-weight:700;font-size:34px;line-height:1.05}
+  .t-display-sm{font-family:var(--display);font-weight:700;font-size:28px;line-height:1.1}
+  .t-headline{font-family:var(--display);font-weight:600;font-size:22px;line-height:1.2}
+  .t-headline-sm{font-family:var(--display);font-weight:500;font-size:18px;line-height:1.25}
+  .t-body{font-family:var(--body);font-size:15px;font-weight:400}
+  .t-body-sm{font-family:var(--body);font-size:14px;font-weight:500}
+  .t-caption{font-family:var(--body);font-size:12px;color:var(--muted)}
+  .t-caption-sm{font-family:var(--body);font-size:11px;color:var(--muted);letter-spacing:.02em}
+  .numerals{font-family:var(--display);font-weight:700;font-size:48px;letter-spacing:-.03em;font-variant-numeric:tabular-nums;line-height:1}
+
+  /* imagery */
+  .imagery{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:14px}
+  .art{aspect-ratio:1;border-radius:var(--r-md);overflow:hidden;background:var(--bg);border:1px solid var(--border)}
+  .art svg{width:100%;height:100%;display:block}
+  .dont{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+  .dont span{font-size:12px;color:var(--muted);border:1px dashed var(--border);border-radius:var(--r-pill);padding:4px 10px}
+
+  /* motion */
+  .motion{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;text-align:center}
+  .motion .demo{background:var(--bg);border:1px solid var(--border);border-radius:var(--r-md);padding:14px 6px;display:flex;flex-direction:column;align-items:center;gap:8px;min-height:120px;justify-content:center}
+  .motion .demo b{font-size:12px;font-family:var(--display);font-weight:600}
+  .motion .demo small{font-size:11px;color:var(--muted)}
+  .ring-anim circle.p{stroke-dasharray:264;stroke-dashoffset:264;animation:fill 1.6s cubic-bezier(.2,.8,.2,1) infinite alternate}
+  @keyframes fill{to{stroke-dashoffset:66}}
+  .countup{font-family:var(--display);font-weight:700;font-size:26px;font-variant-numeric:tabular-nums}
+  .bounce{animation:bounce 1.8s cubic-bezier(.34,1.56,.64,1) infinite}
+  @keyframes bounce{0%,55%,100%{transform:scale(1)}65%{transform:scale(1.12)}80%{transform:scale(.96)}}
+  .replay{font:inherit;font-size:12px;font-weight:500;border:1px solid var(--border);background:var(--card);color:var(--ink);border-radius:var(--r-pill);padding:6px 12px;cursor:pointer;margin-top:12px}
+  @media (prefers-reduced-motion:reduce){.ring-anim circle.p,.bounce{animation:none}.ring-anim circle.p{stroke-dashoffset:66}}
+
+  /* ---------- UI snippets ---------- */
+  .phone{width:100%;max-width:340px;margin:0 auto;background:var(--bg);border:1px solid var(--border);border-radius:36px;padding:18px 14px 16px;box-shadow:var(--shadow)}
+  .status{display:flex;justify-content:space-between;font-size:11px;font-weight:600;color:var(--muted);padding:0 8px 14px}
+  .greet{font-family:var(--display);font-weight:600;font-size:20px;padding:0 4px 12px}
+  .greet small{display:block;font-family:var(--body);font-weight:400;font-size:12px;color:var(--muted)}
+
+  .ring-card{background:var(--card);border:1px solid var(--border);border-radius:var(--r-lg);padding:18px;display:flex;align-items:center;gap:16px}
+  .ring{position:relative;width:128px;height:128px;flex:none}
+  .ring svg{width:100%;height:100%;transform:rotate(-90deg)}
+  .ring .center{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center}
+  .ring .center b{font-family:var(--display);font-weight:700;font-size:26px;line-height:1;font-variant-numeric:tabular-nums}
+  .ring .center small{font-size:11px;color:var(--muted);margin-top:3px}
+  .ring-meta{display:grid;gap:6px;font-size:13px}
+  .ring-meta .k{color:var(--muted);font-size:11px}
+  .ring-meta .v{font-family:var(--display);font-weight:600;font-size:16px}
+
+  .macros{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:10px}
+  .macro{background:var(--card);border:1px solid var(--border);border-radius:var(--r-md);padding:12px 12px 10px}
+  .macro .name{font-size:11px;color:var(--muted);font-weight:500}
+  .macro .val{font-family:var(--display);font-weight:700;font-size:18px;line-height:1.2;margin:2px 0 6px;font-variant-numeric:tabular-nums}
+  .macro .val small{font-size:11px;color:var(--muted);font-weight:500;font-family:var(--body)}
+  .bar{height:6px;border-radius:3px;background:var(--border);overflow:hidden}
+  .bar i{display:block;height:100%;border-radius:3px}
+
+  .btn{font-family:var(--body);font-weight:600;font-size:15px;border:0;border-radius:var(--r-pill);padding:14px 20px;width:100%;cursor:pointer;
+       display:inline-flex;align-items:center;justify-content:center;gap:8px;transition:transform .12s ease}
+  .btn:active{transform:scale(.98)}
+  .btn-primary{background:var(--coral);color:#fff;box-shadow:0 6px 16px rgba(255,90,54,.28)}
+  .btn-secondary{background:var(--card);color:var(--ink);border:1px solid var(--border)}
+  .btn-pill{width:auto;padding:9px 14px;font-size:13px;background:var(--coral-soft);color:var(--coral)}
+  .btn-row{display:grid;gap:8px;margin-top:12px}
+  .pills{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+
+  .entry{display:flex;align-items:center;gap:12px;background:var(--card);border:1px solid var(--border);border-radius:var(--r-md);padding:10px 12px;margin-top:8px}
+  .entry .thumb{width:40px;height:40px;border-radius:12px;flex:none;display:grid;place-items:center}
+  .entry .t{flex:1;min-width:0}
+  .entry .t b{display:block;font-size:14px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .entry .t small{font-size:11px;color:var(--muted)}
+  .entry .kcal{font-family:var(--display);font-weight:600;font-size:14px;font-variant-numeric:tabular-nums}
+  .badge{display:inline-flex;align-items:center;gap:4px;font-size:11px;font-weight:600;border-radius:var(--r-pill);padding:3px 8px}
+  .badge-hi{background:var(--green-soft);color:var(--green)}
+  .badge-mid{background:var(--yellow-soft);color:#9A6E00}
+  :root[data-theme="dark"] .badge-mid{color:var(--yellow)}
+  @media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .badge-mid{color:var(--yellow)}}
+
+  .snip-label{font-size:11px;color:var(--muted);font-family:var(--display);font-weight:600;letter-spacing:.1em;text-transform:uppercase;margin:16px 0 8px}
+  .snip-label:first-of-type{margin-top:0}
+
+  .foot{margin-top:28px;color:var(--muted);font-size:12px;text-align:center}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="topbar">
+    <div class="brand">
+      <svg width="28" height="28" viewBox="0 0 64 64" aria-hidden="true"><circle cx="32" cy="32" r="22" fill="none" stroke="var(--border)" stroke-width="10"/><circle cx="32" cy="32" r="22" fill="none" stroke="var(--coral)" stroke-width="10" stroke-linecap="round" stroke-dasharray="138" stroke-dashoffset="36" transform="rotate(-90 32 32)"/><circle cx="32" cy="32" r="7" fill="var(--yellow)"/></svg>
+      Kalo · Stylescape
+    </div>
+    <button class="theme-btn" id="themeBtn" type="button" aria-label="Toggle light and dark mode">Dark mode</button>
+  </div>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div>
+      <div class="kicker">Part 1 · Branding stylescape</div>
+      <h1>Kalo.<br>Know what you eat, <em>without the guilt.</em></h1>
+      <p class="lede">An AI-first calorie tracker and recipe finder. Snap, say or scan a meal and Kalo does the counting. Ask for a dish and Kalo finds one that fits you.</p>
+      <div class="meta">
+        <span class="tag">Bright</span><span class="tag">Modern</span><span class="tag">Simple</span><span class="tag">Dynamic</span>
+        <span class="tag">Rounded shapes</span><span class="tag">Flat surfaces</span><span class="tag">Progress rings</span>
+      </div>
+    </div>
+    <div style="display:grid;place-items:center">
+      <svg viewBox="0 0 320 320" width="280" height="280" role="img" aria-label="Kalo logo mark: a coral progress ring with a yellow center dot">
+        <circle cx="160" cy="160" r="112" fill="none" stroke="var(--border)" stroke-width="44"/>
+        <circle cx="160" cy="160" r="112" fill="none" stroke="var(--coral)" stroke-width="44" stroke-linecap="round" stroke-dasharray="704" stroke-dashoffset="176" transform="rotate(-90 160 160)"/>
+        <circle cx="160" cy="160" r="36" fill="var(--yellow)"/>
+      </svg>
+    </div>
+  </section>
+
+  <div class="grid">
+
+    <!-- NAME + LOGO -->
+    <section class="tile c4">
+      <div class="kicker">Name · logo · app icon</div>
+      <h2>Kalo</h2>
+      <p class="sub">Short for kilocalorie. Two syllables, easy to say in any language, reads as a friendly name rather than a medical term.</p>
+      <div class="logo-row">
+        <svg width="220" height="64" viewBox="0 0 220 64" role="img" aria-label="Kalo wordmark with ring mark">
+          <circle cx="32" cy="32" r="20" fill="none" stroke="var(--border)" stroke-width="9"/>
+          <circle cx="32" cy="32" r="20" fill="none" stroke="var(--coral)" stroke-width="9" stroke-linecap="round" stroke-dasharray="126" stroke-dashoffset="32" transform="rotate(-90 32 32)"/>
+          <circle cx="32" cy="32" r="6.5" fill="var(--yellow)"/>
+          <text x="70" y="46" font-family="Space Grotesk, system-ui, sans-serif" font-weight="700" font-size="40" fill="var(--ink)" letter-spacing="-1.5">Kalo</text>
+        </svg>
+        <div class="icons">
+          <div>
+            <svg width="72" height="72" viewBox="0 0 72 72" role="img" aria-label="App icon, coral background">
+              <rect width="72" height="72" rx="18" fill="#FF5A36"/>
+              <circle cx="36" cy="36" r="20" fill="none" stroke="rgba(255,255,255,.28)" stroke-width="9"/>
+              <circle cx="36" cy="36" r="20" fill="none" stroke="#FFFFFF" stroke-width="9" stroke-linecap="round" stroke-dasharray="126" stroke-dashoffset="32" transform="rotate(-90 36 36)"/>
+              <circle cx="36" cy="36" r="6.5" fill="#FFC93C"/>
+            </svg>
+            <div class="icon-label">Primary</div>
+          </div>
+          <div>
+            <svg width="72" height="72" viewBox="0 0 72 72" role="img" aria-label="App icon, light background">
+              <rect width="72" height="72" rx="18" fill="#FAFAF7"/>
+              <circle cx="36" cy="36" r="20" fill="none" stroke="#E8E6DD" stroke-width="9"/>
+              <circle cx="36" cy="36" r="20" fill="none" stroke="#FF5A36" stroke-width="9" stroke-linecap="round" stroke-dasharray="126" stroke-dashoffset="32" transform="rotate(-90 36 36)"/>
+              <circle cx="36" cy="36" r="6.5" fill="#FFC93C"/>
+            </svg>
+            <div class="icon-label">Light</div>
+          </div>
+          <div>
+            <svg width="72" height="72" viewBox="0 0 72 72" role="img" aria-label="App icon, dark background">
+              <rect width="72" height="72" rx="18" fill="#161615"/>
+              <circle cx="36" cy="36" r="20" fill="none" stroke="#2E2E29" stroke-width="9"/>
+              <circle cx="36" cy="36" r="20" fill="none" stroke="#FF5A36" stroke-width="9" stroke-linecap="round" stroke-dasharray="126" stroke-dashoffset="32" transform="rotate(-90 36 36)"/>
+              <circle cx="36" cy="36" r="6.5" fill="#FFC93C"/>
+            </svg>
+            <div class="icon-label">Dark</div>
+          </div>
+          <div>
+            <svg width="40" height="40" viewBox="0 0 72 72" role="img" aria-label="Favicon size">
+              <rect width="72" height="72" rx="18" fill="#FF5A36"/>
+              <circle cx="36" cy="36" r="20" fill="none" stroke="rgba(255,255,255,.28)" stroke-width="10"/>
+              <circle cx="36" cy="36" r="20" fill="none" stroke="#FFFFFF" stroke-width="10" stroke-linecap="round" stroke-dasharray="126" stroke-dashoffset="32" transform="rotate(-90 36 36)"/>
+              <circle cx="36" cy="36" r="7" fill="#FFC93C"/>
+            </svg>
+            <div class="icon-label">Small</div>
+          </div>
+        </div>
+      </div>
+      <ul class="rules">
+        <li>The mark is a progress ring at 75 percent with a yellow center dot: today's goal, nearly done, with energy in the middle.</li>
+        <li>Geometry only: circles and a rounded stroke cap. No gradients, no shadows, no food illustration inside the mark.</li>
+        <li>Minimum size 16 px. Clear space around the mark equals the stroke width.</li>
+      </ul>
+    </section>
+
+    <!-- MOOD -->
+    <section class="tile c2 accent-coral">
+      <div class="kicker">Mood</div>
+      <h2>Bright, modern, simple, dynamic</h2>
+      <p class="sub" style="color:rgba(255,255,255,.8)">Kalo feels like a sunny kitchen, not a clinic.</p>
+      <div class="mood">
+        <span>Bright</span><span>Warm</span><span>Quick</span><span>Honest</span><span>Rounded</span><span>Calm</span>
+      </div>
+    </section>
+
+    <!-- TONE OF VOICE -->
+    <section class="tile c3">
+      <div class="kicker">Tone of voice</div>
+      <h2>Friendly and direct</h2>
+      <p class="sub">Kalo speaks like a knowledgeable friend. It states facts, offers the next step, and never judges a choice. No shaming, no diet-culture words, no exclamation-mark cheerleading.</p>
+      <div class="tone">
+        <div class="tone-pair">
+          <div class="say"><b>Say</b>You have 640 kcal left today.</div>
+          <div class="avoid"><b>Avoid</b>Careful, you're almost over your limit!</div>
+        </div>
+        <div class="tone-pair">
+          <div class="say"><b>Say</b>Looks like a chicken burrito. Tap to adjust the portion.</div>
+          <div class="avoid"><b>Avoid</b>Are you sure you want to log this?</div>
+        </div>
+        <div class="tone-pair">
+          <div class="say"><b>Say</b>Saved. Your ring moved to 72 percent.</div>
+          <div class="avoid"><b>Avoid</b>Great job staying on track, you deserve a cheat meal.</div>
+        </div>
+      </div>
+      <ul class="rules">
+        <li>Sentences under twelve words. One action per message.</li>
+        <li>Numbers before adjectives. "540 kcal" beats "a light lunch."</li>
+        <li>Words we do not use: cheat, guilty, bad food, burn off, punish, clean.</li>
+      </ul>
+    </section>
+
+    <!-- IMAGERY (accent tile) -->
+    <section class="tile accent-yellow">
+      <div class="kicker">Principle</div>
+      <h2>Fewest taps to log a meal</h2>
+      <p style="opacity:.8;font-size:14px">Every brand element serves speed. Rings show progress at a glance, big numerals are readable at arm's length, and the primary button is always the only coral thing on the screen.</p>
+    </section>
+
+    <!-- PALETTE -->
+    <section class="tile c4">
+      <div class="kicker">Color palette</div>
+      <h2>Three accents on warm neutrals</h2>
+      <p class="sub">Coral drives, yellow supports, green rewards. Everything else is a warm off-white or ink so food and numbers stand out.</p>
+      <div class="swatches">
+        <div class="sw"><div class="chip" style="background:#FF5A36"></div><div class="info"><b>Coral</b><code>#FF5A36</code><small>Primary CTA, calorie progress, brand mark</small></div></div>
+        <div class="sw"><div class="chip" style="background:#FFC93C"></div><div class="info"><b>Yellow</b><code>#FFC93C</code><small>Secondary progress, highlights, medium AI confidence</small></div></div>
+        <div class="sw"><div class="chip" style="background:#2ECC71"></div><div class="info"><b>Green</b><code>#2ECC71</code><small>Success, health-positive states, high AI confidence</small></div></div>
+        <div class="sw"><div class="chip" style="background:#161615"></div><div class="info"><b>Ink</b><code>#161615</code><small>Primary text on light surfaces</small></div></div>
+        <div class="sw"><div class="chip" style="background:#66655F"></div><div class="info"><b>Muted</b><code>#66655F</code><small>Secondary text, captions, icons at rest</small></div></div>
+        <div class="sw"><div class="chip" style="background:#E8E6DD"></div><div class="info"><b>Border</b><code>#E8E6DD</code><small>Hairlines, ring tracks, empty bars</small></div></div>
+        <div class="sw"><div class="chip" style="background:#FAFAF7;border-bottom:1px solid #E8E6DD"></div><div class="info"><b>Background</b><code>#FAFAF7</code><small>Screen background, warm off-white</small></div></div>
+        <div class="sw"><div class="chip" style="background:#FFFFFF;border-bottom:1px solid #E8E6DD"></div><div class="info"><b>Card</b><code>#FFFFFF</code><small>Cards, sheets, inputs</small></div></div>
+      </div>
+      <div class="ratio" aria-label="Approximate usage ratio">
+        <div style="flex:60;background:var(--bg);border:1px solid var(--border)"></div>
+        <div style="flex:25;background:var(--card);border:1px solid var(--border)"></div>
+        <div style="flex:8;background:#FF5A36"></div>
+        <div style="flex:4;background:#FFC93C"></div>
+        <div style="flex:3;background:#2ECC71"></div>
+      </div>
+      <ul class="rules">
+        <li>Usage ratio about 60 background, 25 card, 8 coral, 4 yellow, 3 green. Accents are never used as large fills behind text blocks.</li>
+        <li>One coral CTA per screen. Coral text only on light coral tint, never on white body copy.</li>
+        <li>Dark mode: bg #121210, card #1C1C19, border #2E2E29, muted #B5B3A9, text #F3F2ED. Accents stay the same. Toggle at the top to preview.</li>
+        <li>Red is not in the palette. Errors use coral with an icon and clear copy, never a new color.</li>
+      </ul>
+    </section>
+
+    <!-- DARK PREVIEW -->
+    <section class="tile c2 accent-ink">
+      <div class="kicker">Dark mode</div>
+      <h2>Same accents, deeper neutrals</h2>
+      <div style="margin-top:14px;background:#1C1C19;border:1px solid #2E2E29;border-radius:20px;padding:14px;color:#F3F2ED">
+        <div style="font-size:11px;color:#B5B3A9">Remaining today</div>
+        <div style="font-family:var(--display);font-weight:700;font-size:30px;line-height:1.1">640 <span style="font-size:13px;color:#B5B3A9;font-family:var(--body);font-weight:500">kcal</span></div>
+        <div style="height:8px;border-radius:4px;background:#2E2E29;margin-top:10px;overflow:hidden"><i style="display:block;width:68%;height:100%;background:#FF5A36;border-radius:4px"></i></div>
+        <div style="display:flex;gap:6px;margin-top:12px">
+          <span class="badge" style="background:#153524;color:#2ECC71">High confidence</span>
+          <span class="badge" style="background:#3A3115;color:#FFC93C">Check portion</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- TYPOGRAPHY -->
+    <section class="tile c3">
+      <div class="kicker">Typography</div>
+      <h2>Space Grotesk + Inter</h2>
+      <p class="sub">Space Grotesk gives numbers and headlines a friendly geometric edge that matches the ring. Inter keeps body copy quiet and legible at small sizes.</p>
+      <div class="specimen">
+        <div class="row"><div class="lbl">Display<small>Space Grotesk 700 · 28 to 34</small></div><div><div class="t-display">1,360 kcal</div><div class="t-display-sm" style="margin-top:6px">Find a recipe</div></div></div>
+        <div class="row"><div class="lbl">Headline<small>Space Grotesk 500 to 600 · 18 to 22</small></div><div><div class="t-headline">Today at a glance</div><div class="t-headline-sm" style="margin-top:4px">From my fridge</div></div></div>
+        <div class="row"><div class="lbl">Body<small>Inter 400 to 500 · 14 to 15</small></div><div><p class="t-body">Kalo detected a chicken burrito with rice and black beans. Tap any value to correct it.</p><p class="t-body-sm" style="margin-top:4px">Portion · 1 burrito, about 320 g</p></div></div>
+        <div class="row"><div class="lbl">Caption<small>Inter 400 · 11 to 12</small></div><div><p class="t-caption">Logged 12:40 · Photo · 92% confidence</p><p class="t-caption-sm" style="margin-top:2px">PROTEIN 38 G · CARBS 64 G · FAT 22 G</p></div></div>
+      </div>
+      <ul class="rules">
+        <li>Tabular numerals everywhere a number can change, so rings and counters never jitter.</li>
+        <li>Letter spacing minus 1 to 3 percent on display sizes, none on body.</li>
+        <li>Never use Space Grotesk under 14 px; never use all caps for Inter above 12 px.</li>
+      </ul>
+    </section>
+
+    <!-- BIG NUMERALS -->
+    <section class="tile c3 accent-green">
+      <div class="kicker">Numerals</div>
+      <h2>Numbers are the hero</h2>
+      <p style="opacity:.85;font-size:14px;margin-bottom:12px">Calories and macros are shown big and tabular, so a glance is enough.</p>
+      <div class="numerals" style="font-size:clamp(40px,7vw,72px)">0123456789</div>
+      <div style="font-family:var(--display);font-weight:600;font-size:22px;margin-top:10px;font-variant-numeric:tabular-nums">640 kcal left · 72%</div>
+    </section>
+
+    <!-- IMAGERY DIRECTION -->
+    <section class="tile c3">
+      <div class="kicker">Imagery direction</div>
+      <h2>Flat illustration, plus the user's own photos</h2>
+      <p class="sub">Chosen direction: <b>flat, rounded illustration in the brand palette</b> for empty states, onboarding and recipe categories. Real food photos appear only where the user takes them (the logging flow). Why: stock food photography competes with the user's photo and dates fast; abstract shapes alone feel cold for a food app. Flat shapes stay bright, scale to any size, and match the ring geometry.</p>
+      <div class="imagery" aria-label="Illustration samples">
+        <div class="art"><svg viewBox="0 0 100 100" role="img" aria-label="Bowl illustration"><circle cx="50" cy="42" r="30" fill="var(--yellow-soft)"/><path d="M18 52h64a32 32 0 0 1-64 0z" fill="var(--coral)"/><circle cx="38" cy="46" r="6" fill="var(--green)"/><circle cx="56" cy="40" r="5" fill="var(--yellow)"/><circle cx="64" cy="48" r="4" fill="var(--card)"/><rect x="34" y="82" width="32" height="5" rx="2.5" fill="var(--border)"/></svg></div>
+        <div class="art"><svg viewBox="0 0 100 100" role="img" aria-label="Apple illustration"><circle cx="50" cy="56" r="28" fill="var(--coral)"/><path d="M50 30c0-10 8-14 14-12" stroke="var(--green)" stroke-width="5" stroke-linecap="round" fill="none"/><ellipse cx="58" cy="26" rx="9" ry="5" fill="var(--green)" transform="rotate(-25 58 26)"/><circle cx="40" cy="48" r="4" fill="var(--card)" opacity=".7"/></svg></div>
+        <div class="art"><svg viewBox="0 0 100 100" role="img" aria-label="Camera illustration"><rect x="18" y="32" width="64" height="46" rx="12" fill="var(--ink)"/><rect x="36" y="22" width="28" height="14" rx="6" fill="var(--ink)"/><circle cx="50" cy="55" r="15" fill="var(--card)"/><circle cx="50" cy="55" r="9" fill="var(--coral)"/><circle cx="50" cy="55" r="3" fill="var(--yellow)"/><circle cx="72" cy="42" r="3" fill="var(--green)"/></svg></div>
+        <div class="art"><svg viewBox="0 0 100 100" role="img" aria-label="Fridge illustration"><rect x="26" y="14" width="48" height="72" rx="10" fill="var(--green-soft)"/><rect x="26" y="14" width="48" height="26" rx="10" fill="var(--green)"/><rect x="36" y="46" width="28" height="6" rx="3" fill="var(--card)"/><rect x="36" y="58" width="20" height="6" rx="3" fill="var(--card)"/><rect x="36" y="70" width="24" height="6" rx="3" fill="var(--card)"/><circle cx="62" cy="27" r="4" fill="var(--yellow)"/></svg></div>
+        <div class="art"><svg viewBox="0 0 100 100" role="img" aria-label="Avocado illustration"><ellipse cx="50" cy="52" rx="28" ry="34" fill="var(--green)"/><ellipse cx="50" cy="56" rx="20" ry="25" fill="var(--yellow-soft)"/><circle cx="50" cy="62" r="10" fill="var(--coral)"/></svg></div>
+        <div class="art"><svg viewBox="0 0 100 100" role="img" aria-label="Abstract ring shapes"><circle cx="34" cy="38" r="22" fill="none" stroke="var(--coral)" stroke-width="12"/><circle cx="66" cy="62" r="18" fill="none" stroke="var(--yellow)" stroke-width="10"/><circle cx="66" cy="62" r="6" fill="var(--green)"/></svg></div>
+      </div>
+      <ul class="rules">
+        <li>Fill shapes only, 2 to 4 colors per illustration, no outlines, no gradients, rounded corners of 20 percent or more.</li>
+        <li>Illustrations sit on background, never on card, so they read as scenery rather than content.</li>
+        <li>User photos get a 20 px radius and a thin border, no filters.</li>
+      </ul>
+      <div class="dont"><span>No glossy stock photos</span><span>No before-and-after bodies</span><span>No scales or tape measures</span><span>No 3D renders</span></div>
+    </section>
+
+    <!-- MOTION -->
+    <section class="tile c3">
+      <div class="kicker">Motion motif</div>
+      <h2>Rings fill, numbers count, saves bounce</h2>
+      <p class="sub">Motion confirms an action and shows progress. It never decorates. Every animation is under 600 ms and respects reduced-motion settings.</p>
+      <div class="motion">
+        <div class="demo">
+          <svg class="ring-anim" width="64" height="64" viewBox="0 0 100 100" aria-hidden="true"><circle cx="50" cy="50" r="42" fill="none" stroke="var(--border)" stroke-width="12"/><circle class="p" cx="50" cy="50" r="42" fill="none" stroke="var(--coral)" stroke-width="12" stroke-linecap="round" transform="rotate(-90 50 50)"/></svg>
+          <b>Ring fill</b><small>500 ms, ease-out, from previous value</small>
+        </div>
+        <div class="demo">
+          <div class="countup" id="countup">0</div>
+          <b>Quick count-up</b><small>400 ms, tabular numerals</small>
+        </div>
+        <div class="demo">
+          <button class="btn btn-primary bounce" type="button" style="width:auto;padding:10px 16px;font-size:13px">Saved</button>
+          <b>Gentle bounce</b><small>Spring on save, 1.12 scale, 300 ms</small>
+        </div>
+      </div>
+      <button class="replay" id="replay" type="button">Replay count-up</button>
+      <ul class="rules">
+        <li>Rings animate from the previous value, never from zero, so a logged snack reads as a small change.</li>
+        <li>Sheets slide up in 250 ms with a standard ease. Nothing bounces except a successful save.</li>
+        <li>No looping animation on any screen the user waits on. Loading uses a ring that sweeps once per second.</li>
+      </ul>
+    </section>
+
+    <!-- UI SNIPPETS: HOME -->
+    <section class="tile c3">
+      <div class="kicker">UI snippet · Home dashboard</div>
+      <h2>Calorie ring and macro cards</h2>
+      <p class="sub">Composed only from the tokens above. Ring, three stat cards, two entries with AI confidence badges.</p>
+      <div class="phone" role="img" aria-label="Home dashboard mockup">
+        <div class="status"><span>9:41</span><span>●●●</span></div>
+        <div class="greet">Good morning, Lena<small>Tuesday, 30 September</small></div>
+        <div class="ring-card">
+          <div class="ring">
+            <svg viewBox="0 0 100 100" aria-hidden="true">
+              <circle cx="50" cy="50" r="42" fill="none" stroke="var(--border)" stroke-width="11"/>
+              <circle cx="50" cy="50" r="42" fill="none" stroke="var(--coral)" stroke-width="11" stroke-linecap="round" stroke-dasharray="264" stroke-dashoffset="74"/>
+            </svg>
+            <div class="center"><b>640</b><small>kcal left</small></div>
+          </div>
+          <div class="ring-meta">
+            <div><div class="k">Goal</div><div class="v">2,000</div></div>
+            <div><div class="k">Eaten</div><div class="v">1,360</div></div>
+            <div><div class="k">Progress</div><div class="v" style="color:var(--coral)">72%</div></div>
+          </div>
+        </div>
+        <div class="macros">
+          <div class="macro"><div class="name">Protein</div><div class="val">96 <small>/ 140 g</small></div><div class="bar"><i style="width:69%;background:var(--coral)"></i></div></div>
+          <div class="macro"><div class="name">Carbs</div><div class="val">148 <small>/ 220 g</small></div><div class="bar"><i style="width:67%;background:var(--yellow)"></i></div></div>
+          <div class="macro"><div class="name">Fat</div><div class="val">42 <small>/ 65 g</small></div><div class="bar"><i style="width:65%;background:var(--green)"></i></div></div>
+        </div>
+        <div class="entry">
+          <div class="thumb" style="background:var(--yellow-soft)"><svg width="20" height="20" viewBox="0 0 100 100" aria-hidden="true"><path d="M18 52h64a32 32 0 0 1-64 0z" fill="var(--coral)"/><circle cx="40" cy="44" r="7" fill="var(--green)"/><circle cx="58" cy="40" r="6" fill="var(--yellow)"/></svg></div>
+          <div class="t"><b>Chicken burrito bowl</b><small>Lunch · 12:40 · <span class="badge badge-hi">92%</span></small></div>
+          <div class="kcal">540</div>
+        </div>
+        <div class="entry">
+          <div class="thumb" style="background:var(--green-soft)"><svg width="20" height="20" viewBox="0 0 100 100" aria-hidden="true"><ellipse cx="50" cy="52" rx="28" ry="34" fill="var(--green)"/><ellipse cx="50" cy="56" rx="18" ry="23" fill="var(--yellow-soft)"/><circle cx="50" cy="62" r="9" fill="var(--coral)"/></svg></div>
+          <div class="t"><b>Avocado toast</b><small>Breakfast · 8:10 · <span class="badge badge-mid">71%</span></small></div>
+          <div class="kcal">320</div>
+        </div>
+        <div class="btn-row">
+          <button class="btn btn-primary" type="button"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>Log a meal</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- UI SNIPPETS: COMPONENTS -->
+    <section class="tile c3">
+      <div class="kicker">UI snippet · Core components</div>
+      <h2>Buttons, chips, badges, confirm card</h2>
+      <p class="sub">The primary button is the only fully coral surface on a screen. Secondary is card on border. Pills carry filters and quick actions.</p>
+
+      <div class="snip-label">Buttons</div>
+      <div class="btn-row">
+        <button class="btn btn-primary" type="button">Save to diary</button>
+        <button class="btn btn-secondary" type="button">Edit portion</button>
+      </div>
+      <div class="pills">
+        <button class="btn btn-pill" type="button">Photo</button>
+        <button class="btn btn-pill" type="button">Voice</button>
+        <button class="btn btn-pill" type="button">Barcode</button>
+        <button class="btn btn-pill" type="button">Search</button>
+      </div>
+
+      <div class="snip-label">Ingredient chips (removable)</div>
+      <div class="pills" style="margin-top:0">
+        <span class="tag" style="display:inline-flex;align-items:center;gap:6px;color:var(--ink)">Eggs <b style="color:var(--muted)">×</b></span>
+        <span class="tag" style="display:inline-flex;align-items:center;gap:6px;color:var(--ink)">Spinach <b style="color:var(--muted)">×</b></span>
+        <span class="tag" style="display:inline-flex;align-items:center;gap:6px;color:var(--ink)">Feta <b style="color:var(--muted)">×</b></span>
+        <span class="tag" style="display:inline-flex;align-items:center;gap:6px;color:var(--coral);border-color:var(--coral)">+ Add</span>
+      </div>
+
+      <div class="snip-label">AI confidence badges</div>
+      <div class="pills" style="margin-top:0">
+        <span class="badge badge-hi">● High · 92%</span>
+        <span class="badge badge-mid">● Check portion · 71%</span>
+        <span class="badge" style="background:var(--coral-soft);color:var(--coral)">● Could not recognize</span>
+      </div>
+
+      <div class="snip-label">Confirm and edit card</div>
+      <div class="ring-card" style="display:block">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:8px">
+          <div>
+            <div class="t-headline-sm">Chicken burrito bowl</div>
+            <div class="t-caption" style="margin-top:2px">Detected from photo</div>
+          </div>
+          <span class="badge badge-hi">92%</span>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px">
+          <div style="border:1px solid var(--border);border-radius:var(--r-sm);padding:8px 10px"><div class="t-caption">Portion</div><div style="font-family:var(--display);font-weight:600;font-size:16px">1 bowl · 320 g</div></div>
+          <div style="border:1px solid var(--border);border-radius:var(--r-sm);padding:8px 10px"><div class="t-caption">Calories</div><div style="font-family:var(--display);font-weight:600;font-size:16px;color:var(--coral)">540 kcal</div></div>
+        </div>
+        <div class="t-caption-sm" style="margin-top:10px">PROTEIN 38 G · CARBS 64 G · FAT 22 G</div>
+        <div class="btn-row"><button class="btn btn-primary" type="button">Save to diary</button></div>
+      </div>
+    </section>
+
+  </div>
+
+  <p class="foot">Kalo · Part 1 branding stylescape · Tokens and type from CLAUDE.md · Fonts load from Google Fonts with system fallbacks; everything else is inline.</p>
+</div>
+
+<script>
+  // Theme toggle: preview the dark tokens without changing the OS setting.
+  (function(){
+    var root=document.documentElement, btn=document.getElementById('themeBtn');
+    function isDark(){
+      var t=root.getAttribute('data-theme');
+      if(t) return t==='dark';
+      return window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+    }
+    function label(){ btn.textContent = isDark() ? 'Light mode' : 'Dark mode'; }
+    try{ var saved=localStorage.getItem('kalo-theme'); if(saved) root.setAttribute('data-theme',saved); }catch(e){}
+    label();
+    btn.addEventListener('click',function(){
+      var next=isDark()?'light':'dark';
+      root.setAttribute('data-theme',next);
+      try{ localStorage.setItem('kalo-theme',next); }catch(e){}
+      label();
+    });
+  })();
+
+  // Count-up demo for the motion tile.
+  (function(){
+    var el=document.getElementById('countup'), btn=document.getElementById('replay');
+    var reduce=window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    function run(){
+      var target=540, dur=400, start=null;
+      if(reduce){ el.textContent=target; return; }
+      function step(ts){
+        if(start===null) start=ts;
+        var p=Math.min((ts-start)/dur,1), e=1-Math.pow(1-p,3);
+        el.textContent=Math.round(target*e);
+        if(p<1) requestAnimationFrame(step);
+      }
+      requestAnimationFrame(step);
+    }
+    run(); btn.addEventListener('click',run);
+  })();
+</script>
+</body>
+</html>
