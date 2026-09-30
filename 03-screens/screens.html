@@ -34,19 +34,28 @@
 
   section.flow{margin-bottom:var(--sp-s8);scroll-margin-top:80px}
   section.flow>h2{font-size:var(--fs-headlineLg);font-weight:var(--fw-semibold)}
-  section.flow>.desc{color:var(--c-muted);font-size:var(--fs-bodySm);margin:var(--sp-s1) 0 var(--sp-s5);max-width:72ch}
-  .steps{display:flex;flex-wrap:wrap;align-items:flex-start;gap:var(--sp-s4) var(--sp-s3);padding:var(--sp-s1)}
-  .step{flex:none;width:340px;display:flex;flex-direction:column;gap:var(--sp-s2)}
+  section.flow>.desc{color:var(--c-muted);font-size:var(--fs-bodySm);margin:var(--sp-s1) 0 var(--sp-s4);max-width:72ch}
+  .crumbs{display:flex;flex-wrap:wrap;gap:var(--sp-s2);align-items:center;margin-bottom:var(--sp-s4)}
+  .crumbs .t-caption{color:var(--c-muted);margin-right:var(--sp-s1)}
+  .stage{display:flex;align-items:flex-start;gap:var(--sp-s6);padding:var(--sp-s1)}
+  .step{width:100%;display:grid;grid-template-columns:340px minmax(0,420px);grid-template-areas:"label label" "phone note" "phone try" "phone .";grid-template-rows:auto auto auto 1fr;gap:var(--sp-s2) var(--sp-s6);align-content:start}
+  .step[hidden]{display:none}
+  .step__label{grid-area:label;max-width:340px}
+  .step .phone{grid-area:phone}
+  .step__note{grid-area:note;align-self:start}
+  .step__try{grid-area:try;align-self:start}
   .step__label{display:flex;justify-content:space-between;align-items:baseline;gap:var(--sp-s2);padding:0 var(--sp-s1)}
   .step__label b{font-family:var(--ff-display),var(--ff-fallback);font-size:var(--fs-headline);font-weight:var(--fw-semibold)}
   .step__label span{font-family:var(--ff-display),var(--ff-fallback);font-size:var(--fs-captionSm);font-weight:var(--fw-semibold);letter-spacing:.1em;text-transform:uppercase;color:var(--c-coralText);white-space:nowrap}
-  .step__note{font-size:var(--fs-caption);color:var(--c-muted);padding:0 var(--sp-s1);max-width:340px}
-  .next{flex:none;align-self:center;width:32px;height:32px;color:var(--c-muted);display:grid;place-items:center;margin-top:var(--sp-s8)}
-  .next svg{width:22px;height:22px}
+  .step__note{font-size:var(--fs-caption);color:var(--c-muted);padding:0 var(--sp-s1)}
+  .step__try{margin:0;padding:var(--sp-s3) var(--sp-s4);list-style:none;background:var(--c-card);border:var(--sz-hairline) solid var(--c-border);border-radius:var(--r-md);font-size:var(--fs-caption);display:grid;gap:var(--sp-s1)}
+  .step__try li::before{content:"→ ";color:var(--c-coralText)}
+  .step__try li:first-child{font-family:var(--ff-display),var(--ff-fallback);font-weight:var(--fw-semibold);color:var(--c-ink);font-size:var(--fs-captionSm);letter-spacing:.1em;text-transform:uppercase}
+  .step__try li:first-child::before{content:""}
+  .tap{display:contents}
   @media(max-width:760px){
-    .steps{flex-direction:column;align-items:center}
-    .step{width:100%;max-width:340px}
-    .next{margin:0;transform:rotate(90deg)}
+    .stage{flex-direction:column;align-items:center}
+    .step{max-width:340px;grid-template-columns:1fr;grid-template-areas:"label" "phone" "note" "try";grid-template-rows:auto}
   }
 
   /* device frame */
@@ -88,6 +97,9 @@
   .overlay{position:absolute;inset:0;z-index:2}
   .overlay .scrim{position:absolute;inset:0;background:var(--c-overlay)}
   .overlay .k-sheet{border-radius:var(--r-lg) var(--r-lg) 36px 36px}
+  .overlay .scrim{cursor:pointer}
+  .overlay-close{position:absolute;top:var(--sp-s4);right:var(--sp-s4)}
+  .back-row{display:flex;padding:0 var(--sp-s1)}
   .dim{opacity:.55}
 
   .foot{margin-top:var(--sp-s7);color:var(--c-muted);font-size:var(--fs-caption);text-align:center}
@@ -272,7 +284,7 @@
     <div class="hero">
       <div class="kicker">Part 3 · Key screens and flows</div>
       <h1>Two user stories, end to end</h1>
-      <p>Every screen below is composed from the design system components and tokens, nothing else. Flow A logs a meal in the fewest taps. Flow B finds a recipe that fits the user's profile and fits it to their day. History and Settings complete the app, including the subscription with a one-step cancel.</p>
+      <p>Every screen below is composed from the design system components and tokens, nothing else. The frames are tappable: follow the "Try" list under each one, use the tab bar to move between areas, and use the step chips above a frame to jump to any step, including the loading, error and empty states. Flow A logs a meal in the fewest taps. Flow B finds a recipe that fits the user's profile and fits it to their day.</p>
     </div>
     <nav class="jump" aria-label="Sections">
       <a href="#flow-a">Flow A · Calculate calories</a>
@@ -710,23 +722,32 @@ if (typeof module !== 'undefined' && module.exports) { module.exports = tokens; 
   }
   function r(n){ return Math.round(n); }
 
+  /* ---------- Navigation helpers ----------
+     tap(view, html) wraps rendered component HTML in a display:contents span carrying the target view id.
+     A single delegated click listener (see bottom) reads it, so components and screens are unchanged. */
+  function tap(view, html, reset){ return '<span class="tap" data-go="'+view+'"'+(reset?' data-reset="'+reset+'"':'')+'>'+html+'</span>'; }
+  function backBtn(){ return '<div class="back-row"><span class="tap" data-back="1">'+C.Button({variant:'pill', label:'Back'})+'</span></div>'; }
+
   /* ---------- Frame helpers ---------- */
   function phone(o){
     return '<div class="phone" role="group" aria-label="'+esc(o.aria||o.title||'Screen')+'">'+
       '<div class="status" aria-hidden="true"><span>9:41</span><span>●●●</span></div>'+
       '<div class="screen'+(o.dim?' dim':'')+'">'+o.content+'</div>'+
-      (o.tab ? C.TabBar({bare:true, active:o.tab, label:(o.aria||o.title)+' navigation'}) : '')+
-      (o.overlay ? '<div class="overlay"><div class="scrim"></div>'+o.overlay+'</div>' : '')+
+      (o.tab ? '<span class="tap" data-tabs="1">'+C.TabBar({bare:true, active:o.tab, label:(o.aria||o.title)+' navigation'})+'</span>' : '')+
+      (o.overlay ? '<div class="overlay"><div class="scrim" data-go="'+(o.close||'a1')+'" aria-hidden="true"></div>'+o.overlay+
+        '<div class="overlay-close">'+tap(o.close||'a1', C.Button({variant:'pill', label:'Close'}))+'</div></div>' : '')+
     '</div>';
   }
-  function head(title,sub){ return '<div class="screen-head"><div class="t-headlineLg">'+esc(title)+'</div>'+(sub?'<div class="t-caption">'+esc(sub)+'</div>':'')+'</div>'; }
+  function head(title,sub,back){ return (back?backBtn():'')+'<div class="screen-head"><div class="t-headlineLg">'+esc(title)+'</div>'+(sub?'<div class="t-caption">'+esc(sub)+'</div>':'')+'</div>'; }
   function sectionTitle(t,aside){ return '<div class="section-title"><span class="t-label">'+esc(t)+'</span>'+(aside?'<span class="t-caption">'+aside+'</span>':'')+'</div>'; }
   function step(o){
-    return '<div class="step"><div class="step__label"><b>'+esc(o.title)+'</b><span>'+esc(o.tag)+'</span></div>'+o.phone+'<p class="step__note">'+o.note+'</p></div>';
+    return '<div class="step" id="view-'+o.id+'" data-view="'+o.id+'"'+(o.first?'':' hidden')+'><div class="step__label"><b>'+esc(o.title)+'</b><span>'+esc(o.tag)+'</span></div>'+o.phone+'<p class="step__note">'+o.note+'</p>'+
+      (o.try_ ? '<ul class="step__try"><li>Try</li>'+o.try_.map(function(t){return '<li>'+t+'</li>';}).join('')+'</ul>' : '')+'</div>';
   }
-  var ARROW='<div class="next" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></div>';
-  function flow(id,title,desc,steps){
-    return '<section class="flow" id="'+id+'"><h2>'+esc(title)+'</h2><p class="desc">'+desc+'</p><div class="steps">'+steps.join(ARROW)+'</div></section>';
+  function flow(id,title,desc,views){
+    views[0].first=true;
+    return '<section class="flow" id="'+id+'" data-section="'+id+'"><h2>'+esc(title)+'</h2><p class="desc">'+desc+'</p>'+
+      '<div class="crumbs" data-crumbs="'+id+'"></div><div class="stage">'+views.map(step).join('')+'</div></section>';
   }
   var BOWL='<svg viewBox="0 0 100 100" aria-hidden="true"><circle cx="50" cy="42" r="30" fill="var(--c-yellowSoft)"/><path d="M18 52h64a32 32 0 0 1-64 0z" fill="var(--c-coral)"/><circle cx="38" cy="46" r="6" fill="var(--c-green)"/><circle cx="56" cy="40" r="5" fill="var(--c-yellow)"/><circle cx="64" cy="48" r="4" fill="var(--c-card)"/></svg>';
   var FRIDGE='<svg viewBox="0 0 100 100" aria-hidden="true"><rect x="26" y="14" width="48" height="72" rx="10" fill="var(--c-greenSoft)"/><rect x="26" y="14" width="48" height="26" rx="10" fill="var(--c-green)"/><rect x="36" y="46" width="28" height="6" rx="3" fill="var(--c-card)"/><rect x="36" y="58" width="20" height="6" rx="3" fill="var(--c-card)"/><rect x="36" y="70" width="24" height="6" rx="3" fill="var(--c-card)"/><circle cx="62" cy="27" r="4" fill="var(--c-yellow)"/></svg>';
@@ -743,8 +764,8 @@ if (typeof module !== 'undefined' && module.exports) { module.exports = tokens; 
         '<div class="ring-meta"><div><div class="k">Goal</div><div class="v">'+GOAL.toLocaleString('en-US')+'</div></div><div><div class="k">Eaten</div><div class="v">'+eaten.toLocaleString('en-US')+'</div></div><div><div class="k">Progress</div><div class="v" style="color:var(--c-coralText)">'+pct+'%</div></div></div></div>'})+
       '<div class="grid3">'+C.StatCard({name:'Protein',value:m.protein.v,target:m.protein.t,color:'coral'})+C.StatCard({name:'Carbs',value:m.carbs.v,target:m.carbs.t,color:'yellow'})+C.StatCard({name:'Fat',value:m.fat.v,target:m.fat.t,color:'green'})+'</div>'+
       sectionTitle('Quick log')+
-      '<div class="row">'+C.Button({variant:'pill',icon:'camera',label:'Photo'})+C.Button({variant:'pill',icon:'mic',label:'Voice'})+C.Button({variant:'pill',icon:'barcode',label:'Barcode'})+C.Button({variant:'pill',icon:'search',label:'Search'})+'</div>'+
-      sectionTitle('Today','<a class="k-link" href="#history">See all</a>')+
+      '<div class="row">'+tap('a2', C.Button({variant:'pill',icon:'camera',label:'Photo'})+C.Button({variant:'pill',icon:'mic',label:'Voice'})+C.Button({variant:'pill',icon:'barcode',label:'Barcode'})+C.Button({variant:'pill',icon:'search',label:'Search'}))+'</div>'+
+      sectionTitle('Today','<span class="tap" data-go="h"><button type="button" class="k-link">See all</button></span>')+
       '<div class="stack">'+entries+'</div>';
   }
   var baseEntries=[{name:'Avocado toast',meta:'Breakfast · 8:10 · 320 kcal',level:'medium',conf:71},{name:'Greek yogurt with berries',meta:'Snack · 10:30 · 180 kcal',level:'high',conf:95}];
@@ -752,14 +773,17 @@ if (typeof module !== 'undefined' && module.exports) { module.exports = tokens; 
 
   /* ---------- Screen: Log a meal sheet (A2, three states) ---------- */
   function logSheet(state){
-    return phone({title:'Log a meal', aria:'Log a meal sheet, '+state+' state', dim:true, content:home({eaten:EATEN, macros:macros, entries:baseEntries}), tab:'Home',
-      overlay:C.BottomSheet({bare:true, state:state, title:'Log a meal'})});
+    var sheet=C.BottomSheet({bare:true, state:state, title:'Log a meal'});
+    if(state==='default') sheet='<span class="tap" data-sheet="1">'+sheet+'</span>';
+    if(state==='error') sheet=sheet.replace('>Retake</span>','>Retake</span>').replace(C.Button({variant:'secondary',label:'Retake'}), tap('a2', C.Button({variant:'secondary',label:'Retake'}))).replace(C.Button({variant:'primary',label:'Search'}), tap('a3', C.Button({variant:'primary',label:'Search'})));
+    return phone({title:'Log a meal', aria:'Log a meal sheet, '+state+' state', dim:true, content:home({eaten:EATEN, macros:macros, entries:baseEntries}), tab:'Home', close:'a1',
+      overlay:sheet});
   }
   var A2=logSheet('default'), A2L=logSheet('loading'), A2E=logSheet('error');
 
   /* ---------- Screen: Confirm and edit (A3) ---------- */
   var A3=phone({title:'Confirm and edit', content:
-    head('Confirm','Detected from your photo. Tap any value to correct it.')+
+    head('Confirm','Detected from your photo. Tap any value to correct it.', true)+
     C.Card({static:true, title:'', text:'', children:
       '<div class="art" style="margin-bottom:var(--sp-s3)">'+BOWL+'</div>'+
       '<div class="k-card__row"><div class="k-card__title">'+esc(detected.name)+'</div>'+C.Badge({level:'high', text:'High · '+detected.conf+'%'})+'</div>'+
@@ -767,7 +791,7 @@ if (typeof module !== 'undefined' && module.exports) { module.exports = tokens; 
     '<div class="grid2">'+C.Input({label:'Portion', value:String(detected.portion), unit:'g'})+C.Input({label:'Calories', value:String(detected.kcal), unit:'kcal'})+'</div>'+
     '<div class="grid3">'+C.Input({label:'Protein (g)', value:String(detected.p)})+C.Input({label:'Carbs (g)', value:String(detected.c)})+C.Input({label:'Fat (g)', value:String(detected.f)})+'</div>'+
     '<div class="row"><span class="k-badge k-badge--medium">Estimate</span><span class="t-caption muted">Calories follow the portion. Edit either one.</span></div>'+
-    '<div class="stack" style="margin-top:auto">'+C.Button({variant:'primary', label:'Save to diary'})+C.Button({variant:'secondary', label:'Retake photo'})+'</div>'
+    '<div class="stack" style="margin-top:auto">'+tap('a4', C.Button({variant:'primary', label:'Save to diary'}))+tap('a2', C.Button({variant:'secondary', label:'Retake photo'}))+'</div>'
   });
 
   /* ---------- Screen: Result (A4) ---------- */
@@ -777,7 +801,7 @@ if (typeof module !== 'undefined' && module.exports) { module.exports = tokens; 
 
   /* ---------- Screen: Recipe discovery (B1, two tabs) ---------- */
   function tabs(active){
-    return '<div class="row">'+C.Chip({label:'Browse recipes', selected:active==='browse'})+C.Chip({label:'From my fridge', selected:active==='fridge'})+'</div>';
+    return '<div class="row">'+tap('b1', C.Chip({label:'Browse recipes', selected:active==='browse'}))+tap('b1f', C.Chip({label:'From my fridge', selected:active==='fridge'}))+'</div>';
   }
   var base=totals(recipe.ingredients);
   var recipes=[
@@ -785,7 +809,7 @@ if (typeof module !== 'undefined' && module.exports) { module.exports = tokens; 
     {name:'Chickpea and tomato stew', meta:'480 kcal · 35 min · 19 g protein', fit:'Fits your day'},
     {name:'Halloumi grain bowl', meta:'540 kcal · 20 min · 24 g protein', fit:'Fits your day'}
   ];
-  function recipeList(list){ return '<div class="stack">'+list.map(function(x){ return C.Card({title:x.name, text:x.meta, aside:C.Badge({level:'high', text:x.fit})}); }).join('')+'</div>'; }
+  function recipeList(list){ return '<div class="stack">'+list.map(function(x){ return tap('b3', C.Card({title:x.name, text:x.meta, aside:C.Badge({level:'high', text:x.fit})})); }).join('')+'</div>'; }
   var B1=phone({title:'Recipes', content:
     head('Recipes','Suggestions respect your goal, diet and allergies.')+tabs('browse')+
     C.Input({label:'Search', icon:'search', placeholder:'Omelette, stew, bowl'})+
@@ -796,24 +820,24 @@ if (typeof module !== 'undefined' && module.exports) { module.exports = tokens; 
     C.Input({label:'Add an ingredient', icon:'plus', placeholder:'Eggs, spinach, feta'})+
     sectionTitle('In my fridge','4 items')+
     '<div class="row">'+['Eggs','Spinach','Feta','Cherry tomatoes'].map(function(x){ return C.Chip({label:x, removable:true}); }).join('')+'</div>'+
-    '<div class="stack" style="margin-top:auto">'+C.Button({variant:'primary', icon:'search', label:'Find recipes'})+'</div>', tab:'Recipes'});
+    '<div class="stack" style="margin-top:auto">'+tap('b2', C.Button({variant:'primary', icon:'search', label:'Find recipes'}))+'</div>', tab:'Recipes'});
 
   /* ---------- Screen: Recipe list filtered by profile (B2) and its empty state ---------- */
   function profileCard(){
     return C.Card({static:true, title:'', text:'', children:
-      '<div class="k-card__row"><span class="t-label">Filtered by your profile</span>'+C.Button({variant:'pill', label:'Edit'})+'</div>'+
+      '<div class="k-card__row"><span class="t-label">Filtered by your profile</span>'+tap('s1', C.Button({variant:'pill', label:'Edit'}))+'</div>'+
       '<div class="row" style="margin-top:var(--sp-s2)">'+C.Chip({label:'Goal: lose weight'})+C.Chip({label:'Vegetarian'})+C.Chip({label:'No peanuts'})+C.Chip({label:'Budget 640 kcal'})+'</div>'});
   }
   var B2=phone({title:'Recipes for you', content:
-    head('Recipes for you','3 recipes from your 4 ingredients')+profileCard()+recipeList(recipes)+
+    head('Recipes for you','3 recipes from your 4 ingredients', true)+profileCard()+recipeList(recipes)+
     '<p class="t-caption muted" style="padding:0 var(--sp-s1)">Budget is what is left of today\'s goal. Recipes over budget are hidden, not shamed.</p>', tab:'Recipes'});
   var B2E=phone({title:'Recipes for you, empty', content:
-    head('Recipes for you','0 recipes')+profileCard()+
+    head('Recipes for you','0 recipes', true)+profileCard()+
     C.Card({static:true, title:'', text:'', children:
       '<div class="art" style="background:var(--c-greenSoft);margin-bottom:var(--sp-s3)">'+FRIDGE+'</div>'+
       '<div class="k-card__title center">Nothing fits all of these</div>'+
       '<div class="k-card__text center">No vegetarian recipe with your ingredients stays under 640 kcal. Try one change.</div>'+
-      '<div class="stack" style="margin-top:var(--sp-s3)">'+C.Button({variant:'secondary', label:'Raise the budget to 800 kcal'})+C.Button({variant:'secondary', label:'Add an ingredient'})+'</div>'}), tab:'Recipes'});
+      '<div class="stack" style="margin-top:var(--sp-s3)">'+tap('b2', C.Button({variant:'secondary', label:'Raise the budget to 800 kcal'}))+tap('b1f', C.Button({variant:'secondary', label:'Add an ingredient'}))+'</div>'}), tab:'Recipes'});
 
   /* ---------- Screen: Recipe detail (B3) ---------- */
   function ingredientLines(list, prev){
@@ -823,7 +847,7 @@ if (typeof module !== 'undefined' && module.exports) { module.exports = tokens; 
     }).join('')+'</div>';
   }
   var B3=phone({title:'Recipe detail', content:
-    head(recipe.name, recipe.time+' · '+recipe.serves+' serving · '+recipe.tags.join(', '))+
+    head(recipe.name, recipe.time+' · '+recipe.serves+' serving · '+recipe.tags.join(', '), true)+
     '<div class="art">'+BOWL+'</div>'+
     C.Card({static:true, title:'', text:'', children:
       '<div class="ring-row">'+C.ProgressRing({size:'sm', value:Math.round(base.kcal/GOAL*100), text:r(base.kcal/GOAL*100)+'%', color:'yellow'})+
@@ -831,21 +855,35 @@ if (typeof module !== 'undefined' && module.exports) { module.exports = tokens; 
     '<div class="grid3">'+C.StatCard({name:'Protein',value:r(base.p),target:140,color:'coral'})+C.StatCard({name:'Carbs',value:r(base.c),target:220,color:'yellow'})+C.StatCard({name:'Fat',value:r(base.f),target:65,color:'green'})+'</div>'+
     sectionTitle('Ingredients','1 serving')+C.Card({static:true, title:'', text:'', children:ingredientLines(recipe.ingredients)})+
     sectionTitle('Steps', recipe.time)+C.Card({static:true, title:'', text:'', children:'<ol class="steps-list">'+recipe.steps.map(function(s){return '<li>'+esc(s)+'</li>';}).join('')+'</ol>'})+
-    '<div class="stack">'+C.Button({variant:'primary', label:'Set a calorie limit'})+C.Button({variant:'secondary', label:'Add to diary as is'})+'</div>'
+    '<div class="stack">'+tap('b4', C.Button({variant:'primary', label:'Set a calorie limit'}))+tap('a1', C.Button({variant:'secondary', label:'Add to diary as is'}), 'b1')+'</div>'
   });
 
-  /* ---------- Screen: Calorie limit for this dish (B4) ---------- */
-  var TARGET=450, scaled=rescale(recipe.ingredients, TARGET), st=totals(scaled);
+  /* ---------- Screen: Calorie limit for this dish (B4) ----------
+     The target Input is live: Recalculate reads it, validates it, and re-renders the result area in place. */
+  var TARGET=450;
+  function b4Field(state, value){
+    return C.Input({label:'Calories for this dish', value:String(value), unit:'kcal', state:state||'default',
+      help:'Was '+r(base.kcal)+' kcal. You have 640 kcal left today.', error:'Enter a number between 150 and 1,200 kcal.'});
+  }
+  function b4Result(target){
+    if(target==null){
+      return C.Card({static:true, title:'', text:'', children:ingredientLines(recipe.ingredients)+
+        '<p class="t-caption muted" style="margin-top:var(--sp-s3)">Original quantities. Set a target and tap Recalculate.</p>'});
+    }
+    var scaled=rescale(recipe.ingredients, target), st=totals(scaled);
+    return C.Card({static:true, title:'', text:'', children:
+        '<div class="ring-row">'+C.ProgressRing({size:'sm', value:Math.round(st.kcal/base.kcal*100), text:r(st.kcal/base.kcal*100)+'%', color:'coral'})+
+        '<div><div class="t-headline num">'+r(base.kcal)+' → '+r(st.kcal)+' kcal</div><div class="t-caption muted">Protein '+r(st.p)+' g · Carbs '+r(st.c)+' g · Fat '+r(st.f)+' g</div></div></div>'})+
+      sectionTitle('Adjusted ingredients')+
+      C.Card({static:true, title:'', text:'', children:ingredientLines(scaled, recipe.ingredients)+
+        '<div class="row" style="margin-top:var(--sp-s3)"><span class="k-badge k-badge--medium">How it works</span><span class="t-caption muted">Oil and cheese scale most. Water and seasoning stay put.</span></div>'})+
+      '<div class="stack">'+tap('a1', C.Button({variant:'primary', icon:'plus', label:'Add to diary · '+r(st.kcal)+' kcal'}), 'b1')+'</div>';
+  }
   var B4=phone({title:'Calorie limit', content:
-    head('Fit it to your day','Set a target. Kalo rescales the recipe, not the flavour.')+
-    C.Input({label:'Calories for this dish', value:String(TARGET), unit:'kcal', help:'Was '+r(base.kcal)+' kcal. You have 640 kcal left today.'})+
-    C.Card({static:true, title:'', text:'', children:
-      '<div class="ring-row">'+C.ProgressRing({size:'sm', value:Math.round(st.kcal/base.kcal*100), text:r(st.kcal/base.kcal*100)+'%', color:'coral'})+
-      '<div><div class="t-headline num">'+r(base.kcal)+' → '+r(st.kcal)+' kcal</div><div class="t-caption muted">Protein '+r(st.p)+' g · Carbs '+r(st.c)+' g · Fat '+r(st.f)+' g</div></div></div>'})+
-    sectionTitle('Adjusted ingredients')+
-    C.Card({static:true, title:'', text:'', children:ingredientLines(scaled, recipe.ingredients)+
-      '<div class="row" style="margin-top:var(--sp-s3)"><span class="k-badge k-badge--medium">How it works</span><span class="t-caption muted">Oil and cheese scale most. Water and seasoning stay put.</span></div>'})+
-    '<div class="stack" style="margin-top:auto">'+C.Button({variant:'primary', icon:'plus', label:'Add to diary · '+r(st.kcal)+' kcal'})+'</div>'
+    head('Fit it to your day','Set a target. Kalo rescales the recipe, not the flavour.', true)+
+    '<div id="b4-field">'+b4Field('default', TARGET)+'</div>'+
+    '<span class="tap" data-action="recalc">'+C.Button({variant:'secondary', label:'Recalculate'})+'</span>'+
+    '<div id="b4-out" class="stack">'+b4Result(null)+'</div>'
   });
 
   /* ---------- Screen: History ---------- */
@@ -885,11 +923,11 @@ if (typeof module !== 'undefined' && module.exports) { module.exports = tokens; 
       (plus
         ? C.Card({static:true, title:'', text:'', children:'<div class="k-card__row"><div class="k-card__title">Kalo Plus</div>'+C.Badge({level:'high', text:'Active'})+'</div>'+
             '<div class="k-card__text">€3.99 a month · renews 30 October</div>'+
-            '<div class="stack" style="margin-top:var(--sp-s3)">'+C.Button({variant:'secondary', label:'Cancel subscription'})+'</div>'+
+            '<div class="stack" style="margin-top:var(--sp-s3)">'+tap('s1', C.Button({variant:'secondary', label:'Cancel subscription'}))+'</div>'+
             '<p class="t-caption muted" style="margin-top:var(--sp-s2)">One tap, no questions. Plus stays on until 30 October, then you are back on Free with all your data.</p>'})
         : C.Card({static:true, title:'', text:'', children:'<div class="k-card__row"><div class="k-card__title">Free plan</div>'+C.Badge({level:'medium', text:'Current'})+'</div>'+
             '<div class="k-card__text">Unlimited logging, recipes and history. No ads, ever.</div>'+
-            '<div class="stack" style="margin-top:var(--sp-s3)">'+C.Button({variant:'primary', label:'Try Plus · €3.99 a month'})+'</div>'+
+            '<div class="stack" style="margin-top:var(--sp-s3)">'+tap('s2', C.Button({variant:'primary', label:'Try Plus · €3.99 a month'}))+'</div>'+
             '<p class="t-caption muted" style="margin-top:var(--sp-s2)">Plus adds weekly meal plans and export. Cancel in one tap from this screen.</p>'}));
   }
   var S1=phone({title:'Settings', content:settings(false), tab:'Settings'});
@@ -900,33 +938,88 @@ if (typeof module !== 'undefined' && module.exports) { module.exports = tokens; 
   out+=flow('flow-a','Flow A · Calculate the calories in a dish or product',
     'Fewest possible taps: one sheet with four input methods, AI does the counting, confidence is always visible and every value is editable inline. No ads anywhere in this flow.',
     [
-      step({tag:'Flow A · Step 1', title:'Home dashboard', phone:A1, note:'Calorie ring, three macro StatCards, quick-log pills and today\'s entries with AI confidence badges. The primary action is the raised log button in the tab bar.'}),
-      step({tag:'Flow A · Step 2', title:'Log a meal', phone:A2, note:'One BottomSheet, four ways in: photo, voice, barcode, search. Photo is first because it is the fewest taps.'}),
-      step({tag:'Step 2 · loading state', title:'Analyzing photo', phone:A2L, note:'The sheet stays in place while the AI works. Under two seconds on a typical connection.'}),
-      step({tag:'Step 2 · error state', title:'Photo not recognized', phone:A2E, note:'Honest failure with two ways out: retake, or search by name. The user never leaves the flow.'}),
-      step({tag:'Flow A · Step 3', title:'Confirm and edit', phone:A3, note:'Detected dish with its confidence Badge. Portion, calories and macros are Inputs, not labels. One Save action.'}),
-      step({tag:'Flow A · Step 4', title:'Result', phone:A4, note:'Back on the dashboard: the ring animates from 68% to 95%, the new entry is on top, and a quiet confirmation replaces any celebration.'})
+      {id:'a1', tag:'Flow A · Step 1', title:'Home dashboard', phone:A1, note:'Calorie ring, three macro StatCards, quick-log pills and today\'s entries with AI confidence badges. The primary action is the raised log button in the tab bar.', try_:['Tap the coral + in the tab bar, or any quick-log pill, to log a meal','Tap See all for History','Use the tab bar to reach Recipes, History and Settings']},
+      {id:'a2', tag:'Flow A · Step 2', title:'Log a meal', phone:A2, note:'One BottomSheet, four ways in: photo, voice, barcode, search. Photo is first because it is the fewest taps.', try_:['Tap Photo, Voice, Barcode or Search to analyze','Tap Close or the dimmed area to cancel']},
+      {id:'a2l', tag:'Step 2 · loading state', title:'Analyzing photo', phone:A2L, note:'The sheet stays in place while the AI works. Under two seconds on a typical connection.', try_:['Wait: the prototype advances to Confirm on its own']},
+      {id:'a2e', tag:'Step 2 · error state', title:'Photo not recognized', phone:A2E, note:'Honest failure with two ways out: retake, or search by name. The user never leaves the flow.', try_:['Tap Retake to go back to the sheet','Tap Search to continue by name']},
+      {id:'a3', tag:'Flow A · Step 3', title:'Confirm and edit', phone:A3, note:'Detected dish with its confidence Badge. Portion, calories and macros are Inputs, not labels. One Save action.', try_:['Edit any value, then tap Save to diary','Tap Retake photo or Back to return to the sheet']},
+      {id:'a4', tag:'Flow A · Step 4', title:'Result', phone:A4, note:'Back on the dashboard: the ring moved from 68% to 95%, the new entry is on top, and a quiet confirmation replaces any celebration.', try_:['Tap Recipes in the tab bar to start Flow B','Log another meal from the + button']}
     ]);
   out+=flow('flow-b','Flow B · Find a recipe that suits me',
     'Recipes are filtered by the profile from Settings (goal, diet, allergies) and by what is left of today\'s calorie budget. A dish that is too rich is not rejected: the user sets a limit and Kalo rescales it.',
     [
-      step({tag:'Flow B · Step 1', title:'Recipe discovery', phone:B1, note:'Two tabs as Chips. Browse: search Input, filter Chips, recipe Cards with a fit Badge.'}),
-      step({tag:'Step 1 · second tab', title:'From my fridge', phone:B1F, note:'Removable ingredient Chips and one primary action. Pantry basics like oil, salt and water are assumed.'}),
-      step({tag:'Flow B · Step 2', title:'Recipe list, filtered', phone:B2, note:'The profile that did the filtering is shown as Chips at the top, editable in one tap. Every result fits goal, diet, allergies and budget.'}),
-      step({tag:'Step 2 · empty state', title:'No match', phone:B2E, note:'Empty state explains which constraint failed and offers the smallest change that would unlock results.'}),
-      step({tag:'Flow B · Step 3', title:'Recipe detail', phone:B3, note:'Calories as a share of the daily goal, macros per serving as StatCards, ingredients, steps and time. Two actions: set a limit or add as is.'}),
-      step({tag:'Flow B · Step 4', title:'Calorie limit for this dish', phone:B4, note:'Target 450 kcal. Quantities are rescaled by ingredient type: oil and feta scale hardest, eggs and vegetables proportionally, water and seasoning stay close to the original. The list shows before and after, then Add to diary.'})
+      {id:'b1', tag:'Flow B · Step 1', title:'Recipe discovery', phone:B1, note:'Two tabs as Chips. Browse: search Input, filter Chips, recipe Cards with a fit Badge.', try_:['Tap a recipe card to open it','Tap From my fridge to switch tabs']},
+      {id:'b1f', tag:'Step 1 · second tab', title:'From my fridge', phone:B1F, note:'Removable ingredient Chips and one primary action. Pantry basics like oil, salt and water are assumed.', try_:['Tap Find recipes','Tap Browse recipes to switch back']},
+      {id:'b2', tag:'Flow B · Step 2', title:'Recipe list, filtered', phone:B2, note:'The profile that did the filtering is shown as Chips at the top, editable in one tap. Every result fits goal, diet, allergies and budget.', try_:['Tap a recipe card to open it','Tap Edit to jump to Settings','Use the step chips above to see the empty state']},
+      {id:'b2e', tag:'Step 2 · empty state', title:'No match', phone:B2E, note:'Empty state explains which constraint failed and offers the smallest change that would unlock results.', try_:['Tap Raise the budget to see results','Tap Add an ingredient to go back to the fridge']},
+      {id:'b3', tag:'Flow B · Step 3', title:'Recipe detail', phone:B3, note:'Calories as a share of the daily goal, macros per serving as StatCards, ingredients, steps and time. Two actions: set a limit or add as is.', try_:['Tap Set a calorie limit','Tap Add to diary as is to return to the dashboard','Tap Back to return to the list']},
+      {id:'b4', tag:'Flow B · Step 4', title:'Calorie limit for this dish', phone:B4, note:'Type a target and tap Recalculate. Quantities are rescaled by ingredient type: oil and feta scale hardest, eggs and vegetables proportionally, water and seasoning stay close to the original. The list shows before and after, then Add to diary.', try_:['Change the target (try 450, 300 or 800) and tap Recalculate','Enter 50 to see the validation error','Tap Add to diary to return to the dashboard']}
     ]);
   out+=flow('history','History',
     'A month at a glance using the ring motif per day, then daily totals. Future days are disabled rings, days over goal turn yellow, never red.',
-    [ step({tag:'History', title:'Calendar and daily totals', phone:H, note:'Each day is an extra-small ProgressRing showing the share of the goal. Totals below reuse the Card with a ring aside.'}) ]);
+    [ {id:'h', tag:'History', title:'Calendar and daily totals', phone:H, note:'Each day is an extra-small ProgressRing showing the share of the goal. Totals below reuse the Card with a ring aside.', try_:['Use the tab bar to go anywhere else']} ]);
   out+=flow('settings','Settings',
     'Profile and goals feed the recipe filter. The subscription lives here in plain sight: the free tier is honest and complete, and cancelling Plus is one tap.',
     [
-      step({tag:'Settings · Free', title:'Profile, goals, subscription', phone:S1, note:'Inputs for the body profile, Chips for the goal and diet, and the plan Card with the in-app upgrade.'}),
-      step({tag:'Settings · Plus', title:'One-step cancel', phone:S2, note:'Same screen for a subscriber. Cancel is a secondary Button, no dark pattern, and the copy says exactly what happens next.'})
+      {id:'s1', tag:'Settings · Free', title:'Profile, goals, subscription', phone:S1, note:'Inputs for the body profile, Chips for the goal and diet, and the plan Card with the in-app upgrade.', try_:['Tap Try Plus to upgrade in place']},
+      {id:'s2', tag:'Settings · Plus', title:'One-step cancel', phone:S2, note:'Same screen for a subscriber. Cancel is a secondary Button, no dark pattern, and the copy says exactly what happens next.', try_:['Tap Cancel subscription: one tap, back to Free']}
     ]);
-  document.getElementById('flows').innerHTML=out;
+  var flows=document.getElementById('flows');
+  flows.innerHTML=out;
+
+  /* ---------- Navigation runtime: plain show/hide with one delegated listener ---------- */
+  var VIEW={};   /* id -> {el, section, tag, title} */
+  Array.prototype.forEach.call(flows.querySelectorAll('.step'), function(el){
+    VIEW[el.dataset.view]={el:el, section:el.closest('section').dataset.section, tag:el.querySelector('.step__label span').textContent, title:el.querySelector('.step__label b').textContent};
+  });
+  var current={}, stack=[], timer=null, homeView='a1';
+  function crumbs(section){
+    var box=flows.querySelector('[data-crumbs="'+section+'"]'), ids=Object.keys(VIEW).filter(function(id){return VIEW[id].section===section;});
+    box.innerHTML='<span class="t-caption">Step</span>'+ids.map(function(id){ return tap(id, C.Chip({label:VIEW[id].tag.replace(/^Flow [AB] · /,'')+' · '+VIEW[id].title, selected:current[section]===id})); }).join('');
+  }
+  function show(id, opts){
+    opts=opts||{};
+    var v=VIEW[id]; if(!v) return;
+    if(timer){ clearTimeout(timer); timer=null; }
+    var prev=current[v.section];
+    if(prev && prev!==id && !opts.back) stack.push(prev);
+    Object.keys(VIEW).forEach(function(k){ if(VIEW[k].section===v.section) VIEW[k].el.hidden=(k!==id); });
+    current[v.section]=id;
+    crumbs(v.section);
+    if(id==='a4') homeView='a4';
+    if(opts.from && opts.from!==v.section) document.getElementById(v.section).scrollIntoView({behavior:'smooth', block:'start'});
+    if(id==='a2l') timer=setTimeout(function(){ show('a3'); }, 1200);
+  }
+  var TAB_TARGET={ 'Home':function(){return homeView;}, 'Recipes':function(){return current['flow-b']||'b1';}, 'History':function(){return 'h';}, 'Settings':function(){return current['settings']||'s1';}, 'Log a meal':function(){return 'a2';} };
+  flows.addEventListener('click', function(e){
+    var from=(e.target.closest('section')||{}).dataset ? e.target.closest('section').dataset.section : null;
+    var back=e.target.closest('[data-back]');
+    if(back){ var p=stack.pop(); show(p||'a1', {back:true, from:from}); return; }
+    var recalc=e.target.closest('[data-action="recalc"]');
+    if(recalc){
+      var field=document.getElementById('b4-field'), input=field.querySelector('input'), val=parseInt(String(input.value).replace(/[^0-9]/g,''),10);
+      if(!(val>=150 && val<=1200)){ field.innerHTML=b4Field('error', input.value); return; }
+      field.innerHTML=b4Field('default', val);
+      document.getElementById('b4-out').innerHTML=b4Result(val);
+      return;
+    }
+    var tabs=e.target.closest('[data-tabs]');
+    if(tabs){
+      var t=e.target.closest('.k-tab'); if(!t) return;
+      var name=t.getAttribute('aria-label')||t.textContent.trim();
+      var target=TAB_TARGET[name]; if(target) show(target(), {from:from});
+      return;
+    }
+    var sheet=e.target.closest('[data-sheet]');
+    if(sheet && e.target.closest('.k-opt')){ show('a2l', {from:from}); return; }
+    var go=e.target.closest('[data-go]');
+    if(go){
+      show(go.dataset.go, {from:from});
+      if(go.dataset.reset){ show(go.dataset.reset, {back:true}); stack.length=0; }   /* a completed flow restarts from its first step */
+    }
+  });
+  Object.keys(VIEW).forEach(function(id){ var v=VIEW[id]; if(!current[v.section]) show(id); });
+  window.KaloProto={show:show, views:VIEW};
 })();
 </script>
 </body>
