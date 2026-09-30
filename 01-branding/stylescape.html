@@ -15,6 +15,7 @@
     --ink:#161615; --muted:#66655F; --border:#E8E6DD;
     --bg:#FAFAF7; --card:#FFFFFF;
     --coral-soft:#FFE9E3; --yellow-soft:#FFF4CF; --green-soft:#DFF7E8;
+    --coral-text:#C63110; --green-text:#1C7D44; --yellow-text:#8F6600; --border-strong:#918C76; --on-accent:#161615;
     --shadow:0 8px 24px rgba(22,22,21,.08);
     --display:"Space Grotesk",ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;
     --body:"Inter",ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;
@@ -25,12 +26,14 @@
     :root:not([data-theme="light"]){
       --ink:#F3F2ED; --muted:#B5B3A9; --border:#2E2E29; --bg:#121210; --card:#1C1C19;
       --coral-soft:#3A2119; --yellow-soft:#3A3115; --green-soft:#153524;
+      --coral-text:#FF5A36; --green-text:#2ECC71; --yellow-text:#FFC93C; --border-strong:#7A7972;
       --shadow:0 8px 24px rgba(0,0,0,.4); color-scheme:dark;
     }
   }
   :root[data-theme="dark"]{
     --ink:#F3F2ED; --muted:#B5B3A9; --border:#2E2E29; --bg:#121210; --card:#1C1C19;
     --coral-soft:#3A2119; --yellow-soft:#3A3115; --green-soft:#153524;
+    --coral-text:#FF5A36; --green-text:#2ECC71; --yellow-text:#FFC93C; --border-strong:#7A7972;
     --shadow:0 8px 24px rgba(0,0,0,.4); color-scheme:dark;
   }
 
@@ -51,7 +54,7 @@
   .hero{display:grid;grid-template-columns:1fr;gap:20px;align-items:center;margin-bottom:20px}
   @media(min-width:860px){.hero{grid-template-columns:1.2fr .8fr}}
   .hero h1{font-size:clamp(34px,6vw,64px);font-weight:700;line-height:1.02}
-  .hero h1 em{font-style:normal;color:var(--coral)}
+  .hero h1 em{font-style:normal;color:var(--coral-text)}
   .hero .lede{color:var(--muted);font-size:17px;margin-top:14px;max-width:48ch}
   .meta{display:flex;flex-wrap:wrap;gap:8px;margin-top:20px}
   .tag{font-size:12px;font-weight:500;color:var(--muted);border:1px solid var(--border);border-radius:var(--r-pill);padding:5px 11px;background:var(--card)}
@@ -63,14 +66,14 @@
   @media(min-width:960px){.c2{grid-column:span 2}.c3{grid-column:span 3}.c4{grid-column:span 4}}
   .tile h2{font-size:20px;font-weight:600;margin-bottom:4px}
   .tile .sub{color:var(--muted);font-size:13px;margin-bottom:16px}
-  .kicker{font-family:var(--display);font-size:11px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--coral);margin-bottom:8px}
-  .accent-coral{background:var(--coral);color:#fff;border-color:transparent}
+  .kicker{font-family:var(--display);font-size:11px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--coral-text);margin-bottom:8px}
+  .accent-coral{background:var(--coral);color:var(--on-accent);border-color:transparent}
   .accent-yellow{background:var(--yellow);color:#161615;border-color:transparent}
-  .accent-green{background:var(--green);color:#fff;border-color:transparent}
+  .accent-green{background:var(--green);color:var(--on-accent);border-color:transparent}
   .accent-ink{background:var(--ink);color:var(--bg);border-color:transparent}
   .accent-coral h2,.accent-yellow h2,.accent-green h2,.accent-ink h2{color:inherit}
-  .accent-coral .kicker,.accent-green .kicker,.accent-ink .kicker{color:inherit;opacity:.8}
-  .accent-yellow .kicker{color:#161615;opacity:.7}
+  .accent-coral .kicker,.accent-green .kicker,.accent-ink .kicker{color:inherit}
+  .accent-yellow .kicker{color:#161615}
 
   /* logo tile */
   .logo-row{display:flex;flex-wrap:wrap;align-items:center;gap:24px}
@@ -80,7 +83,7 @@
   /* mood */
   .mood{display:flex;flex-wrap:wrap;gap:10px}
   .mood span{font-family:var(--display);font-weight:600;font-size:22px;padding:8px 16px;border-radius:var(--r-pill);background:var(--bg);border:1px solid var(--border)}
-  .accent-coral .mood span{background:rgba(255,255,255,.16);border-color:rgba(255,255,255,.3)}
+  .accent-coral .mood span{background:rgba(255,255,255,.28);border-color:rgba(22,22,21,.25)}
 
   /* tone */
   .tone{display:grid;gap:10px}
@@ -88,7 +91,7 @@
   @media(min-width:640px){.tone-pair{grid-template-columns:1fr 1fr}}
   .say,.avoid{font-size:14px}
   .say b,.avoid b{display:block;font-size:11px;letter-spacing:.1em;text-transform:uppercase;font-family:var(--display);margin-bottom:4px}
-  .say b{color:var(--green)}.avoid b{color:var(--muted)}
+  .say b{color:var(--green-text)}.avoid b{color:var(--muted)}
   .avoid{color:var(--muted);text-decoration:line-through;text-decoration-color:rgba(255,90,54,.6)}
   .avoid b{text-decoration:none}
 
@@ -170,9 +173,9 @@
   .btn{font-family:var(--body);font-weight:600;font-size:15px;border:0;border-radius:var(--r-pill);padding:14px 20px;width:100%;cursor:pointer;
        display:inline-flex;align-items:center;justify-content:center;gap:8px;transition:transform .12s ease}
   .btn:active{transform:scale(.98)}
-  .btn-primary{background:var(--coral);color:#fff}
+  .btn-primary{background:var(--coral);color:var(--on-accent)}
   .btn-secondary{background:var(--card);color:var(--ink);border:1px solid var(--border)}
-  .btn-pill{width:auto;padding:9px 14px;font-size:13px;background:var(--coral-soft);color:var(--coral)}
+  .btn-pill{width:auto;padding:9px 14px;font-size:13px;background:var(--coral-soft);color:var(--coral-text)}
   .btn-row{display:grid;gap:8px;margin-top:12px}
   .pills{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
 
@@ -183,10 +186,8 @@
   .entry .t small{font-size:11px;color:var(--muted)}
   .entry .kcal{font-family:var(--display);font-weight:600;font-size:14px;font-variant-numeric:tabular-nums}
   .badge{display:inline-flex;align-items:center;gap:4px;font-size:11px;font-weight:600;border-radius:var(--r-pill);padding:3px 8px}
-  .badge-hi{background:var(--green-soft);color:var(--green)}
-  .badge-mid{background:var(--yellow-soft);color:#9A6E00}
-  :root[data-theme="dark"] .badge-mid{color:var(--yellow)}
-  @media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .badge-mid{color:var(--yellow)}}
+  .badge-hi{background:var(--green-soft);color:var(--green-text)}
+  .badge-mid{background:var(--yellow-soft);color:var(--yellow-text)}
 
   .snip-label{font-size:11px;color:var(--muted);font-family:var(--display);font-weight:600;letter-spacing:.1em;text-transform:uppercase;margin:16px 0 8px}
   .snip-label:first-of-type{margin-top:0}
@@ -197,14 +198,15 @@
 <body>
 <div class="wrap">
 
-  <div class="topbar">
+  <header class="topbar">
     <div class="brand">
       <svg width="28" height="28" viewBox="0 0 64 64" aria-hidden="true"><circle cx="32" cy="32" r="22" fill="none" stroke="var(--border)" stroke-width="10"/><circle cx="32" cy="32" r="22" fill="none" stroke="var(--coral)" stroke-width="10" stroke-linecap="round" stroke-dasharray="138" stroke-dashoffset="36" transform="rotate(-90 32 32)"/><circle cx="32" cy="32" r="7" fill="var(--yellow)"/></svg>
       Kalo · Stylescape
     </div>
     <button class="theme-btn" id="themeBtn" type="button" aria-label="Toggle light and dark mode">Dark mode</button>
-  </div>
+  </header>
 
+  <main>
   <!-- HERO -->
   <section class="hero">
     <div>
@@ -289,7 +291,7 @@
     <section class="tile c2 accent-coral">
       <div class="kicker">Mood</div>
       <h2>Bright, modern, simple, dynamic</h2>
-      <p class="sub" style="color:rgba(255,255,255,.8)">Kalo feels like a sunny kitchen, not a clinic.</p>
+      <p class="sub" style="color:inherit;opacity:.85">Kalo feels like a sunny kitchen, not a clinic.</p>
       <div class="mood">
         <span>Bright</span><span>Warm</span><span>Quick</span><span>Honest</span><span>Rounded</span><span>Calm</span>
       </div>
@@ -342,8 +344,12 @@
         <div class="sw"><div class="chip" style="background:#E8E6DD"></div><div class="info"><b>Border</b><code>#E8E6DD</code><small>Hairlines, ring tracks, empty bars</small></div></div>
         <div class="sw"><div class="chip" style="background:#FAFAF7;border-bottom:1px solid #E8E6DD"></div><div class="info"><b>Background</b><code>#FAFAF7</code><small>Screen background, warm off-white</small></div></div>
         <div class="sw"><div class="chip" style="background:#FFFFFF;border-bottom:1px solid #E8E6DD"></div><div class="info"><b>Card</b><code>#FFFFFF</code><small>Cards, sheets, inputs</small></div></div>
+        <div class="sw"><div class="chip" style="background:#C63110"></div><div class="info"><b>Coral text</b><code>#C63110</code><small>Coral as text or icon on light surfaces</small></div></div>
+        <div class="sw"><div class="chip" style="background:#1C7D44"></div><div class="info"><b>Green text</b><code>#1C7D44</code><small>High-confidence badge text</small></div></div>
+        <div class="sw"><div class="chip" style="background:#8F6600"></div><div class="info"><b>Yellow text</b><code>#8F6600</code><small>Medium-confidence badge text</small></div></div>
+        <div class="sw"><div class="chip" style="background:#918C76"></div><div class="info"><b>Border strong</b><code>#918C76</code><small>Input outlines, 3:1 on card</small></div></div>
       </div>
-      <div class="ratio" aria-label="Approximate usage ratio">
+      <div class="ratio" role="img" aria-label="Approximate usage ratio">
         <div style="flex:60;background:var(--bg);border:1px solid var(--border)"></div>
         <div style="flex:25;background:var(--card);border:1px solid var(--border)"></div>
         <div style="flex:8;background:#FF5A36"></div>
@@ -352,8 +358,8 @@
       </div>
       <ul class="rules">
         <li>Usage ratio about 60 background, 25 card, 8 coral, 4 yellow, 3 green. Accents are never used as large fills behind text blocks.</li>
-        <li>One coral CTA per screen. Coral text only on light coral tint, never on white body copy.</li>
-        <li>Dark mode: bg #121210, card #1C1C19, border #2E2E29, muted #B5B3A9, text #F3F2ED. Accents stay the same. Toggle at the top to preview.</li>
+        <li>One coral CTA per screen, ink label on the coral fill (5.8:1). Coral, green and yellow as text use the deeper text variants below, which reach 4.5:1 on light surfaces. In dark mode the text variants equal the fills.</li>
+        <li>Dark mode: bg #121210, card #1C1C19, border #2E2E29, border strong #7A7972, muted #B5B3A9, text #F3F2ED. Accent fills stay the same and double as the text variants. Toggle at the top to preview.</li>
         <li>Red is not in the palette. Errors use coral with an icon and clear copy, never a new color.</li>
       </ul>
     </section>
@@ -395,7 +401,7 @@
     <section class="tile c3 accent-green">
       <div class="kicker">Numerals</div>
       <h2>Numbers are the hero</h2>
-      <p style="opacity:.85;font-size:14px;margin-bottom:12px">Calories and macros are shown big and tabular, so a glance is enough.</p>
+      <p style="font-size:14px;margin-bottom:12px">Calories and macros are shown big and tabular, so a glance is enough.</p>
       <div class="numerals" style="font-size:clamp(40px,7vw,72px)">0123456789</div>
       <div style="font-family:var(--display);font-weight:600;font-size:22px;margin-top:10px;font-variant-numeric:tabular-nums">640 kcal left · 72%</div>
     </section>
@@ -453,7 +459,7 @@
       <div class="kicker">UI snippet · Home dashboard</div>
       <h2>Calorie ring and macro cards</h2>
       <p class="sub">Composed only from the tokens above. Ring, three stat cards, two entries with AI confidence badges.</p>
-      <div class="phone" role="img" aria-label="Home dashboard mockup">
+      <div class="phone" role="group" aria-label="Home dashboard mockup">
         <div class="status"><span>9:41</span><span>●●●</span></div>
         <div class="greet">Good morning, Lena<small>Tuesday, 30 September</small></div>
         <div class="ring-card">
@@ -467,7 +473,7 @@
           <div class="ring-meta">
             <div><div class="k">Goal</div><div class="v">2,000</div></div>
             <div><div class="k">Eaten</div><div class="v">1,360</div></div>
-            <div><div class="k">Progress</div><div class="v" style="color:var(--coral)">72%</div></div>
+            <div><div class="k">Progress</div><div class="v" style="color:var(--coral-text)">72%</div></div>
           </div>
         </div>
         <div class="macros">
@@ -514,14 +520,14 @@
         <span class="tag" style="display:inline-flex;align-items:center;gap:6px;color:var(--ink)">Eggs <b style="color:var(--muted)">×</b></span>
         <span class="tag" style="display:inline-flex;align-items:center;gap:6px;color:var(--ink)">Spinach <b style="color:var(--muted)">×</b></span>
         <span class="tag" style="display:inline-flex;align-items:center;gap:6px;color:var(--ink)">Feta <b style="color:var(--muted)">×</b></span>
-        <span class="tag" style="display:inline-flex;align-items:center;gap:6px;color:var(--coral);border-color:var(--coral)">+ Add</span>
+        <span class="tag" style="display:inline-flex;align-items:center;gap:6px;color:var(--coral-text);border-color:var(--coral)">+ Add</span>
       </div>
 
       <div class="snip-label">AI confidence badges</div>
       <div class="pills" style="margin-top:0">
         <span class="badge badge-hi">● High · 92%</span>
         <span class="badge badge-mid">● Check portion · 71%</span>
-        <span class="badge" style="background:var(--coral-soft);color:var(--coral)">● Could not recognize</span>
+        <span class="badge" style="background:var(--coral-soft);color:var(--coral-text)">● Could not recognize</span>
       </div>
 
       <div class="snip-label">Confirm and edit card</div>
@@ -534,8 +540,8 @@
           <span class="badge badge-hi">92%</span>
         </div>
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px">
-          <div style="border:1px solid var(--border);border-radius:var(--r-sm);padding:8px 10px"><div class="t-caption">Portion</div><div style="font-family:var(--display);font-weight:600;font-size:16px">1 bowl · 320 g</div></div>
-          <div style="border:1px solid var(--border);border-radius:var(--r-sm);padding:8px 10px"><div class="t-caption">Calories</div><div style="font-family:var(--display);font-weight:600;font-size:16px;color:var(--coral)">540 kcal</div></div>
+          <div style="border:1px solid var(--border-strong);border-radius:var(--r-sm);padding:8px 10px"><div class="t-caption">Portion</div><div style="font-family:var(--display);font-weight:600;font-size:16px">1 bowl · 320 g</div></div>
+          <div style="border:1px solid var(--border-strong);border-radius:var(--r-sm);padding:8px 10px"><div class="t-caption">Calories</div><div style="font-family:var(--display);font-weight:600;font-size:16px;color:var(--coral-text)">540 kcal</div></div>
         </div>
         <div class="t-caption-sm" style="margin-top:10px">PROTEIN 38 G · CARBS 64 G · FAT 22 G</div>
         <div class="btn-row"><button class="btn btn-primary" type="button">Save to diary</button></div>
@@ -543,8 +549,9 @@
     </section>
 
   </div>
+  </main>
 
-  <p class="foot">Kalo · Part 1 branding stylescape · Tokens and type from CLAUDE.md · Fonts load from Google Fonts with system fallbacks; everything else is inline.</p>
+  <footer class="foot">Kalo · Part 1 branding stylescape · Tokens and type from CLAUDE.md · Fonts load from Google Fonts with system fallbacks; everything else is inline.</footer>
 </div>
 
 <script>
